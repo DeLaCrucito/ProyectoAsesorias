@@ -1,0 +1,34 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+
+class CreateAssignmentsTable extends Migration {
+
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
+		Schema::create('assignments', function(Blueprint $table)
+		{
+			$table->integer('id', true);
+			$table->integer('asesor')->nullable()->index('asignacion_asesor_index');
+			$table->integer('materia')->nullable()->index('asignacion_materia_index');
+		});
+	}
+
+
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		Schema::drop('assignments');
+	}
+
+}
