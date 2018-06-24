@@ -1,7 +1,7 @@
 @extends('templates.admin')
 @section('main')
     <div class="section">
-        <div class="row" style="background-color: transparent" id="SolicitudAdd">
+        <div class="row" style="background-color: transparent">
             {{ csrf_field() }}
             <div class="col s12 m12">
                 <div align="center">

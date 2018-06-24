@@ -74,15 +74,22 @@ Route::group(['prefix' => 'admin'],function (){
         Route::get('/save','DegreeController@create')->name('savelicenciatura');
         Route::post('/save','DegreeController@create')->name('savelicenciatura');
 
-        Route::get('/list','DegreeController@read')->name('viewlicenciaturas');
-        Route::post('/list','DegreeController@read')->name('viewlicenciaturas');
+        Route::get('/list','DegreeController@read')->name('viewlicenciatura');
+        Route::post('/list','DegreeController@read')->name('viewlicenciatura');
 
-        Route::get('/edit','DegreeController@update')->name('editlicenciaturas');
-        Route::post('/edit','DegreeController@update')->name('editlicenciaturas');
+        Route::get('/edit/{degree}','DegreeController@edit')->name('editlicenciatura');
+        Route::post('//edit/{degree}','DegreeController@edit')->name('editlicenciatura');
+
+        Route::get('/update{degree}','DegreeController@update')->name('updatelicenciatura');
+        Route::post('/update{degree}','DegreeController@update')->name('updatelicenciatura');
 
         Route::get('/delete','DegreeController@delete')->name('deletefacultad');
         Route::post('/delete','DegreeController@delete')->name('deletefacultad');
 
+        Route::group(['prefix' => 'ajax'], function (){
+            Route::get('/ajaxtabla','DegreeController@ajaxTabla')->name('tablalicenciatura');
+            Route::post('/ajaxtabla','DegreeController@ajaxTabla')->name('tablalicenciatura');
+        });
     });
 
 

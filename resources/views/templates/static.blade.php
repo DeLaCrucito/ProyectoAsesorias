@@ -9,7 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <title>Portal de Asesorías</title>
+    <link rel="shortcut icon" href="{{ asset('images/uac.jpg') }}" >
 </head>
 <style>
     .iris {

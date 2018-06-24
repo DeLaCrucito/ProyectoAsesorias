@@ -27,7 +27,7 @@
             <a  href="{{route('viewfacultad')}}" class="white-text left-align"><i class="material-icons">domain</i>Facultades</a>
         </li>
         <li>
-            <a  href="{{route('viewlicenciaturas')}}" class="white-text left-align"><i class="material-icons">card_membership</i>Licenciaturas</a>
+            <a  href="{{route('viewlicenciatura')}}" class="white-text left-align"><i class="material-icons">card_membership</i>Licenciaturas</a>
         </li>
         <li>
             <a  href="{{route('viewunidad')}}" class="white-text left-align"><i class="material-icons">class</i>Unidades de Aprendizaje</a>

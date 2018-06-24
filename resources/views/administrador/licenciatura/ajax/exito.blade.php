@@ -6,14 +6,18 @@
             <div class="row center ">
                 <div class="row col s12 m9">
                     <blockquote>
-                        <h4 class="left-align thin white-text">Nueva Unidad de Aprendizaje</h4>
+                        <h4 class="left-align thin white-text">Se guardó exitosamente</h4>
                     </blockquote>
                 </div>
             </div>
             <div style="margin-top: 50px">
                 <div class="row">
-                    <p>En esta sección, usted podrá realizar la gestión de las Facultades y Escuelas pertenecientes a la Universidad Autónoma de Campeche</p>
-
+                    <div class="row center-align">
+                        <a name="registros" id="registros" href="{{ route('viewlicenciatura') }}"
+                           class="black-text light-blue accent-1 btn boton">Ver registros</a>
+                        <br>
+                        <a name="nuevo" id="nuevo" href="{{ route('newlicenciatura') }}" class="white-text red darken-1 btn boton">Agregar Nuevo</a>
+                    </div>
                 </div>
             </div>
         </div>
