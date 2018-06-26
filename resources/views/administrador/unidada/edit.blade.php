@@ -5,7 +5,7 @@
             display: none;
         }
     </style>
-    <form class="col s12" method="post" action="{{ route('saveunidad') }}">
+    <form class="col s12" method="post" action="{{ route('updateunidad',$subject->id) }}">
         {{ csrf_field() }}
         <div class="col s12 m12">
             <div class="row center ">

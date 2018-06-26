@@ -110,21 +110,30 @@ class SubjectController extends Controller
 
     public function update(Request $request, $id){
         $this->validate($request, [
-            'facultad' => 'required',
+            'licen' => 'required',
             'nombre' => 'required',
-            'semestres' => 'required'
+            'fase' => 'required',
+            'semestre' => 'required',
+            'clave' => 'required',
+            'tipo' => 'required'
         ],[
+            'licen.required' => 'Debe seleccionar una licenciatura',
             'facultad.required' => 'Debe seleccionar una facultad',
             'nombre.required' => 'Es necesario ingrasar el nombre',
-            'semestres.required' => 'Debe introducir los semestres'
+            'fase.required' => 'No se pudo encontrar la fase',
+            'semestre.required' => 'El cambo semestre es obligatorio',
+            'clave.required' => 'Debe introducir una clave válida',
+            'tipo.required' => 'Debe seleccionar el tipo asignatura'
         ]);
 
-        $Degree = Degree::findOrFail($id);
-        $Degree -> facultad = $request -> facultad;
-        $Degree -> nombre = $request -> nombre;
-        $Degree -> semestres = $request -> semestres;
-        $Degree->save();
-
-        return view('administrador.licenciatura.ajax.exito');
+        $Subject = Subject::findOrFail($id);
+        $Subject-> licenciatura = $request->licen;
+        $Subject-> nombre = $request->nombre;
+        $Subject-> fase = $request->fase;
+        $Subject-> semestre = $request->semestre;
+        $Subject-> clave = $request->clave;
+        $Subject -> tipo = $request->tipo;
+        $Subject-> save();
+        return view('administrador.unidada.ajax.exito');
     }
 }

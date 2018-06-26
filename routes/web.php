@@ -108,7 +108,7 @@ Route::group(['prefix' => 'admin'],function (){
         Route::post('/edit{subject}','SubjectController@edit')->name('editunidad');
 
         Route::get('/update{subject}','SubjectController@update')->name('updateunidad');
-        Route::post('/update{subject','SubjectController@update')->name('updateunidad');
+        Route::post('/update{subject}','SubjectController@update')->name('updateunidad');
 
         Route::get('/delete','SubjectController@delete')->name('deleteunidad');
         Route::post('/delete','SubjectController@delete')->name('deleteunidad');
