@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Thu, 21 Jun 2018 21:44:55 +0000.
+ * Date: Mon, 25 Jun 2018 00:27:09 +0000.
  */
 
 namespace App\Models;
@@ -15,6 +15,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $id
  * @property int $facultad
  * @property string $nombre
+ * @property int $semestres
  * 
  * @property \App\Models\Faculty $faculty
  * @property \Illuminate\Database\Eloquent\Collection $coordinators
@@ -28,12 +29,14 @@ class Degree extends Eloquent
 	public $timestamps = false;
 
 	protected $casts = [
-		'facultad' => 'int'
+		'facultad' => 'int',
+		'semestres' => 'int'
 	];
 
 	protected $fillable = [
 		'facultad',
-		'nombre'
+		'nombre',
+		'semestres'
 	];
 
 	public function faculty()

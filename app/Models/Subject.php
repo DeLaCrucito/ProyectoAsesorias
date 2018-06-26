@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Thu, 21 Jun 2018 21:44:55 +0000.
+ * Date: Mon, 25 Jun 2018 00:27:09 +0000.
  */
 
 namespace App\Models;
@@ -18,6 +18,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $fase
  * @property int $semestre
  * @property string $clave
+ * @property string $tipo
  * 
  * @property \App\Models\Degree $degree
  * @property \Illuminate\Database\Eloquent\Collection $assignments
@@ -40,7 +41,8 @@ class Subject extends Eloquent
 		'nombre',
 		'fase',
 		'semestre',
-		'clave'
+		'clave',
+		'tipo'
 	];
 
 	public function degree()

@@ -38,11 +38,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row col s12 m12 center">
-                                <a href="{{route('nuevasolicitud')}}">
-                                    <button name="solicitud" class=" black-text light-blue accent-1 btn boton">Solicitar Asesoría</button>
-                                </a>
-                            </div>
                         </div>
                     </div>
                 </div>

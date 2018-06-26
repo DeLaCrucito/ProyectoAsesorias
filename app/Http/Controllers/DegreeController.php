@@ -27,6 +27,7 @@ class DegreeController extends Controller
         $Degree = new Degree();
         $Degree-> facultad = $request->facultad;
         $Degree-> nombre = $request->nombre;
+        $Degree-> semestres = $request->semestres;
         $Degree-> save();
         return view('administrador.licenciatura.ajax.exito');
     }
@@ -61,14 +62,17 @@ class DegreeController extends Controller
         $this->validate($request, [
             'facultad' => 'required',
             'nombre' => 'required',
+            'semestres' => 'required'
         ],[
             'facultad.required' => 'Debe seleccionar una facultad',
-            'nombre.required' => 'Es necesario ingrasar el nombre'
+            'nombre.required' => 'Es necesario ingrasar el nombre',
+            'semestres.required' => 'Debe introducir los semestres'
         ]);
 
         $Degree = Degree::findOrFail($id);
         $Degree -> facultad = $request -> facultad;
         $Degree -> nombre = $request -> nombre;
+        $Degree -> semestres = $request -> semestres;
         $Degree->save();
 
         return view('administrador.licenciatura.ajax.exito');

@@ -40,9 +40,24 @@
             </div>
         </div>
         <div class="row center-align">
-            <button type="submit" name="guardar"  class=" black-text light-blue accent-1 btn boton">Guardar</button>
+            <div style="display: inline-flex">
+                <input type="checkbox" onclick="Validacaja(this)" class="filled-in" id="validar"/>
+                <label class="white-text" for="validar">Los datos son correctos</label>
+            </div>
             <br>
-            <a name="nuevo" id="nuevo" href="{{ route('viewfacultad') }}" class="white-text red darken-1 btn boton">Cancelar</a>
+            <button type="submit" name="guardar" id="guardar" class="disabled black-text light-blue accent-1 btn boton">Guardar</button><br>
+            <a name="cancel" id="cancel" href="{{ route('viewfacultad') }}" class="white-text red darken-1 btn boton">Cancelar y volver</a>
         </div>
     </form>
+    <script>
+        function Validacaja(caja) {
+            var finalizar = document.getElementById('guardar');
+            finalizar.getAttribute('class');
+            if (caja.checked === true) {
+                finalizar.setAttribute('class', 'black-text light-blue accent-1 btn boton');
+            } else if (caja.checked === false) {
+                finalizar.setAttribute('class', 'disabled black-text light-blue accent-1 btn boton');
+            }
+        }
+    </script>
 @endsection

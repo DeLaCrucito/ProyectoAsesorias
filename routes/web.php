@@ -78,7 +78,7 @@ Route::group(['prefix' => 'admin'],function (){
         Route::post('/list','DegreeController@read')->name('viewlicenciatura');
 
         Route::get('/edit/{degree}','DegreeController@edit')->name('editlicenciatura');
-        Route::post('//edit/{degree}','DegreeController@edit')->name('editlicenciatura');
+        Route::post('/edit/{degree}','DegreeController@edit')->name('editlicenciatura');
 
         Route::get('/update{degree}','DegreeController@update')->name('updatelicenciatura');
         Route::post('/update{degree}','DegreeController@update')->name('updatelicenciatura');
@@ -104,8 +104,11 @@ Route::group(['prefix' => 'admin'],function (){
         Route::get('/list','SubjectController@read')->name('viewunidad');
         Route::post('/list','SubjectController@read')->name('viewunidad');
 
-        Route::get('/edit','SubjectController@update')->name('editunidad');
-        Route::post('/edit','SubjectController@update')->name('editunidad');
+        Route::get('/edit{subject}','SubjectController@edit')->name('editunidad');
+        Route::post('/edit{subject}','SubjectController@edit')->name('editunidad');
+
+        Route::get('/update{subject}','SubjectController@update')->name('updateunidad');
+        Route::post('/update{subject','SubjectController@update')->name('updateunidad');
 
         Route::get('/delete','SubjectController@delete')->name('deleteunidad');
         Route::post('/delete','SubjectController@delete')->name('deleteunidad');
@@ -113,11 +116,21 @@ Route::group(['prefix' => 'admin'],function (){
         Route::group(['prefix' => 'ajax'], function (){
             Route::get('/licenciatura','SubjectController@ajaxlicenciatura')->name('ajaxlicen');
             Route::post('/licenciatura','SubjectController@ajaxlicenciatura')->name('ajaxlicen');
+
+            Route::get('/semestres','SubjectController@ajaxsemestre')->name('ajaxsemestre');
+            Route::post('/semestres','SubjectController@ajaxsemestre')->name('ajaxsemestre');
+
+            Route::get('/tabla','SubjectController@ajaxTabla')->name('tablaunidada');
+            Route::post('/tabla','SubjectController@ajaxTabla')->name('tablaunidada');
         });
 
     });
 
     Route::group(['prefix' => 'user'], function (){
+
+        Route::get('/home', function (){
+            return view('administrador.usuarios.home');
+        })->name('viewusuarios');
 
         Route::group(['prefix' => 'alumno'], function (){
             Route::get('/new','StudentController@nuevo')->name('newalumno');

@@ -21,9 +21,6 @@
             <a  href="{{route('adminhome')}}" class="white-text left-align"><i class="material-icons">home</i>Inicio</a>
         </li>
         <li>
-            <a  href="{{route('viewasesor')}}" class="white-text left-align"><i class="material-icons">group</i>Asesores</a>
-        </li>
-        <li>
             <a  href="{{route('viewfacultad')}}" class="white-text left-align"><i class="material-icons">domain</i>Facultades</a>
         </li>
         <li>
@@ -33,7 +30,7 @@
             <a  href="{{route('viewunidad')}}" class="white-text left-align"><i class="material-icons">class</i>Unidades de Aprendizaje</a>
         </li>
         <li>
-            <a  href="{{route('viewhistory')}}" class="white-text left-align"><i class="material-icons">account_circle</i>Usuarios</a>
+            <a  href="{{route('viewusuarios')}}" class="white-text left-align"><i class="material-icons">account_circle</i>Usuarios</a>
         </li>
         <li>
             <a href="#" class="white-text left-align"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a>
