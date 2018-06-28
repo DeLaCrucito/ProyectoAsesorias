@@ -151,21 +151,28 @@ Route::group(['prefix' => 'admin'],function (){
         });
 
         Route::group(['prefix' => 'coordinador'], function (){
-            Route::get('/new','FacultyController@nuevo')->name('newcoordinador');
-            Route::post('/new','FacultyController@nuevo')->name('newcoordinador');
+            Route::get('/new','CoordinatorController@nuevo')->name('newcoordinador');
+            Route::post('/new','CoordinatorController@nuevo')->name('newcoordinador');
 
-            Route::get('/save','FacultyController@create')->name('savecoordinador');
-            Route::post('/save','FacultyController@create')->name('savecoordinador');
+            Route::get('/save','CoordinatorController@create')->name('savecoordinador');
+            Route::post('/save','CoordinatorController@create')->name('savecoordinador');
 
-            Route::get('/list','FacultyController@read')->name('viewcoordinador');
-            Route::post('/list','FacultyController@read')->name('viewcoordinador');
+            Route::get('/list','CoordinatorController@read')->name('viewcoordinador');
+            Route::post('/list','CoordinatorController@read')->name('viewcoordinador');
 
-            Route::get('/edit','FacultyController@update')->name('editcoordinador');
-            Route::post('/edit','FacultyController@update')->name('editcoordinador');
+            Route::get('/edit{coordinator}','CoordinatorController@edit')->name('editcoordinador');
+            Route::post('/edit{coordinator}','CoordinatorController@edit')->name('editcoordinador');
 
-            Route::get('/delete','FacultyController@delete')->name('deletecoordinador');
-            Route::post('/delete','FacultyController@delete')->name('deletecoordinador');
+            Route::get('/update{coordinator}','CoordinatorController@update')->name('updatecoordinador');
+            Route::post('/update{coordinator}','CoordinatorController@update')->name('updatecoordinador');
 
+            Route::get('/delete','CoordinatorController@delete')->name('deletecoordinador');
+            Route::post('/delete','CoordinatorController@delete')->name('deletecoordinador');
+
+            Route::group(['prefix' => 'ajax'], function (){
+                Route::get('/tabla','CoordinatorController@ajaxTabla')->name('tablacoordinadores');
+                Route::post('/tabla','CoordinatorController@ajaxTabla')->name('tablacoordinadores');
+            });
         });
 
         Route::group(['prefix' => 'asesor'], function (){

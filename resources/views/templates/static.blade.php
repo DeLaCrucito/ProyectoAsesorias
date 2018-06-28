@@ -193,8 +193,9 @@
         table.responsive-table.bordered tbody tr {
             border-right: 1px solid rgba(0, 0, 0, 0.12);
         }
-
-        
+        .oculto {
+            display: none;
+        }
     }
 </style>
 <body class="iris">
@@ -203,10 +204,10 @@
 <script type="text/javascript" src="{{asset('js/jquery-3.2.1.min.js')}}"></script>
 <script type="text/javascript" src={{asset('js/materialize.js')}}></script>
 <script>
-
     $(document).ready(function() {
         $('select').material_select();
         $(".button-collapse").sideNav();
+        $(".oculto").css('display','none');
         $('.tooltipped').tooltip({delay: 50});
         $('select').on('contentChanged', function () {
             $(this).material_select();
@@ -216,9 +217,17 @@
             e.preventDefault();
             var page = $(this).attr('href').split('page=')[1];
             cargaTabla(page)
-            console.log(page);
         })
+
     });
+</script>
+<script>
+    function MostrarOcultos() {
+        var ocultos = document.getElementsByClassName("oculto");
+        for (var i = 0; i<=ocultos.length; i++){
+            $(ocultos[i]).css('display','block');
+        }
+    }
 </script>
 </body>
 </html>

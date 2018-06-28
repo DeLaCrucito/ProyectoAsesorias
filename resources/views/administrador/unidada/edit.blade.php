@@ -103,13 +103,7 @@
     </form>
     <script>
         function realizaProceso(val) {
-            var caja = document.getElementById('cajalicen');
             var selecte = document.getElementById('licen');
-            var oc2 = document.getElementById('oculto2');
-            var oc3 = document.getElementById('oculto3');
-            var oc4 = document.getElementById('oculto4');
-            var oc5 = document.getElementById('oculto5');
-            var oc6 = document.getElementById('oculto6');
             $.ajax({
                 type: 'post',
                 url: '{{route('ajaxlicen')}}',
@@ -124,14 +118,9 @@
                 },
                 success: function (response) {
                     var cosas = response.html;
-                    caja.setAttribute('style', 'display: block');
-                    oc2.setAttribute('style', 'display: block');
-                    oc3.setAttribute('style', 'display: block');
-                    oc4.setAttribute('style', 'display: block');
-                    oc5.setAttribute('style', 'display: block');
-                    oc6.setAttribute('style', 'display: block');
                     selecte.innerHTML = cosas;
                     $("#licen").trigger('contentChanged');
+                    MostrarOcultos();
                 }
             });
         }
