@@ -1,24 +1,34 @@
 @extends('administrador.base')
 @section('elementos')
+    <style>
+        .oculto {
+            display: none;
+        }
+    </style>
     <form class="col s12" method="post">
         {{ csrf_field() }}
         <div class="col s12 m12">
             <div class="row center ">
                 <div class="row col s12 m9">
                     <blockquote>
-                        <h4 class="left-align thin white-text">Asesores</h4>
+                        <h4 class="left-align thin white-text">Alumnos</h4>
                     </blockquote>
                 </div>
             </div>
             <div style="margin-top: 50px">
                 <div class="row">
-                    <div class="input-field col s12 m6">
-                        <input class="white-text" type="text" id="nombre" name="nombre" value="" placeholder="Introduzca el nombre" onkeyup="mostrarTabla(this.value)">
-                        <label class="white-text" for="nombre">Nombre</label>
+                    <div class="row input-field col s12 m8">
+                        <label class="active white-text" for="tipo">Facultad</label>
+                        <select class="white-text" id="facultad" name="facultad" onchange="mostrarTabla(this.value)">
+                            <option disabled selected="selected">Seleccione una facultad</option>
+                            @foreach($facultads as $facultad)
+                                <option value="{{ $facultad->id }}">{{ $facultad->nombre }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="row center-align col s12 m4">
-                        <a name="nuevo" id="nuevo" href="{{ route('newasesor') }}" class="white-text red
-                        darken-1 btn boton">Agregar Nuevo</a>
+                        <!--<a name="nuevo" id="nuevo" href="{{ route('newalumno') }}" class="white-text red
+                        darken-1 btn boton">Agregar Nuevo</a>-->
                     </div>
                     <div class="posts row" id="posts">
                     </div>
@@ -30,7 +40,7 @@
         function mostrarTabla(val) {
             $.ajax({
                 type: 'post',
-                url: '{{route('tablaasesor')}}',
+                url: '{{route('tablaalumnos')}}',
                 beforeSend: function (xhr) {
                     var token = $('meta[name="csrf-token"]').attr('content');
                     if (token) {
@@ -38,20 +48,19 @@
                     }
                 },
                 data: {
-                    asesor: val,
+                    facultad: val,
                 },
                 success: function (response) {
-                    console.log(response.html);
                     document.getElementById('posts').innerHTML = response.html;
                 }
             });
         }
 
         function cargaTabla(page) {
-            var asesor = document.getElementById('asesor').value;
+            var facultad = document.getElementById('facultad').value;
             $.ajax({
                 data: {
-                    asesor: asesor
+                    facultad: facultad
                 },
                 url:'?page='+page
             }).done(function (data) {

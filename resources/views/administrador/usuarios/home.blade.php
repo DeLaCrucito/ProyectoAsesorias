@@ -20,7 +20,7 @@
                     <div class="input-field col s12 m4 white-text">
                         <h5>Alumnos</h5>
                         <a name="cancel" id="cancel" href="{{ route('viewalumno') }}" class="white-text  indigo darken-1 btn boton">Ver Alumnos</a>
-                        <a name="cancel" id="cancel" href="{{ route('newalumno') }}" class="white-text red darken-1 btn boton">Agregar Nuevo</a>
+                        <!--<a name="cancel" id="cancel" href="{{ route('newalumno') }}" class="white-text red darken-1 btn boton">Agregar Nuevo</a>-->
                     </div>
                     <div class="input-field col s12 m4 white-text">
                         <h5>Coordinadores</h5>

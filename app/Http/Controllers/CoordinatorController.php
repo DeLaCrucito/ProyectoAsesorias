@@ -45,7 +45,8 @@ class CoordinatorController extends Controller
             'email.required' => 'El cambo semestre es obligatorio',
             'email.email' => 'Debe introducir un correo electrónico válido',
             'password.required' => 'Debe introducir una clave válida',
-            'password.confirmed' => 'Las contraseñas no coinciden'
+            'password.confirmed' => 'Las contraseñas no coinciden',
+            'password.min' => 'La contraseña tiene que tener almenos 8 caracteres'
         ]);
 
         $Coordinator = new Coordinator();
@@ -90,14 +91,17 @@ class CoordinatorController extends Controller
             'apellido' => 'required',
             'usuario' => 'required',
             'email' => 'required|email',
-            'password' => ''
+            'password' => 'required|confirmed|min:8'
         ],[
             'licen.required' => 'Debe seleccionar una licenciatura',
             'nombre.required' => 'Debe seleccionar una facultad',
             'apellido.required' => 'Es necesario ingrasar el nombre',
             'usuario.required' => 'No se pudo encontrar la fase',
             'email.required' => 'El cambo semestre es obligatorio',
-            'email.email' => 'Debe introducir un correo electrónico válido'
+            'email.email' => 'Debe introducir un correo electrónico válido',
+            'password.required' => 'Es necesario una contraseña',
+            'password.confirmed' => 'Las contraseñas no coinciden',
+            'password.min' => 'La contraseña tiene que tener almenos 8 caracteres'
         ]);
 
         $Coordinator = Coordinator::findOrFail($id);
@@ -106,9 +110,8 @@ class CoordinatorController extends Controller
         $Coordinator -> apellido = $request -> apellido;
         $Coordinator -> usuario = $request -> usuario;
         $Coordinator -> correo = $request -> email;
-        if ($request->password != null) {
-            $Coordinator -> passwd = bcrypt($request->password);
-        }
+        $Coordinator -> passwd = bcrypt($request->password);
+
         $Coordinator -> save();
 
         return view('administrador.usuarios.coordinador.ajax.exito');

@@ -1,12 +1,15 @@
 @extends('administrador.base')
 @section('elementos')
-    <form class="col s12" method="post" action="{{ route('saveasesor') }}">
+    <style>
+
+    </style>
+    <form class="col s12" method="post" action="{{ route('updateasesor',$consultant->id) }}">
         {{ csrf_field() }}
         <div class="col s12 m12">
             <div class="row center ">
                 <div class="row col s12 m9">
                     <blockquote>
-                        <h4 class="left-align thin white-text">Nuevo Asesor</h4>
+                        <h4 class="left-align thin white-text">Editar Asesor</h4>
                     </blockquote>
                 </div>
             </div>
@@ -20,36 +23,34 @@
                         </ul>
                     </div>
                 @endif
-                <div class="row">
                     <div class="input-field col s12 m6 ">
-                        <input class="white-text" type="text" id="nombre" name="nombre" value="" placeholder="Introduzca el nombre">
+                        <input class="white-text" type="text" id="nombre" name="nombre" value="{{ $consultant->nombre }}" placeholder="Introduzca el nombre">
                         <label class="white-text" for="nombre">Nombre</label>
                     </div>
                     <div class="input-field col s12 m6 ">
-                        <input class="white-text" type="text" id="apellido" name="apellido" value="" placeholder="Introduzca los apellidos">
+                        <input class="white-text" type="text" id="apellido" name="apellido" value="{{ $consultant->apellido }}" placeholder="Introduzca los apellidos">
                         <label class="white-text"  for="apellido">Apellido</label>
                     </div>
                     <div class="input-field col s12 m6 ">
-                        <input class="white-text"  type="text" id="nivel_estudio" name="nivel_estudio" value="" placeholder="Introduzca el nivel de estudio">
+                        <input class="white-text"  type="text" id="nivel_estudio" name="nivel_estudio" value="{{ $consultant->nivel_estudio }}" placeholder="Introduzca el nivel de estudio">
                         <label class="white-text"  for="nivel_estudio">Nivel de Estudio</label>
                     </div>
                     <div class="input-field col s12 m6 ">
-                        <input class="white-text"  type="text" id="especialidad" name="especialidad" value="" placeholder="Introduzca la Especialidad">
+                        <input class="white-text"  type="text" id="especialidad" name="especialidad" value="{{ $consultant->especialidad }}" placeholder="Introduzca la especialidad">
                         <label class="white-text"  for="especialidad">Especialidad</label>
                     </div>
                     <div class="input-field col s12 m12 ">
-                        <input class="white-text"  type="email" id="correo" name="correo" value="" placeholder="Ingrese un correo electrónico institucional">
+                        <input class="white-text"  type="email" id="correo" name="correo" value="{{ $consultant->correo }}" placeholder="Ingrese correo electrónico institucional">
                         <label class="white-text"  for="correo">Correo Institucional</label>
                     </div>
                     <div class="input-field col s12 m6 ">
-                        <input class="white-text"  type="password" id="password" name="password"  placeholder="Ingrese su contraseña">
+                        <input class="white-text"  type="password" id="password" name="password" value="" placeholder="Ingrese nueva contraseña">
                         <label class="white-text" for="pass">Contraseña (Debe contener mínimo 8 caracteres)</label>
                     </div>
                     <div class="input-field col s12 m6 ">
-                        <input class="white-text"  type="password" id="password_confirmation " name="password_confirmation" placeholder="Vuelva a introducir su contraseña">
-                        <label class="white-text"  for="email">Confirmar contraseña</label>
+                        <input class="white-text"  type="password" id="password_confirmation" value="" name="password_confirmation" placeholder="Vuelva a introducir la nueva contraseña">
+                        <label class="white-text"  for="password">Confirmar contraseña</label>
                     </div>
-
             </div>
         </div>
         <div class="row center-align">
