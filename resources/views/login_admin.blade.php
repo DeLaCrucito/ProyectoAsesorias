@@ -31,33 +31,36 @@
         <div class="row padre">
             <div class="row col s12 m6">
                 <div class="row col s12 m12" style="display: inline-block">
-                    <form class=" white-text" method="post" id="Formulario" name="Formulario">
-                        <h4 class="center">Portal de Asesorías</h4>
-                        <section><p><br></p></section>
+                    <h4 class="center white-text">Portal de Asesorías</h4>
+                    <section><p><br></p></section>
+                    <form class=" white-text" method="post" action="{{ route('adminsignin') }}" id="Formulario" name="Formulario">
+                        {{ csrf_field() }}
+                        <h5 class="white-text center-align">Administrador</h5>
                         <div class="row ">
                             <div class="row">
                                 <div class="input-field col s12">
                                     <i class="material-icons prefix" style="focus: white">account_circle</i>
-                                    <input placeholder="" type="text"  name="Matricula" id="Matricula" data-length="5"
-                                           required pattern="[0-9]{1,5}"/>
-                                    <label for="email">Matricula</label>
+                                    <input placeholder="" type="email"  name="email" id="email" />
+                                    <label for="email">Correo</label>
+                                    @if ($errors->has('email'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                    @endif
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
                                     <i class="material-icons prefix">lock</i>
-                                    <input placeholder="" type="password" name="password"  id="password" required
+                                    <input placeholder="" type="password" name="password" id="password" required
                                            pattern="[A-Za-z0-9_-]{1,16}"/>
+
                                     <label for="password">Contraseña</label>
                                 </div>
                                 <br>
                             </div>
                             <div class="row center">
                                 <button type="submit" name="btn_login"  class=" black-text light-blue accent-1 btn boton"> Iniciar Sesión</button>
-                                <p></p>
-                                <a style="color: #bbdefb" href="{{route('register')}}">¿Nuevo usuario?</a>
-                                <p></p>
-                                <a style="color: #bbdefb" href=''>¿Olvidaste tu contraseña?</a>
                             </div>
                         </div>
                     </form>

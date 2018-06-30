@@ -27,7 +27,7 @@
             <a  href="{{route('viewhistory')}}" class="white-text left-align"><i class="material-icons">storage</i>Historial de Solicitud</a>
         </li>
         <li>
-            <a href="#" class="white-text left-align"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a>
+            <a href="{{ route('alumnologout') }}" class="white-text left-align"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a>
         </li>
     </ul>
 @endsection

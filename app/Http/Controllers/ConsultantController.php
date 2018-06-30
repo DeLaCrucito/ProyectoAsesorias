@@ -52,7 +52,7 @@ class ConsultantController extends Controller
         $Consultant->nivel_estudio = $request->nivel_estudio;
         $Consultant->especialidad = $request->especialidad;
         $Consultant->correo = $request->correo;
-        $Consultant->passw = $request->password;
+        $Consultant->password = $request->password;
         $Consultant->save();
 
         return view('administrador.usuarios.asesor.ajax.exito');
@@ -101,7 +101,7 @@ class ConsultantController extends Controller
         $Consultant -> nivel_estudio = $request -> nivel_estudio;
         $Consultant -> especialidad = $request -> especialidad;
         $Consultant -> correo = $request -> correo;
-        $Consultant -> passw = bcrypt($request->password);
+        $Consultant -> password = bcrypt($request->password);
 
         $Consultant -> save();
 

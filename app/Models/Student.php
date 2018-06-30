@@ -2,11 +2,12 @@
 
 /**
  * Created by Reliese Model.
- * Date: Mon, 25 Jun 2018 00:27:09 +0000.
+ * Date: Sat, 30 Jun 2018 17:19:29 +0000.
  */
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\Authenticatable;
 use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
@@ -19,21 +20,29 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $correo
  * @property int $licenciatura
  * @property int $semestre
- * @property string $passwd
+ * @property string $password
+ * @property bool $is_alumno
  * 
  * @property \App\Models\Degree $degree
  * @property \Illuminate\Database\Eloquent\Collection $requests
  *
  * @package App\Models
  */
-class Student extends Eloquent
+class Student extends Eloquent implements Authenticatable
 {
+    use \Illuminate\Auth\Authenticatable;
+    protected $guard = 'alumnos';
 	public $timestamps = false;
 
 	protected $casts = [
 		'matricula' => 'int',
 		'licenciatura' => 'int',
-		'semestre' => 'int'
+		'semestre' => 'int',
+		'is_alumno' => 'bool'
+	];
+
+	protected $hidden = [
+		'password'
 	];
 
 	protected $fillable = [
@@ -43,7 +52,8 @@ class Student extends Eloquent
 		'correo',
 		'licenciatura',
 		'semestre',
-		'passwd'
+		'password',
+		'is_alumno'
 	];
 
 	public function degree()

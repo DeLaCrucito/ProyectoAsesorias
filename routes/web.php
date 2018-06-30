@@ -11,18 +11,43 @@
 |
 */
 
-Route::get('/', function () {
-    return view('login');
-})->name('login');
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/register', function (){
-    return view('registro');
-})->name('register');
+//Home
+Route::get('/', function (){
+        return view('home');
+    })->name('generalhome');
 
-Route::group(['prefix' => 'alumno'],function (){
-    Route::get('/profile',function (){
-        return view('alumno.home');
-    })->name('profile');
+//Logins
+Route::get('/loginalumno','StudentLoginController@showLoginForm')->name('alumnologin');
+Route::post('/alumnsignin','StudentLoginController@login')->name('alumnosignin');
+Route::get('alumnlogout', '\App\Http\Controllers\Auth\LoginController@logout')->name('alumnologout');
+
+Route::get('/loginasesor','ConsultantLoginController@showLoginForm')->name('asesorlogin');
+Route::post('/asesorsignin','ConsultantLoginController@login')->name('asesorsignin');
+Route::get('asesorlogout', '\App\Http\Controllers\Auth\LoginController@logout')->name('asesorlogout');
+
+Route::get('/logincoor','CoordinatorLoginController@showLoginForm')->name('coordinadorlogin');
+Route::post('/coorsignin','CoordinatorLoginController@login')->name('coordinadorsignin');
+Route::get('coorlogout', '\App\Http\Controllers\Auth\LoginController@logout')->name('coordinadorlogout');
+
+Route::get('/loginadmin','AdministratorLoginController@showLoginForm')->name('adminlogin');
+Route::post('/adminsignin','AdministratorLoginController@login')->name('adminsignin');
+Route::get('adminlogout', '\App\Http\Controllers\Auth\LoginController@logout')->name('adminlogout');
+
+//Registro
+Route::get('/registro', 'StudentController@register')->name('registro');
+Route::get('/listalicen','StudentController@ajaxlicenciatura')->name('licenciaturas');
+Route::post('/listalicen','StudentController@ajaxlicenciatura')->name('licenciaturas');
+Route::get('/semestres','StudentController@ajaxsemestre')->name('semestres');
+Route::post('/semestres','StudentController@ajaxsemestre')->name('semestres');
+Route::get('/new','StudentController@create')->name('newalumno');
+Route::post('/new','StudentController@create')->name('newalumno');
+
+
+Route::group(['prefix' => 'alumno', 'middleware' => 'auth:alumnos'],function (){
+    Route::get('/profile','StudentController@showDatos')->name('profile');
 
     Route::get('/nueva',function (){
         return view('alumno.newsolicitud');
@@ -37,7 +62,9 @@ Route::group(['prefix' => 'alumno'],function (){
     Route::post('/confirm','StudentController@confirmaSolicitud');
 });
 
-Route::group(['prefix' => 'admin'],function (){
+
+
+Route::group(['prefix' => 'admin', 'middleware' => 'auth:administradores'],function (){
     Route::get('/home',function (){
         return view('administrador.home');
     })->name('adminhome');
@@ -133,11 +160,6 @@ Route::group(['prefix' => 'admin'],function (){
         })->name('viewusuarios');
 
         Route::group(['prefix' => 'alumno'], function (){
-            Route::get('/new','StudentController@nuevo')->name('newalumno');
-            Route::post('/new','StudentController@nuevo')->name('newalumno');
-
-            Route::get('/save','StudentController@create')->name('savealumno');
-            Route::post('/save','StudentController@create')->name('savealumno');
 
             Route::get('/list','StudentController@read')->name('viewalumno');
             Route::post('/list','StudentController@read')->name('viewalumno');

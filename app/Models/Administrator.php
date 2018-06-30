@@ -2,11 +2,12 @@
 
 /**
  * Created by Reliese Model.
- * Date: Mon, 25 Jun 2018 00:27:09 +0000.
+ * Date: Sat, 30 Jun 2018 17:19:29 +0000.
  */
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\Authenticatable;
 use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
@@ -14,18 +15,30 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * 
  * @property int $id
  * @property string $usuario
- * @property string $passwd
+ * @property string $password
  * @property string $correo
+ * @property bool $is_admin
  *
  * @package App\Models
  */
-class Administrator extends Eloquent
+class Administrator extends Eloquent  implements Authenticatable
 {
-	public $timestamps = false;
+    use \Illuminate\Auth\Authenticatable;
+    protected $guard = 'administradores';
+    public $timestamps = false;
+
+	protected $casts = [
+		'is_admin' => 'bool'
+	];
+
+	protected $hidden = [
+		'password'
+	];
 
 	protected $fillable = [
 		'usuario',
-		'passwd',
-		'correo'
+		'password',
+		'correo',
+		'is_admin'
 	];
 }

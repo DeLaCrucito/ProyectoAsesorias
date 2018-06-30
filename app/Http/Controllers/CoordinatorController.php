@@ -42,7 +42,7 @@ class CoordinatorController extends Controller
             'nombre.required' => 'Debe seleccionar una facultad',
             'apellido.required' => 'Es necesario ingrasar el nombre',
             'usuario.required' => 'No se pudo encontrar la fase',
-            'email.required' => 'El cambo semestre es obligatorio',
+            'email.required' => 'El cambo correo electrónico es obligatorio',
             'email.email' => 'Debe introducir un correo electrónico válido',
             'password.required' => 'Debe introducir una clave válida',
             'password.confirmed' => 'Las contraseñas no coinciden',
@@ -55,7 +55,7 @@ class CoordinatorController extends Controller
         $Coordinator -> apellido = $request -> apellido;
         $Coordinator -> usuario = $request -> usuario;
         $Coordinator -> correo = $request -> email;
-        $Coordinator -> passwd = bcrypt($request->password);
+        $Coordinator -> password = bcrypt($request->password);
         $Coordinator -> save();
 
         return view('administrador.usuarios.coordinador.ajax.exito');
@@ -110,7 +110,7 @@ class CoordinatorController extends Controller
         $Coordinator -> apellido = $request -> apellido;
         $Coordinator -> usuario = $request -> usuario;
         $Coordinator -> correo = $request -> email;
-        $Coordinator -> passwd = bcrypt($request->password);
+        $Coordinator -> password = bcrypt($request->password);
 
         $Coordinator -> save();
 

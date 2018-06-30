@@ -43,8 +43,29 @@ return [
 
         'api' => [
             'driver' => 'token',
-            'provider' => 'users',
+            'provider' => 'students',
         ],
+
+        'alumnos' => [
+            'driver' => 'session',
+            'provider' => 'alumnos',
+        ],
+
+        'administradores' => [
+            'driver' => 'session',
+            'provider' => 'administradores',
+        ],
+
+        'coordinadores' => [
+            'driver' => 'session',
+            'provider' => 'coordinadores',
+        ],
+
+        'asesores' => [
+            'driver' => 'session',
+            'provider' => 'asesores',
+        ],
+
     ],
 
     /*
@@ -67,8 +88,28 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model' => App\Models\Student::class,
         ],
+
+        'alumnos' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Student::class,
+        ],
+
+        'administradores' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Administrator::class,
+        ],
+
+        'coordinadores' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Coordinator::class,
+        ],
+
+        'asesores' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Consultant::class,
+        ]
 
         // 'users' => [
         //     'driver' => 'database',
@@ -93,7 +134,7 @@ return [
 
     'passwords' => [
         'users' => [
-            'provider' => 'users',
+            'provider' => 'students',
             'table' => 'password_resets',
             'expire' => 60,
         ],

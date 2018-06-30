@@ -22,6 +22,7 @@ class CreateStudentsTable extends Migration {
 			$table->integer('licenciatura')->nullable()->index('alumnos_licenciatura_index');
 			$table->integer('semestre')->nullable();
 			$table->string('passwd', 200)->nullable();
+			$table->boolean('is_user')->defult(true);
 		});
 	}
 

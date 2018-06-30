@@ -17,11 +17,15 @@
                             <div class="center-align" style="margin-top: 50px">
                                 <div class="row col s12 m12">
                                     <div class="input-field col s12 m9">
-                                        <input type="text" disabled name="Nombre" id="Nombre" value="Nombre Completo" class="white-text"/>
+                                        <input type="text" disabled name="Nombre" id="Nombre" value="{{
+                                        $student->nombre }}"
+                                               class="white-text"/>
                                         <label class="white-text" for="Nombre">Nombre</label>
                                     </div>
                                     <div class="input-field col s12 m3">
-                                        <input class="white-text" type="text" id="Matricula" disabled value="Matricula" name="Matricula">
+                                        <input class="white-text" type="text" id="Matricula" disabled value="{{
+                                        $student->matricula }}"
+                                               name="Matricula">
                                         <label class="white-text" for="Matricula">Matricula</label>
                                     </div>
                                     <div class="input-field col s12 m12">

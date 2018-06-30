@@ -2,11 +2,12 @@
 
 /**
  * Created by Reliese Model.
- * Date: Mon, 25 Jun 2018 00:27:09 +0000.
+ * Date: Sat, 30 Jun 2018 17:19:29 +0000.
  */
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\Authenticatable;
 use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
@@ -18,20 +19,27 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $apellido
  * @property string $correo
  * @property string $usuario
- * @property int $passwd
+ * @property string $password
+ * @property bool $is_coor
  * 
  * @property \App\Models\Degree $degree
  * @property \Illuminate\Database\Eloquent\Collection $requests
  *
  * @package App\Models
  */
-class Coordinator extends Eloquent
+class Coordinator extends Eloquent implements Authenticatable
 {
+    use \Illuminate\Auth\Authenticatable;
+    protected $guard = 'administradores';
 	public $timestamps = false;
 
 	protected $casts = [
 		'licenciatura' => 'int',
-		'passwd' => 'int'
+		'is_coor' => 'bool'
+	];
+
+	protected $hidden = [
+		'password'
 	];
 
 	protected $fillable = [
@@ -40,7 +48,8 @@ class Coordinator extends Eloquent
 		'apellido',
 		'correo',
 		'usuario',
-		'passwd'
+		'password',
+		'is_coor'
 	];
 
 	public function degree()

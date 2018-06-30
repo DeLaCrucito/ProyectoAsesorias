@@ -2,11 +2,12 @@
 
 /**
  * Created by Reliese Model.
- * Date: Mon, 25 Jun 2018 00:27:09 +0000.
+ * Date: Sat, 30 Jun 2018 17:19:29 +0000.
  */
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\Authenticatable;
 use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
@@ -18,7 +19,8 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $nivel_estudio
  * @property string $especialidad
  * @property string $correo
- * @property string $passw
+ * @property string $password
+ * @property bool $is_asesor
  * 
  * @property \Illuminate\Database\Eloquent\Collection $assignments
  * @property \Illuminate\Database\Eloquent\Collection $requests
@@ -26,9 +28,19 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  *
  * @package App\Models
  */
-class Consultant extends Eloquent
+class Consultant extends Eloquent implements Authenticatable
 {
+    use \Illuminate\Auth\Authenticatable;
+    protected $guard = 'administradores';
 	public $timestamps = false;
+
+	protected $casts = [
+		'is_asesor' => 'bool'
+	];
+
+	protected $hidden = [
+		'password'
+	];
 
 	protected $fillable = [
 		'nombre',
@@ -36,7 +48,8 @@ class Consultant extends Eloquent
 		'nivel_estudio',
 		'especialidad',
 		'correo',
-		'passw'
+		'password',
+		'is_asesor'
 	];
 
 	public function assignments()

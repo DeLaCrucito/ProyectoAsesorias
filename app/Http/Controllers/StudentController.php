@@ -6,11 +6,20 @@ use App\Models\Student;
 use App\Models\Degree;
 use App\Models\Faculty;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
     public function nuevaSolicitud(){
         return view('alumno.confirmacion');
+    }
+
+    public function showlogin(){
+        return view('log-in');
+    }
+
+    public function login(){
+        return view('alumno.home');
     }
 
     public function confirmaSolicitud(){
@@ -65,7 +74,7 @@ class StudentController extends Controller
         $Student -> correo = $request -> email;
         $Student -> licenciatura = $request -> licen;
         $Student -> semestre = $request -> semestre;
-        $Student -> passwd = bcrypt($request->password);
+        $Student -> password = bcrypt($request->password);
         $Student -> save();
 
         return view('administrador.usuarios.usuario.ajax.exito');
@@ -128,5 +137,42 @@ class StudentController extends Controller
         $Student -> save();
 
         return view('administrador.usuarios.usuario.ajax.exito');
+    }
+
+    public function register(){
+        $facultads = Faculty::all(['id', 'nombre']);
+        return view('registro', compact('facultads', $facultads));
+    }
+
+    public function ajaxlicenciatura(Request $request){
+        if($request->ajax()){
+            $facultad = $request->facultad;
+            $degrees = Degree::all(['id','facultad','nombre'])->where('facultad',$facultad);
+            $datos = compact('degrees',$degrees);
+            $vista = view('alumno.ajax.selectlicenciatura', $datos)->render();
+        }
+        return response()->json(array('success' => true, 'html'=>$vista));
+    }
+
+    public function ajaxsemestre(Request $request){
+        if($request->ajax()){
+            $licenciatura = $request->licenciatura;
+            $degree = Degree::findOrFail($licenciatura);
+            $datos = compact('degree');
+            $vista = view('alumno.ajax.semestres', $datos)->render();
+        }
+        return response()->json(array('success' => true, 'html'=>$vista));
+    }
+
+
+    public function showDatos(){
+        if (Auth::check())
+        {
+            $alumno  =  Auth::id();
+            $student = Student::findOrFail($alumno);
+            $datos = compact('student');
+            return view('alumno.home',$datos);
+        }
+
     }
 }

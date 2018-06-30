@@ -33,7 +33,8 @@
             <a  href="{{route('viewusuarios')}}" class="white-text left-align"><i class="material-icons">account_circle</i>Usuarios</a>
         </li>
         <li>
-            <a href="#" class="white-text left-align"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a>
+            <a href="{{ route('adminlogout') }}" class="white-text left-align"><i class="material-icons">exit_to_app</i>Cerrar
+                Sesión</a>
         </li>
     </ul>
 @endsection
