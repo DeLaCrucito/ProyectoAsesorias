@@ -43,11 +43,7 @@
                         <input class="white-text" type="text" id="apellido" name="apellido" value="" placeholder="Introduzca los apellidos">
                         <label class="white-text"  for="apellido">Apellido</label>
                     </div>
-                    <div class="input-field col s12 m6 oculto">
-                        <input class="white-text"  type="text" id="usuario" name="usuario" value="" placeholder="Introduzca el nombre de usuario">
-                        <label class="white-text"  for="usuario">Nombre de usuario</label>
-                    </div>
-                    <div class="input-field col s12 m6 oculto">
+                    <div class="input-field col s12 m12 oculto">
                         <input class="white-text"  type="email" id="email" name="email" value="" placeholder="Ingrese correo electrónico institucional">
                         <label class="white-text"  for="email">Correo Institucional</label>
                     </div>

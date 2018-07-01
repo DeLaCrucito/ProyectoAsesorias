@@ -30,7 +30,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
 class Coordinator extends Eloquent implements Authenticatable
 {
     use \Illuminate\Auth\Authenticatable;
-    protected $guard = 'administradores';
+    protected $guard = 'coordinadores';
 	public $timestamps = false;
 
 	protected $casts = [
@@ -47,7 +47,6 @@ class Coordinator extends Eloquent implements Authenticatable
 		'nombre',
 		'apellido',
 		'correo',
-		'usuario',
 		'password',
 		'is_coor'
 	];

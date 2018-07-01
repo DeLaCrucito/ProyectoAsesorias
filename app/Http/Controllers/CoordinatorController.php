@@ -34,14 +34,12 @@ class CoordinatorController extends Controller
             'licen' => 'required',
             'nombre' => 'required',
             'apellido' => 'required',
-            'usuario' => 'required',
             'email' => 'required|email',
             'password' => 'required|confirmed|min:8'
         ],[
             'licen.required' => 'Debe seleccionar una licenciatura',
             'nombre.required' => 'Debe seleccionar una facultad',
             'apellido.required' => 'Es necesario ingrasar el nombre',
-            'usuario.required' => 'No se pudo encontrar la fase',
             'email.required' => 'El cambo correo electrónico es obligatorio',
             'email.email' => 'Debe introducir un correo electrónico válido',
             'password.required' => 'Debe introducir una clave válida',
@@ -53,7 +51,6 @@ class CoordinatorController extends Controller
         $Coordinator -> licenciatura = $request->licen;
         $Coordinator -> nombre = $request-> nombre;
         $Coordinator -> apellido = $request -> apellido;
-        $Coordinator -> usuario = $request -> usuario;
         $Coordinator -> correo = $request -> email;
         $Coordinator -> password = bcrypt($request->password);
         $Coordinator -> save();
@@ -89,7 +86,6 @@ class CoordinatorController extends Controller
             'licen' => 'required',
             'nombre' => 'required',
             'apellido' => 'required',
-            'usuario' => 'required',
             'email' => 'required|email',
             'password' => 'required|confirmed|min:8'
         ],[
@@ -108,7 +104,6 @@ class CoordinatorController extends Controller
         $Coordinator -> licenciatura = $request->licen;
         $Coordinator -> nombre = $request-> nombre;
         $Coordinator -> apellido = $request -> apellido;
-        $Coordinator -> usuario = $request -> usuario;
         $Coordinator -> correo = $request -> email;
         $Coordinator -> password = bcrypt($request->password);
 

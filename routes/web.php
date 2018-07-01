@@ -45,7 +45,7 @@ Route::post('/semestres','StudentController@ajaxsemestre')->name('semestres');
 Route::get('/new','StudentController@create')->name('newalumno');
 Route::post('/new','StudentController@create')->name('newalumno');
 
-
+//Alumnos
 Route::group(['prefix' => 'alumno', 'middleware' => 'auth:alumnos'],function (){
     Route::get('/profile','StudentController@showDatos')->name('profile');
 
@@ -62,8 +62,7 @@ Route::group(['prefix' => 'alumno', 'middleware' => 'auth:alumnos'],function (){
     Route::post('/confirm','StudentController@confirmaSolicitud');
 });
 
-
-
+//Administrador
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:administradores'],function (){
     Route::get('/home',function (){
         return view('administrador.home');
@@ -229,4 +228,18 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:administradores'],funct
             });
         });
     });
+});
+
+//Coordinador
+Route::group(['prefix' => 'coordinador', 'middleware' => 'auth:coordinadores'],function (){
+    Route::get('/home',function (){
+        return view('coordinador.home');
+    })->name('coordinadorhome');
+});
+
+//Asesor
+Route::group(['prefix' => 'asesores', 'middleware' => 'auth:asesores'],function (){
+    Route::get('/home',function (){
+        return view('asesor.home');
+    })->name('asesorhome');
 });

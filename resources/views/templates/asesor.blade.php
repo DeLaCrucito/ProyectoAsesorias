@@ -13,8 +13,8 @@
                 <div>
                     <img src="">
                 </div>
-                <a href="#!user"><img class="circle" src="https://pbs.twimg.com/profile_images/677225147703496704/bI3kWrjm.png"></a>
-                <h6 class="white-text">ADMINISTRADOR</h6>
+                <a href=""><img class="circle" src="https://pbs.twimg.com/profile_images/677225147703496704/bI3kWrjm.png"></a>
+                <h6 class="white-text">Asesor</h6>
             </div>
         </li>
         <li>
@@ -33,7 +33,7 @@
             <a  href="{{route('viewusuarios')}}" class="white-text left-align"><i class="material-icons">account_circle</i>Usuarios</a>
         </li>
         <li>
-            <a href="{{ route('adminlogout') }}" class="white-text left-align"><i class="material-icons">exit_to_app</i>Cerrar
+            <a href="{{ route('asesorlogout') }}" class="white-text left-align"><i class="material-icons">exit_to_app</i>Cerrar
                 Sesión</a>
         </li>
     </ul>

@@ -30,12 +30,12 @@ class RedirectIfAuthenticated
                 break;
             case 'coordinadores':
                 if (Auth::guard($guard)->check()) {
-                    return redirect()->route('viewfacultad');
+                    return redirect()->route('coordinadorhome');
                 }
                 break;
             case 'asesores':
                 if (Auth::guard($guard)->check()) {
-                    return redirect()->route('viewfacultad');
+                    return redirect()->route('asesorhome');
                 }
                 break;
             default:

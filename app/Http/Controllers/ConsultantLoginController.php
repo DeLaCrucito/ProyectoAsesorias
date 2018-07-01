@@ -26,7 +26,7 @@ class ConsultantLoginController extends Controller
         if (Auth::guard('asesores')->attempt(['correo' => $request->email, 'password' => $request->password],
             $request->remember)) {
             // if successful, then redirect to their intended location
-            return redirect()->intended(route('adminhome'));
+            return redirect()->intended(route('asesorhome'));
         }
         // if unsuccessful, then redirect back to the login with the form data
         return redirect()->back()->withInput($request->only('email', 'remember'));

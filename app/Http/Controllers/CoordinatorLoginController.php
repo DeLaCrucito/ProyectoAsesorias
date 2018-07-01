@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CoordinatorLoginController extends Controller
 {
@@ -25,7 +26,7 @@ class CoordinatorLoginController extends Controller
         if (Auth::guard('coordinadores')->attempt(['correo' => $request->email, 'password' => $request->password],
             $request->remember)) {
             // if successful, then redirect to their intended location
-            return redirect()->intended(route('adminhome'));
+            return redirect()->intended(route('coordinadorhome'));
         }
         // if unsuccessful, then redirect back to the login with the form data
         return redirect()->back()->withInput($request->only('email', 'remember'));
