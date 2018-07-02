@@ -3,6 +3,7 @@
     <tr>
         <th>Nombre</th>
         <th>Acciones</th>
+        <th>Borrar</th>
     </tr>
     </thead>
     <tbody>
@@ -10,6 +11,7 @@
         <tr>
             <td>{{ $facultad->nombre }}</td>
             <td><a href="{{ route('editfacultad', $facultad) }}" >Ver detalles</a></td>
+            <td><a href="{{ route('deletefacultad', $facultad->id) }}">Eliminar</a> </td>
         </tr>
     @endforeach
     </tbody>

@@ -84,8 +84,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:administradores'],funct
         Route::get('/update/{faculty}','FacultyController@update')->name('updatefacultad');
         Route::post('//update/{faculty}','FacultyController@update')->name('updatefacultad');
 
-        Route::get('/delete','FacultyController@delete')->name('deletefacultad');
-        Route::post('/delete','FacultyController@delete')->name('deletefacultad');
+        Route::get('/delete{id}','FacultyController@destroy')->name('deletefacultad');
+        Route::post('/delete{id}','FacultyController@destroy')->name('deletefacultad');
 
         Route::group(['prefix' => 'ajax'], function (){
             Route::get('/ajaxtabla','FacultyController@ajaxTabla')->name('ajaxtablafacultad');
@@ -109,16 +109,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:administradores'],funct
         Route::get('/update{degree}','DegreeController@update')->name('updatelicenciatura');
         Route::post('/update{degree}','DegreeController@update')->name('updatelicenciatura');
 
-        Route::get('/delete','DegreeController@delete')->name('deletefacultad');
-        Route::post('/delete','DegreeController@delete')->name('deletefacultad');
+        Route::get('/delete{id}','DegreeController@destroy')->name('deletelicenciatura');
+        Route::post('/delete{id}','DegreeController@destroy')->name('deletelicenciatura');
 
         Route::group(['prefix' => 'ajax'], function (){
             Route::get('/ajaxtabla','DegreeController@ajaxTabla')->name('tablalicenciatura');
             Route::post('/ajaxtabla','DegreeController@ajaxTabla')->name('tablalicenciatura');
         });
     });
-
-
 
     Route::group(['prefix' => 'unidad'], function (){
         Route::get('/new','SubjectController@nuevo')->name('newunidad');
@@ -136,8 +134,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:administradores'],funct
         Route::get('/update{subject}','SubjectController@update')->name('updateunidad');
         Route::post('/update{subject}','SubjectController@update')->name('updateunidad');
 
-        Route::get('/delete','SubjectController@delete')->name('deleteunidad');
-        Route::post('/delete','SubjectController@delete')->name('deleteunidad');
+        Route::get('/delete{id}','SubjectController@destroy')->name('deleteunidad');
+        Route::post('/delete{id}','SubjectController@destroy')->name('deleteunidad');
 
         Route::group(['prefix' => 'ajax'], function (){
             Route::get('/licenciatura','SubjectController@ajaxlicenciatura')->name('ajaxlicen');
@@ -169,8 +167,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:administradores'],funct
             Route::get('/update{student}','StudentController@update')->name('updatealumno');
             Route::post('/update{student}','StudentController@update')->name('updatealumno');
 
-            Route::get('/delete','StudentController@delete')->name('deletealumno');
-            Route::post('/delete','StudentController@delete')->name('deletealumno');
+            Route::get('/delete{id}','StudentController@destroy')->name('deletealumno');
+            Route::post('/delete{id}','StudentController@destroy')->name('deletealumno');
 
             Route::group(['prefix' => 'ajax'], function (){
                 Route::get('/tabla','StudentController@ajaxTabla')->name('tablaalumnos');
@@ -194,8 +192,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:administradores'],funct
             Route::get('/update{coordinator}','CoordinatorController@update')->name('updatecoordinador');
             Route::post('/update{coordinator}','CoordinatorController@update')->name('updatecoordinador');
 
-            Route::get('/delete','CoordinatorController@delete')->name('deletecoordinador');
-            Route::post('/delete','CoordinatorController@delete')->name('deletecoordinador');
+            Route::get('/delete{id}','CoordinatorController@destroy')->name('deletecoordinador');
+            Route::post('/delete{id}','CoordinatorController@destroy')->name('deletecoordinador');
 
             Route::group(['prefix' => 'ajax'], function (){
                 Route::get('/tabla','CoordinatorController@ajaxTabla')->name('tablacoordinadores');
@@ -210,6 +208,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:administradores'],funct
             Route::get('/save','ConsultantController@create')->name('saveasesor');
             Route::post('/save','ConsultantController@create')->name('saveasesor');
 
+            Route::delete('/post/{id}','ConsultantController@destroy')->name('destroyasesor');
+
             Route::get('/list','ConsultantController@read')->name('viewasesor');
             Route::post('/list','ConsultantController@read')->name('viewasesor');
 
@@ -219,8 +219,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:administradores'],funct
             Route::get('/update{coordinator}','ConsultantController@update')->name('updateasesor');
             Route::post('/update{coordinator}','ConsultantController@update')->name('updateasesor');
 
-            Route::get('/delete','ConsultantController@delete')->name('deleteasesor');
-            Route::post('/delete','ConsultantController@delete')->name('deleteasesor');
+            Route::get('/delete{id}','ConsultantController@destroy')->name('deleteasesor');
+            Route::post('/delete{id}','ConsultantController@destroy')->name('deleteasesor');
 
             Route::group(['prefix' => 'ajax'], function (){
                 Route::get('/tabla','ConsultantController@ajaxTabla')->name('tablaasesor');

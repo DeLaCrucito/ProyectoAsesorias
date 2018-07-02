@@ -111,7 +111,6 @@ class ConsultantController extends Controller
         return view('administrador.usuarios.asesor.ajax.exito');
     }
 
-    //Coordinador
     public function listaasesores(Request $request){
         $consultants = DB::table('consultants')->paginate(5);
         $datos = compact('consultants',$consultants);
@@ -133,6 +132,12 @@ class ConsultantController extends Controller
             $vista = view('coordinador.ajax.tablaasesor', $datos)->render();
         }
         return response()->json(array('success' => true, 'html'=>$vista));
+    }
+
+    public function destroy(Request $request){
+        $post = Consultant::findOrFail($request -> id);
+        $post -> delete();
+        return redirect()->route('viewasesor');
     }
 
     public function detalles(Consultant $consultant){

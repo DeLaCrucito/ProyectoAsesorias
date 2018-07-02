@@ -136,4 +136,10 @@ class SubjectController extends Controller
         $Subject-> save();
         return view('administrador.unidada.ajax.exito');
     }
+
+    public function destroy(Request $request){
+        $post = Subject::findOrFail($request -> id);
+        $post -> delete();
+        return redirect()->route('viewunidad');
+    }
 }

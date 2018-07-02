@@ -78,5 +78,11 @@ class DegreeController extends Controller
         return view('administrador.licenciatura.ajax.exito');
     }
 
+    public function destroy(Request $request){
+        $post = Degree::findOrFail($request -> id);
+        $post -> delete();
+        return redirect()->route('viewlicenciatura');
+    }
+
 }
 

@@ -121,4 +121,10 @@ class CoordinatorController extends Controller
             return view('coordinador.home',compact('coordinator'));
         }
     }
+
+    public function destroy(Request $request){
+        $post = Coordinator::findOrFail($request -> id);
+        $post -> delete();
+        return redirect()->route('viewcoordinador');
+    }
 }

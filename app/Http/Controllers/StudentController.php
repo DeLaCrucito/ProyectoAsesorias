@@ -174,5 +174,10 @@ class StudentController extends Controller
         return view('alumno.home',$datos);
     }
 
+    public function destroy(Request $request){
+        $post = Student::findOrFail($request -> id);
+        $post -> delete();
+        return redirect()->route('viewalumno');
+    }
 
 }

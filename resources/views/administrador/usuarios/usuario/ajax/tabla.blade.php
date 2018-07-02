@@ -5,6 +5,7 @@
         <th>Correo</th>
         <th>Licenciatura</th>
         <th>Acciones</th>
+        <th>Borrado</th>
     </tr>
     </thead>
     <tbody>
@@ -14,6 +15,7 @@
             <td>{{ $student->correo }}</td>
             <td>{{ $student->degree->nombre }}</td>
             <td><a href="{{ route('editalumno', $student->id) }}" >Ver detalles</a></td>
+            <td><a href="{{ route('deletealumno', $student->id) }}">Eliminar</a> </td>
         </tr>
     @endforeach
     </tbody>

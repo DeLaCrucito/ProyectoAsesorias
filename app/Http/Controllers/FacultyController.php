@@ -71,8 +71,10 @@ class FacultyController extends Controller
         return view('administrador.facultad.ajax.exito');
     }
 
-    public function delete(){
-
+    public function destroy(Request $request){
+        $post = Faculty::findOrFail($request -> id);
+        $post -> delete();
+        return redirect()->route('viewfacultad');
     }
 
 }
