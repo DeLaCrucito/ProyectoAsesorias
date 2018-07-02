@@ -18,19 +18,18 @@
             </div>
         </li>
         <li>
-            <a  href="{{route('adminhome')}}" class="white-text left-align"><i class="material-icons">home</i>Inicio</a>
-        </li>
-        <li>
-            <a  href="{{route('viewfacultad')}}" class="white-text left-align"><i class="material-icons">domain</i>Facultades</a>
-        </li>
-        <li>
-            <a  href="{{route('viewlicenciatura')}}" class="white-text left-align"><i class="material-icons">card_membership</i>Licenciaturas</a>
+            <a  href="{{route('coordinadorhome')}}" class="white-text left-align"><i class="material-icons">home</i>Inicio</a>
         </li>
         <li>
             <a  href="{{route('viewunidad')}}" class="white-text left-align"><i class="material-icons">class</i>Unidades de Aprendizaje</a>
         </li>
         <li>
-            <a  href="{{route('viewusuarios')}}" class="white-text left-align"><i class="material-icons">account_circle</i>Usuarios</a>
+            <a  href="{{route('verasesores')}}" class="white-text left-align"><i
+                        class="material-icons">account_circle</i>Asesores</a>
+        </li>
+        <li>
+            <a  href="{{route('viewusuarios')}}" class="white-text left-align"><i
+                        class="material-icons">account_circle</i>Solicitudes</a>
         </li>
         <li>
             <a href="{{ route('coordinadorlogout') }}" class="white-text left-align"><i class="material-icons">exit_to_app</i>Cerrar

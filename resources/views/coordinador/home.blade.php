@@ -16,24 +16,20 @@
                             </div>
                             <div class="center-align" style="margin-top: 50px">
                                 <div class="row col s12 m12">
-                                    <div class="input-field col s12 m9">
-                                        <input type="text" disabled name="Nombre" id="Nombre" value="Nombre Completo" class="white-text"/>
+                                    <div class="input-field col s12 m6">
+                                        <input type="text" disabled name="Nombre" id="Nombre" value="{{
+                                        $coordinator->nombre .' '. $coordinator->apellido }}" class="white-text"/>
                                         <label class="white-text" for="Nombre">Nombre</label>
                                     </div>
-                                    <div class="input-field col s12 m3">
-                                        <input class="white-text" type="text" id="Matricula" disabled value="Matricula" name="Matricula">
-                                        <label class="white-text" for="Matricula">Matricula</label>
-                                    </div>
-                                    <div class="input-field col s12 m12">
-                                        <input class="white-text" type="text" id="licenciatura" disabled value="Licenciatura" name="licenciatura">
+                                    <div class="input-field col s12 m6">
+                                        <input class="white-text" type="text" id="licenciatura" disabled value="{{
+                                        $coordinator->degree->nombre }}" name="licenciatura">
                                         <label class="white-text" for="licenciatura">Licenciatura</label>
                                     </div>
-                                    <div class="input-field col s12 m2">
-                                        <input class="white-text" type="text" id="semestre" disabled value="Semestre" name="semestre">
-                                        <label class="white-text" for="semestre">Semestre</label>
-                                    </div>
-                                    <div class="input-field col s12 m10">
-                                        <input class="white-text" type="text" id="correo" disabled value="Correo" name="correo">
+                                    <div class="input-field col s12 m6">
+                                        <input class="white-text" type="text" id="correo" disabled value="{{
+                                        $coordinator->correo }}"
+                                               name="correo">
                                         <label class="white-text" for="correo">Correo</label>
                                     </div>
                                 </div>

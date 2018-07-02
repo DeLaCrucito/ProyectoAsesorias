@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Consultant;
 use App\Models\Faculty;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ConsultantController extends Controller
 {
@@ -59,7 +60,9 @@ class ConsultantController extends Controller
     }
 
     public function read(Request $request){
-        $vista = view('administrador.usuarios.asesor.read');
+        $consultants = DB::table('consultants')->paginate(5);
+        $datos = compact('consultants',$consultants);
+        $vista = view('administrador.usuarios.asesor.read',$datos);
         if($request->ajax()){
             $asesor = $request->asesor;
             $consultants = Consultant::where('nombre', 'like','%'. $asesor.'%')->paginate(5);
@@ -106,6 +109,33 @@ class ConsultantController extends Controller
         $Consultant -> save();
 
         return view('administrador.usuarios.asesor.ajax.exito');
+    }
+
+    public function listaasesores(Request $request){
+        $consultants = DB::table('consultants')->paginate(5);
+        $datos = compact('consultants',$consultants);
+        $vista = view('coordinador.asesores',$datos);
+        if($request->ajax()){
+            $especialidad = $request->especialidad;
+            $consultants = Consultant::where('especialidad', '=',$especialidad)->paginate(5);
+            $datos = compact('consultants',$consultants);
+            $vista = view('coordinador.ajax.tablaasesor', $datos)->render();
+        }
+        return $vista;
+    }
+
+    public function especialidad(Request $request){
+        if($request->ajax()){
+            $especialidad = $request->especialidad;
+            $consultants = Consultant::where('especialidad', '=',$especialidad)->paginate(5);
+            $datos = compact('consultants',$consultants);
+            $vista = view('coordinador.ajax.tablaasesor', $datos)->render();
+        }
+        return response()->json(array('success' => true, 'html'=>$vista));
+    }
+
+    public function detalles(Request $request, $id){
+
     }
 
 }

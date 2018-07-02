@@ -18,7 +18,7 @@
             </div>
         </li>
         <li>
-            <a  href="{{route('adminhome')}}" class="white-text left-align"><i class="material-icons">home</i>Inicio</a>
+            <a  href="{{route('asesorhome')}}" class="white-text left-align"><i class="material-icons">home</i>Inicio</a>
         </li>
         <li>
             <a  href="{{route('viewfacultad')}}" class="white-text left-align"><i class="material-icons">domain</i>Facultades</a>

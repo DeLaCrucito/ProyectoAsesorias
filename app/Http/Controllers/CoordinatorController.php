@@ -7,6 +7,7 @@ use App\Models\Degree;
 use App\Models\Faculty;
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CoordinatorController extends Controller
 {
@@ -110,5 +111,14 @@ class CoordinatorController extends Controller
         $Coordinator -> save();
 
         return view('administrador.usuarios.coordinador.ajax.exito');
+    }
+
+    public function showDatos(){
+        if (Auth::check())
+        {
+            $id  =  Auth::id();
+            $coordinator = Coordinator::with('degree')->findOrFail($id);
+            return view('coordinador.home',compact('coordinator'));
+        }
     }
 }

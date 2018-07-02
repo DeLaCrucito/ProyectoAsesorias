@@ -17,7 +17,8 @@
                             <div class="center-align" style="margin-top: 50px">
                                 <div class="row col s12 m12">
                                     <div class="input-field col s12 m9">
-                                        <input type="text" disabled name="Nombre" id="Nombre" value="Nombre Completo" class="white-text"/>
+                                        <input type="text" disabled name="Nombre" id="Nombre" value=""
+                                               class="white-text"/>
                                         <label class="white-text" for="Nombre">Nombre</label>
                                     </div>
                                     <div class="input-field col s12 m3">

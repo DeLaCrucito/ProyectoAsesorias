@@ -88,7 +88,7 @@
             var selecte = document.getElementById('licen');
             $.ajax({
                 type: 'post',
-                url: '{{route('ajaxlicen')}}',
+                url: '{{route('registrolicenciaturas')}}',
                 beforeSend: function (xhr) {
                     var token = $('meta[name="csrf-token"]').attr('content');
                     if (token) {
@@ -111,7 +111,7 @@
             var selecte = document.getElementById('semestre');
             $.ajax({
                 type: 'post',
-                url: '{{route('ajaxsemestre')}}',
+                url: '{{route('registrosemestres')}}',
                 beforeSend: function (xhr) {
                     var token = $('meta[name="csrf-token"]').attr('content');
                     if (token) {

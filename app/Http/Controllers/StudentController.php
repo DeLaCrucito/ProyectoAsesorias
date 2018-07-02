@@ -164,15 +164,12 @@ class StudentController extends Controller
         return response()->json(array('success' => true, 'html'=>$vista));
     }
 
-
     public function showDatos(){
-        if (Auth::check())
-        {
-            $alumno  =  Auth::id();
-            $student = Student::findOrFail($alumno);
-            $datos = compact('student');
-            return view('alumno.home',$datos);
-        }
-
+        $alumno  =  Auth::id();
+        $student = Student::findOrFail($alumno);
+        $datos = compact('student');
+        return view('alumno.home',$datos);
     }
+
+
 }

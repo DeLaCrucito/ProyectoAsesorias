@@ -38,10 +38,10 @@ Route::get('adminlogout', '\App\Http\Controllers\Auth\LoginController@logout')->
 
 //Registro
 Route::get('/registro', 'StudentController@register')->name('registro');
-Route::get('/listalicen','StudentController@ajaxlicenciatura')->name('licenciaturas');
-Route::post('/listalicen','StudentController@ajaxlicenciatura')->name('licenciaturas');
-Route::get('/semestres','StudentController@ajaxsemestre')->name('semestres');
-Route::post('/semestres','StudentController@ajaxsemestre')->name('semestres');
+Route::get('/listalicens','StudentController@ajaxlicenciatura')->name('registrolicenciaturas');
+Route::post('/listalicens','StudentController@ajaxlicenciatura')->name('registrolicenciaturas');
+Route::get('/semestres','StudentController@ajaxsemestre')->name('registrosemestres');
+Route::post('/semestres','StudentController@ajaxsemestre')->name('registrosemestres');
 Route::get('/new','StudentController@create')->name('newalumno');
 Route::post('/new','StudentController@create')->name('newalumno');
 
@@ -232,14 +232,34 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:administradores'],funct
 
 //Coordinador
 Route::group(['prefix' => 'coordinador', 'middleware' => 'auth:coordinadores'],function (){
-    Route::get('/home',function (){
-        return view('coordinador.home');
-    })->name('coordinadorhome');
+    Route::get('/profile','CoordinatorController@showDatos')->name('coordinadorhome');
+    Route::post('/profile','CoordinatorController@showDatos')->name('coordinadorhome');
+
+    Route::get('/listaunidades','SubjectController@read')->name('unidades');
+    Route::post('/listaunidades','SubjectController@read')->name('unidades');
+
+    Route::get('/listaasesores','ConsultantController@listaasesores')->name('verasesores');
+    Route::post('/listaasesores','ConsultantController@listaasesores')->name('verasesores');
+
+    Route::get('/detalles{consultant}','ConsultantController@detalles')->name('detalleasesor');
+    Route::post('/detalles{consultant}','ConsultantController@detalles')->name('detalleasesor');
+
+    Route::group(['prefix' => 'ajax'], function (){
+        Route::get('/licenciatura','SubjectController@ajaxlicenciatura')->name('coorajaxlicen');
+        Route::post('/licenciatura','SubjectController@ajaxlicenciatura')->name('coorajaxlicen');
+
+        Route::get('/asesortabla','ConsultantController@especialidad')->name('filtroespecialidad');
+        Route::post('/asesortabla','ConsultantController@especialidad')->name('filtroespecialidad');
+
+        Route::get('/semestres','SubjectController@ajaxsemestre')->name('coorajaxsemestre');
+        Route::post('/semestres','SubjectController@ajaxsemestre')->name('coorajaxsemestre');
+
+        Route::get('/tabla','SubjectController@ajaxTabla')->name('coortablaunidada');
+        Route::post('/tabla','SubjectController@ajaxTabla')->name('coortablaunidada');
+    });
 });
 
 //Asesor
 Route::group(['prefix' => 'asesores', 'middleware' => 'auth:asesores'],function (){
-    Route::get('/home',function (){
-        return view('asesor.home');
-    })->name('asesorhome');
+
 });
