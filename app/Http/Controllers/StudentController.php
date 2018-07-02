@@ -46,11 +46,13 @@ class StudentController extends Controller
     }
 
     public function create(Request $request){
+
         $this->validate($request, [
             'matri' => 'required',
             'nombre' => 'required',
             'apellido' => 'required',
             'email' => 'required|email',
+            'facultad' => 'required',
             'licen' => 'required',
             'semestre' => 'required',
             'password' => 'required|confirmed|min:8'
@@ -60,6 +62,7 @@ class StudentController extends Controller
             'apellido.required' => 'Es necesario ingresar su(s) apellido(s)',
             'email.required' => 'Es necesario ingresar un email',
             'email.email' => 'Debe introducir un correo electrónico válido',
+            'facultad.required' => 'Debe seleccionar su facultad',
             'licen.required' => 'Debe seleccionar una licenciatura',
             'semestre.required' => 'Debe seleccionar un Semetre',
             'password.required' => 'Es necesario una contraseña',
@@ -77,7 +80,7 @@ class StudentController extends Controller
         $Student -> password = bcrypt($request->password);
         $Student -> save();
 
-        return view('administrador.usuarios.usuario.ajax.exito');
+        return view('exito');
     }
 
     public function read(Request $request){

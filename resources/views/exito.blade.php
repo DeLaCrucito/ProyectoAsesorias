@@ -11,7 +11,7 @@
                         <h4 class="center-align">Registro completo</h4>
                         <section><p><br></p></section>
                         <div class="row center">
-                            <a name="cancel" id="cancel" href="{{ route('login') }}" class="white-text red darken-1 btn
+                            <a name="cancel" id="cancel" href="{{ route('alumnologinl') }}" class="white-text red darken-1 btn
                             boton">Iniciar Sesión</a>
                         </div>
                     </form>

@@ -42,8 +42,8 @@ Route::get('/listalicens','StudentController@ajaxlicenciatura')->name('registrol
 Route::post('/listalicens','StudentController@ajaxlicenciatura')->name('registrolicenciaturas');
 Route::get('/semestres','StudentController@ajaxsemestre')->name('registrosemestres');
 Route::post('/semestres','StudentController@ajaxsemestre')->name('registrosemestres');
-Route::get('/new','StudentController@create')->name('newalumno');
-Route::post('/new','StudentController@create')->name('newalumno');
+Route::get('/newalumno','StudentController@create')->name('newalumno');
+Route::post('/newalumno','StudentController@create')->name('newalumno');
 
 //Alumnos
 Route::group(['prefix' => 'alumno', 'middleware' => 'auth:alumnos'],function (){
