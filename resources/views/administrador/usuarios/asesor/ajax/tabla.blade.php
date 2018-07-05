@@ -4,7 +4,7 @@
         <th>Nombre</th>
         <th>Correo</th>
         <th>Acciones</th>
-        <th>Borrado</th>
+        <th>Borrar</th>
     </tr>
     </thead>
     <tbody>

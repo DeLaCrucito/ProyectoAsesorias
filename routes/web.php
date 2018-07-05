@@ -216,8 +216,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:administradores'],funct
             Route::get('/edit{consultant}','ConsultantController@edit')->name('editasesor');
             Route::post('/edit{consultant}','ConsultantController@edit')->name('editasesor');
 
-            Route::get('/update{coordinator}','ConsultantController@update')->name('updateasesor');
-            Route::post('/update{coordinator}','ConsultantController@update')->name('updateasesor');
+            Route::get('/update{consultant}','ConsultantController@update')->name('updateasesor');
+            Route::post('/update{consultant}','ConsultantController@update')->name('updateasesor');
 
             Route::get('/delete{id}','ConsultantController@destroy')->name('deleteasesor');
             Route::post('/delete{id}','ConsultantController@destroy')->name('deleteasesor');
@@ -227,6 +227,23 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:administradores'],funct
                 Route::post('/tabla','ConsultantController@ajaxTabla')->name('tablaasesor');
             });
         });
+    });
+
+    Route::group(['prefix' => 'aprovechamiento'], function (){
+        Route::get('/new','ExploitationController@nuevo')->name('newaprovechamiento');
+        Route::post('/new','ExploitationController@nuevo')->name('newaprovechamiento');
+
+        Route::get('/save','ExploitationController@create')->name('saveaprovechamiento');
+        Route::post('/save','ExploitationController@create')->name('saveaprovechamiento');
+
+        Route::get('/list','ExploitationController@read')->name('viewaprovechamiento');
+        Route::post('/list','ExploitationController@read')->name('viewaprovechamiento');
+
+        Route::get('/edit{exploitation}','ExploitationController@edit')->name('editaprovechamiento');
+        Route::post('/edit{exploitation}','ExploitationController@edit')->name('editaprovechamiento');
+
+        Route::get('/update{exploitation}','ExploitationController@update')->name('updateaprovechamiento');
+        Route::post('/update{exploitation}','ExploitationController@update')->name('updateaprovechamiento');
     });
 });
 

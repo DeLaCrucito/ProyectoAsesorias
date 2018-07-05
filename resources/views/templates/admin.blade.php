@@ -33,6 +33,9 @@
             <a  href="{{route('viewusuarios')}}" class="white-text left-align"><i class="material-icons">account_circle</i>Usuarios</a>
         </li>
         <li>
+            <a  href="{{route('viewaprovechamiento')}}" class="white-text left-align"><i class="material-icons">thumb_up</i>Criterios de Evaluación</a>
+        </li>
+        <li>
             <a href="{{ route('adminlogout') }}" class="white-text left-align"><i class="material-icons">exit_to_app</i>Cerrar
                 Sesión</a>
         </li>
