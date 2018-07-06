@@ -28,6 +28,6 @@ class AssignmentController extends Controller
         $consultant = $request->consultant;
         $post = Assignment::findOrFail($request -> id);
         $post -> delete();
-        return redirect()->route('detalleasesor',$consultant);
+        return redirect()->back();
     }
 }

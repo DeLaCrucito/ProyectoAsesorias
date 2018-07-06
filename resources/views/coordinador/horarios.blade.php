@@ -48,7 +48,7 @@
                             <h5 class="left-align thin white-text">Horario actual</h5>
                         </blockquote>
                     </div>
-                    <div class="row" id="">
+                    <div class="posts row" id="posts">
                         <table class="white-text highlight">
                             <thead>
                             <tr>
@@ -64,19 +64,24 @@
                                     <td>{{ $schedule->dia }}</td>
                                     <td>{{ $schedule->hr_inicio }}</td>
                                     <td>{{ $schedule->hr_fin }}</td>
-                                    <td><a class="btn-flat blue-text"
-                                           onclick="
-                                                   if (confirm('¿Seguro que desea eliminar el horario del día {{
-                                                   $schedule->dia .' de '. $schedule->hr_inicio .' - '.
-                                                   $schedule->hr_fin
-                                                   }} del asesor {{$consultant->nombre . ' '. $consultant->apellido}}?')) {
-                                                   window.location.href = '{{ route('delhorario', ['id'=>$schedule,
-                                                   'consultant'=>$consultant]) }}' }
-                                                   "><span></span>Eliminar</a></td>
+                                    <td><a class="btn-flat blue-text modal-trigger"
+                                           href="#modal{{ $schedule->id }}"><span></span>Eliminar</a></td>
+
                                 </tr>
+                                <script>
+                                    function ejecutaAccion() {
+                                        window.location.href = '{{ route('delhorario', ['id'=>$schedule,
+                                                   'consultant'=>$consultant]) }}'
+                                    }
+                                    
+                                    function cierraModal() {
+                                        $('#modal{{ $schedule->id }}').modal('close');
+                                    }
+                                </script>
                             @endforeach
                             </tbody>
                         </table>
+                        {!! $schedules->links() !!}
                     </div>
                 </div>
                 <div class="col s12 m6">
@@ -118,6 +123,24 @@
 
             </div>
         </div>
+        @foreach($horas as $hora)
+            <div id="modal{{ $hora->id }}" class="modal">
+                <div class="modal-content">
+                    <h5>Esta acción no se puede deshacer</h5>
+                    <p>¿Seguro que desea eliminar el horario con el día {{
+                                                   $hora->dia .' y horario '. $hora->hr_inicio .' - '.
+                                                   $hora->hr_fin
+                                                   }} para el asesor {{$consultant->nombre . ' '.
+                                                   $consultant->apellido}}?</p>
+                </div>
+                <div class="modal-footer">
+                    <a id="#disagree" onclick="cierraModal()" class="modal-action modal-close waves-effect
+                                            waves-red btn-flat">Cancelar</a>
+                    <a id="#agree" onclick="ejecutaAccion()" class="modal-action modal-close waves-effect
+                                            waves-green btn-flat">Aceptar</a>
+                </div>
+            </div>
+        @endforeach
     </form>
     <script>
         function cargaTabla(page) {

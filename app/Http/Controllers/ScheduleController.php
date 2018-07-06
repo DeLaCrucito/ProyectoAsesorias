@@ -10,15 +10,21 @@ use Illuminate\Support\Facades\DB;
 class ScheduleController extends Controller
 {
     public function nuevohorario(Request $request, Consultant $consultant){
-        $schedules = Schedule::with('consultant')->where('asesor','=',$consultant->id)->get();
-        return view('coordinador.horarios',compact('consultant'))->with(compact('schedules'));
+        $horas = Schedule::with('consultant')->where('asesor','=',$consultant->id)->get();
+        $schedules = Schedule::with('consultant')->where('asesor','=',$consultant->id)->paginate(5);
+        $vista = view('coordinador.horarios',compact('consultant'))->with(compact('schedules'))->with(compact('horas'));
+        if($request->ajax()){
+            $schedules = Schedule::with('consultant')->where('asesor','=',$consultant->id)->paginate(5);
+            $vista = view('coordinador.ajax.tablahoras', compact('schedules'))->with(compact('consultant'))->render();
+        }
+        return $vista;
     }
 
     public function destroy(Request $request){
         $consultant = $request->consultant;
         $post = Schedule::findOrFail($request -> id);
         $post -> delete();
-        return redirect()->route('detalleasesor',$consultant);
+        return redirect()->back();
     }
 
     public function savehorario(Request $request, Consultant $consultant){
@@ -43,15 +49,15 @@ class ScheduleController extends Controller
         $schedules = Schedule::where('asesor','=',$consultant->id)->where('dia','=',$day)->get();
 
 
+        // 0800 1200
         foreach ($schedules as $schedule){
             $codigo = $schedule->code;
             $array = explode('-',$codigo);
             $init = str_replace(':', '', $array[1]);
             $finish = str_replace(':', '', $array[2]);
-
             if ($inicio > $init && $inicio < $finish){
                 return redirect()->back()->with('message', 'Error: No fue posible asignar el horario porque ya exite un horario que causa conflicto');
-            }else if ($fin < $finish && $fin > $inicio){
+            }else if ($fin < $finish && $fin > $init){
                 return redirect()->back()->with('message', 'Error: No fue posible asignar el horario porque ya exite un horario que causa conflicto');
             } else if(Schedule::where('code', '=', $code)->exists()) {
                 return redirect()->back()->with('message', 'Error: El horario ya existe');

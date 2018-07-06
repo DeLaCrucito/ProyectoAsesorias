@@ -1,59 +1,69 @@
 @extends('coordinador.base')
 @section('elementos')
+    <style>
+        .oculto {
+            display: none;
+        }
+    </style>
     <form class="col s12" method="post">
         {{ csrf_field() }}
         <div class="col s12 m12">
             <div class="row center ">
                 <div class="row col s12 m9">
                     <blockquote>
-                        <h4 class="left-align thin white-text">Asesores</h4>
+                        <h4 class="left-align thin white-text">Unidades de aprendizaje</h4>
                     </blockquote>
                 </div>
             </div>
             <div style="margin-top: 50px">
                 <div class="row">
-                    <div class="row input-field col s12 m6">
-                        <label class="active white-text" for="tipo">Especialidad</label>
-                        <select class="white-text" id="especialidad" name="especialidad" onchange="mostrarTabla(this
-                        .value)">
-                            <option disabled selected="selected">Buscar por especialidad</option>
-                            @foreach($consultants as $consultant)
-                                <option value="{{ $consultant->especialidad }}">{{ $consultant->especialidad }}</option>
+                    <div id="cajasemestre" class="input-field col s12 m6 white-text">
+                        <select id="semestre" onchange="mostrarTabla(this.value)" name="semestre"  required>
+                            <option disabled selected="selected">Seleccione un semestre</option>
+                            @foreach(range(1,$degree->semestres) as $semestre)
+                                <option value="{{ $semestre }}">{{ $semestre }}</option>
                             @endforeach
                         </select>
+                        <label for="semestre" class="white-text">Semestre</label>
                     </div>
                     <div class="posts row" id="posts">
                         <table class="white-text highlight">
                             <thead>
                             <tr>
-                                <th>Nombre</th>
-                                <th>Especialidad</th>
+                                <th>Unidad de Aprendizaje</th>
+                                <th>Semestre</th>
+                                <th>Tipo de asignatura</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($consultants as $consultant)
+                            @foreach($subjects as $subject)
                                 <tr>
-                                    <td>{{ $consultant->nombre ." ". $consultant->apellido}}</td>
-                                    <td>{{ $consultant->especialidad }}</td>
+                                    <td>{{ $subject->nombre }}</td>
+                                    <td>{{ $subject->semestre }}</td>
+                                    <td>{{ $subject->tipo }}</td>
                                     <td><a class="tooltipped" data-position="top" data-delay="50"
-                                           data-tooltip="Consultar detalles de materias y horarios"
-                                           href="{{ route('detalleasesor', $consultant->id) }}" >Ver detalles</a></td>
+                                           data-tooltip="Podrá consultar los detalles de la unidad, así como ver los
+                                           asesores que imparten la materia" href="{{ route('coordetalleunidad',
+                                           $subject) }}" >Ver
+                                            detalles</a></td>
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
-                        {!! $consultants->links() !!}
+                        {!! $subjects->links() !!}
+
                     </div>
                 </div>
             </div>
         </div>
     </form>
     <script>
+
         function mostrarTabla(val) {
             $.ajax({
                 type: 'post',
-                url: '{{route('filtroespecialidad')}}',
+                url: '{{route('coorajaxunidades')}}',
                 beforeSend: function (xhr) {
                     var token = $('meta[name="csrf-token"]').attr('content');
                     if (token) {
@@ -61,7 +71,7 @@
                     }
                 },
                 data: {
-                    especialidad: val
+                    semestre: val
                 },
                 success: function (response) {
                     document.getElementById('posts').innerHTML = response.html;
@@ -70,10 +80,10 @@
         }
 
         function cargaTabla(page) {
-            var tipo = document.getElementById('facultad').value;
+            var semestre = document.getElementById('semestre').value;
             $.ajax({
                 data: {
-                    facultad: tipo
+                    semestre: semestre
                 },
                 url:'?page='+page
             }).done(function (data) {

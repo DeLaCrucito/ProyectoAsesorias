@@ -150,10 +150,12 @@ class ConsultantController extends Controller
         $value = Auth::user()->licenciatura;
         $schedules = Schedule::with('consultant')->where('asesor','=',$consultant->id)->get();
         $subjects = Assignment::with('subject')->where('asesor','=',$consultant->id)->paginate(5);
-        $vista = view('coordinador.detalleasesor',compact('consultant'))->with(compact('subjects'))->with(compact('schedules'));
+        $asignaturas = Assignment::with('subject')->where('asesor','=',$consultant->id)->get();
+        $vista = view('coordinador.detalleasesor',compact('consultant'))->with(compact('subjects'))->with(compact('schedules'))->with(compact('asignaturas'));
         if($request->ajax()){
+            $consultant = $consultant;
             $subjects = Assignment::with('subject')->where('asesor','=',$consultant->id)->paginate(5);
-            $vista = view('coordinador.ajax.tabla_asignaturas',compact('subjects'));
+            $vista = view('coordinador.ajax.tabla_asignaturas',compact('subjects'))->with(compact('consultant'));
         }
         return $vista;
     }
@@ -165,6 +167,7 @@ class ConsultantController extends Controller
         $vista = view('coordinador.asignacion',compact('subjects'))
             ->with(compact('degree'))->with(compact('consultant'));
         if($request->ajax()){
+            $asesor = $request->asesor;
             $semestre = $request->semestre;
             $subjects = Subject::where('semestre', '=',$semestre)->where('licenciatura','=',$licenciatura)->paginate(5);
             $datos = compact('subjects',$subjects);

@@ -279,9 +279,15 @@ Route::group(['prefix' => 'coordinador', 'middleware' => 'auth:coordinadores'],f
     Route::get('/delasignacion{id}/asesor{consultant}','AssignmentController@destroy')->name('delasignacion');
     Route::post('/delasignacion{id}/asesor{consultant}','AssignmentController@destroy')->name('delasignacion');
 
+    Route::get('/unidades','SubjectController@listaunidadescoor')->name('coorunidades');
+    Route::post('/unidades','SubjectController@listaunidadescoor')->name('coorunidades');
+
+    Route::get('/unidad{subject}','SubjectController@detalleunidad')->name('coordetalleunidad');
+    Route::post('/unidad{subject}','SubjectController@detalleunidad')->name('coordetalleunidad');
+
     Route::group(['prefix' => 'ajax'], function (){
-        Route::get('/licenciatura','SubjectController@ajaxlicenciatura')->name('coorajaxlicen');
-        Route::post('/licenciatura','SubjectController@ajaxlicenciatura')->name('coorajaxlicen');
+        Route::get('/unidades','SubjectController@ajaxlistaunidades')->name('coorajaxunidades');
+        Route::post('/unidades','SubjectController@ajaxlistaunidades')->name('coorajaxunidades');
 
         Route::get('/asesortabla','ConsultantController@especialidad')->name('filtroespecialidad');
         Route::post('/asesortabla','ConsultantController@especialidad')->name('filtroespecialidad');

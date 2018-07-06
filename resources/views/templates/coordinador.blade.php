@@ -21,7 +21,8 @@
             <a  href="{{route('coordinadorhome')}}" class="white-text left-align"><i class="material-icons">home</i>Inicio</a>
         </li>
         <li>
-            <a  href="{{route('viewunidad')}}" class="white-text left-align"><i class="material-icons">class</i>Unidades de Aprendizaje</a>
+            <a  href="{{route('coorunidades')}}" class="white-text left-align"><i class="material-icons">class</i>Unidades de
+                Aprendizaje</a>
         </li>
         <li>
             <a  href="{{route('verasesores')}}" class="white-text left-align"><i
@@ -29,17 +30,26 @@
         </li>
         <li>
             <a  href="{{route('viewusuarios')}}" class="white-text left-align"><i
-                        class="material-icons">account_circle</i>Solicitudes</a>
+                        class="material-icons">list</i>Solicitudes</a>
         </li>
         <li>
-            <a onclick="
-                    if (confirm('¿Desea cerrar sesión?')) {
-                    window.location.href = '{{ route('coordinadorlogout') }}' }
-                    " class="white-text btn-flat left-align"><span></span><i
+            <a href="#signout" class="white-text btn-flat left-align  modal-trigger"><span></span><i
                         class="material-icons">exit_to_app</i>Cerrar
                 Sesión</a>
         </li>
     </ul>
+    <div id="signout" class="modal">
+        <div class="modal-content">
+            <h5>Cerrar sesión</h5>
+            <p>¿Desea finalizar esta sesión?</p>
+        </div>
+        <div class="modal-footer">
+            <a id="" onclick="$('#signout').modal('close');" class="modal-action modal-close waves-effect
+                                            waves-red btn-flat">Cancelar</a>
+            <a id="" onclick="window.location.href = '{{ route('coordinadorlogout') }}'" class="modal-action modal-close waves-effect
+                                            waves-green btn-flat">Aceptar</a>
+        </div>
+    </div>
 @endsection
 
 @section('footer')

@@ -439,6 +439,7 @@
             cargaTabla(page)
         });
 
+
         $('.timepicker').pickatime({
             default: 'now', // Set default time: 'now', '1:30AM', '16:30'
             fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
@@ -451,6 +452,10 @@
             ampmclickable: true, // make AM PM clickable
             aftershow: function(){} //Function for after opening timepicker
         });
+
+            // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+        $('.modal').modal();
+
 
 
     });

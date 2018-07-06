@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assignment;
+use App\Models\Consultant;
 use App\Models\Degree;
 use App\Models\Faculty;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SubjectController extends Controller
 {
@@ -141,5 +145,37 @@ class SubjectController extends Controller
         $post = Subject::findOrFail($request -> id);
         $post -> delete();
         return redirect()->route('viewunidad');
+    }
+
+    public function listaunidadescoor(Request $request){
+        $licenciatura = Auth::user()->licenciatura;
+        $degree = Degree::findOrFail($licenciatura);
+        $subjects = Subject::where('licenciatura','=',$licenciatura)->paginate(5);
+        $vista = view('coordinador.unidades')->with(compact('subjects'))->with(compact('degree'));
+        if ($request->ajax()){
+            $licenciatura = Auth::user()->licenciatura;
+            $semestre = $request->semestre;
+            $subjects = Subject::where('licenciatura','=',$licenciatura)->paginate(5);
+            $vista = view('coordinador.ajax.tablaunidades')->with(compact('subjects'))->render();
+        }
+        return $vista;
+    }
+
+    public function ajaxlistaunidades(Request $request){
+        if ($request->ajax()){
+            $licenciatura = Auth::user()->licenciatura;
+            $semestre = $request->semestre;
+            $subjects = Subject::where('licenciatura','=',$licenciatura)->where('semestre','=',$semestre)->paginate(5);
+            $vista = view('coordinador.ajax.tablaunidades')->with(compact('subjects'))->render();
+        }
+        return response()->json(array('success' => true, 'html'=>$vista));
+    }
+
+    public function detalleunidad(Request $request, Subject $subject){
+        $asignaturas = Assignment::with('consultant')->where('materia','=',$subject->id)->get();
+        $consultants = Assignment::with('consultant')->where('materia','=',$subject->id)->paginate(5);
+        $vista = view('coordinador.detalleunidad')->with(compact('consultants'))->with(compact('subject'))->with
+        (compact('asignaturas'));
+        return $vista;
     }
 }
