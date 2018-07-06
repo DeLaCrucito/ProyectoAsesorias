@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assignment;
 use App\Models\Consultant;
+use App\Models\Degree;
 use App\Models\Faculty;
+use App\Models\Schedule;
+use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Queue\RedisQueue;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ConsultantController extends Controller
@@ -140,8 +146,46 @@ class ConsultantController extends Controller
         return redirect()->route('viewasesor');
     }
 
-    public function detalles(Consultant $consultant){
-        return view('administrador.usuarios.asesor.edit',compact('consultant'));
+    public function detalles(Request $request, Consultant $consultant){
+        $value = Auth::user()->licenciatura;
+        $schedules = Schedule::with('consultant')->where('asesor','=',$consultant->id)->get();
+        $subjects = Assignment::with('subject')->where('asesor','=',$consultant->id)->paginate(5);
+        $vista = view('coordinador.detalleasesor',compact('consultant'))->with(compact('subjects'))->with(compact('schedules'));
+        if($request->ajax()){
+            $subjects = Assignment::with('subject')->where('asesor','=',$consultant->id)->paginate(5);
+            $vista = view('coordinador.ajax.tabla_asignaturas',compact('subjects'));
+        }
+        return $vista;
     }
+
+    public function asignamateria(Request $request, Consultant $consultant){
+        $licenciatura = Auth::user()->licenciatura;
+        $subjects = Subject::where('licenciatura','=',$licenciatura)->paginate(5);
+        $degree = Degree::findOrFail($licenciatura);
+        $vista = view('coordinador.asignacion',compact('subjects'))
+            ->with(compact('degree'))->with(compact('consultant'));
+        if($request->ajax()){
+            $semestre = $request->semestre;
+            $subjects = Subject::where('semestre', '=',$semestre)->where('licenciatura','=',$licenciatura)->paginate(5);
+            $datos = compact('subjects',$subjects);
+            $vista = view('coordinador.ajax.tablaasignacion', $datos)->with(compact('consultant'))->render();
+        }
+        return $vista;
+    }
+
+    public function tbasignacion(Request $request){
+
+        if($request->ajax()){
+            $semestre = $request->semestre;
+            $consultant = $request->asesor;
+            $licenciatura = Auth::user()->licenciatura;
+            $subjects = Subject::where('semestre', '=',$semestre)->where('licenciatura','=',$licenciatura)->paginate(5);
+            $datos = compact('subjects',$subjects);
+            $vista = view('coordinador.ajax.tablaasignacion', $datos)->with(compact('consultant'))->render();
+        }
+        return response()->json(array('success' => true, 'html'=>$vista));
+    }
+
+
 
 }

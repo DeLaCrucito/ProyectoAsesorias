@@ -43,7 +43,7 @@ Route::post('/listalicens','StudentController@ajaxlicenciatura')->name('registro
 Route::get('/semestres','StudentController@ajaxsemestre')->name('registrosemestres');
 Route::post('/semestres','StudentController@ajaxsemestre')->name('registrosemestres');
 Route::get('/newalumno','StudentController@create')->name('newalumno');
-Route::post('/newalumno','StudentController@create')->name('newalumno');
+Route::post('/newalumno.','StudentController@create')->name('newalumno');
 
 //Alumnos
 Route::group(['prefix' => 'alumno', 'middleware' => 'auth:alumnos'],function (){
@@ -252,14 +252,32 @@ Route::group(['prefix' => 'coordinador', 'middleware' => 'auth:coordinadores'],f
     Route::get('/profile','CoordinatorController@showDatos')->name('coordinadorhome');
     Route::post('/profile','CoordinatorController@showDatos')->name('coordinadorhome');
 
-    Route::get('/listaunidades','SubjectController@read')->name('unidades');
-    Route::post('/listaunidades','SubjectController@read')->name('unidades');
+    Route::get('/asignacion{consultant}','ConsultantController@asignamateria')->name('asignacion');
+    Route::post('/asignacion{consultant}','ConsultantController@asignamateria')->name('asignacion');
+
+    Route::get('/tbasignacion','ConsultantController@tbasignacion')->name('tbasignacion');
+    Route::post('/tbasignacion','ConsultantController@tbasignacion')->name('tbasignacion');
+
+    Route::get('/materia{subject}/asesor{consultant}','AssignmentController@asignar')->name('asignar');
+    Route::post('/materia{subject}/asesor{consultant}','AssignmentController@asignar')->name('asignar');
 
     Route::get('/listaasesores','ConsultantController@listaasesores')->name('verasesores');
     Route::post('/listaasesores','ConsultantController@listaasesores')->name('verasesores');
 
     Route::get('/detalles{consultant}','ConsultantController@detalles')->name('detalleasesor');
     Route::post('/detalles{consultant}','ConsultantController@detalles')->name('detalleasesor');
+
+    Route::get('/newhora{consultant}','ScheduleController@nuevohorario')->name('newhorario');
+    Route::post('/newhora{consultant}','ScheduleController@nuevohorario')->name('newhorario');
+
+    Route::get('/savehorario{consultant}','ScheduleController@savehorario')->name('savehorario');
+    Route::post('/savehorario{consultant}','ScheduleController@savehorario')->name('savehorario');
+
+    Route::get('/deletehora{id}/asesor{consultant}','ScheduleController@destroy')->name('delhorario');
+    Route::post('/deletehora{id}/asesor{consultant}','ScheduleController@destroy')->name('delhorario');
+
+    Route::get('/delasignacion{id}/asesor{consultant}','AssignmentController@destroy')->name('delasignacion');
+    Route::post('/delasignacion{id}/asesor{consultant}','AssignmentController@destroy')->name('delasignacion');
 
     Route::group(['prefix' => 'ajax'], function (){
         Route::get('/licenciatura','SubjectController@ajaxlicenciatura')->name('coorajaxlicen');

@@ -32,7 +32,11 @@
                         class="material-icons">account_circle</i>Solicitudes</a>
         </li>
         <li>
-            <a href="{{ route('coordinadorlogout') }}" class="white-text left-align"><i class="material-icons">exit_to_app</i>Cerrar
+            <a onclick="
+                    if (confirm('¿Desea cerrar sesión?')) {
+                    window.location.href = '{{ route('coordinadorlogout') }}' }
+                    " class="white-text btn-flat left-align"><span></span><i
+                        class="material-icons">exit_to_app</i>Cerrar
                 Sesión</a>
         </li>
     </ul>

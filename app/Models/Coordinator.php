@@ -18,7 +18,6 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $nombre
  * @property string $apellido
  * @property string $correo
- * @property string $usuario
  * @property string $password
  * @property bool $is_coor
  * 

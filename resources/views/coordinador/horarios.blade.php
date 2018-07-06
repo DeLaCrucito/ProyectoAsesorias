@@ -1,12 +1,12 @@
 @extends('coordinador.base')
 @section('elementos')
-    <form class="col s12" method="post" action="{{ route('updateasesor',$consultant->id) }}">
+    <form class="col s12" method="post" action="{{ route('savehorario',$consultant->id) }}">
         {{ csrf_field() }}
         <div class="col s12 m12">
             <div class="row center ">
                 <div class="row col s12 m9">
                     <blockquote>
-                        <h4 class="left-align thin white-text">Detalles del asesor</h4>
+                        <h4 class="left-align thin white-text">Gestión de Horario</h4>
                     </blockquote>
                 </div>
             </div>
@@ -45,59 +45,17 @@
                 <div class="col s12 m6">
                     <div class="row col s12 m9">
                         <blockquote>
-                            <h5 class="left-align thin white-text">Materias asignadas</h5>
+                            <h5 class="left-align thin white-text">Horario actual</h5>
                         </blockquote>
                     </div>
-                    <a name="cancel" id="cancel" href="{{ route('asignacion', $consultant->id) }}" class="white-text
-                    red darken-1 btn boton">Asignar materia</a>
-                    <p class="white-text">Se muestra un listado con las materias que el asesor puede impartir.</p>
-                    <div class="posts row" id="posts">
+                    <div class="row" id="">
                         <table class="white-text highlight">
                             <thead>
                             <tr>
-                                <th>Unidad de Aprendizaje</th>
-                                <th>Semestre</th>
-                                <th>Tipo</th>
+                                <th>Dia</th>
+                                <th>Hora de Inicio</th>
+                                <th>Hora de fin</th>
                                 <th>Acciones</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($subjects as $subject)
-                                <tr>
-                                    <td>{{ $subject->subject->nombre }}</td>
-                                    <td>{{ $subject->subject->semestre }}</td>
-                                    <td>{{ $subject->subject->tipo }}</td>
-                                    <td><a class="btn-flat blue-text"
-                                           onclick="
-                                                   if (confirm('¿Seguro que desea remover la materia {{
-                                                   $subject->subject->nombre }} del asesor {{$consultant->nombre . ' '. $consultant->apellido}} ?')) {
-                                                   window.location.href = '{{ route('delasignacion', ['id'=>$subject,
-                                                   'consultant'=>$consultant]) }}' }
-                                                   "><span></span>Remover</a></td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                        {!! $subjects->links() !!}
-                    </div>
-                </div>
-                <div class="col s12 m6">
-                    <div class="row col s12 m9">
-                        <blockquote>
-                            <h5 class="left-align thin white-text">Horario</h5>
-                        </blockquote>
-                    </div>
-                    <a name="cancel" id="cancel" href="{{ route('newhorario', $consultant->id) }}" class="white-text
-                red darken-1 btn boton">Gestionar Horario</a>
-                    <p class="white-text">Se muestra un listado con el horario que el asesor dispone para dar
-                        asesorías.</p>
-                    <div class=" row" id="">
-                        <table class="white-text highlight">
-                            <thead>
-                            <tr>
-                                <th>Día</th>
-                                <th>Inicio</th>
-                                <th>Fin </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -106,17 +64,62 @@
                                     <td>{{ $schedule->dia }}</td>
                                     <td>{{ $schedule->hr_inicio }}</td>
                                     <td>{{ $schedule->hr_fin }}</td>
+                                    <td><a class="btn-flat blue-text"
+                                           onclick="
+                                                   if (confirm('¿Seguro que desea eliminar el horario del día {{
+                                                   $schedule->dia .' de '. $schedule->hr_inicio .' - '.
+                                                   $schedule->hr_fin
+                                                   }} del asesor {{$consultant->nombre . ' '. $consultant->apellido}}?')) {
+                                                   window.location.href = '{{ route('delhorario', ['id'=>$schedule,
+                                                   'consultant'=>$consultant]) }}' }
+                                                   "><span></span>Eliminar</a></td>
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
+                <div class="col s12 m6">
+                    <div class="row col s12 m9">
+                        <blockquote>
+                            <h5 class="left-align thin white-text">Nuevo horario</h5>
+                        </blockquote>
+                    </div>
+
+                    <div class="input-field col s12 m12 white-text">
+                        <select name="dia" id="dia" onchange="MostrarOcultos()">
+                            <option disabled selected>Días hábiles</option>
+                            <option value="1">Lunes</option>
+                            <option value="2">Martes</option>
+                            <option value="3">Miércoles</option>
+                            <option value="4">Jueves</option>
+                            <option value="5">Viérnes</option>
+                        </select>
+                        <label class="white-text" for="dia">Seleccione un día</label>
+                    </div>
+
+                    <div class="input-field col s12 m6 oculto">
+                        <input class="white-text timepicker" type="time" id="hr_inicio" name="hr_inicio"
+                               value="">
+                        <label class="white-text active" for="hr_inicio">Hora de inicio</label>
+                    </div>
+                    <div class="input-field col s12 m6 oculto">
+                        <input class="white-text timepicker" type="time" id="hr_fin" name="hr_fin" value="">
+                        <label class="white-text active" for="hr_fin">Hora de fin</label>
+                    </div>
+                        @if(session()->has('message'))
+                            <div class="red darken-1 white-text col s12 m12" style="border-radius: 25px">
+                                {{ session()->get('message') }}
+                            </div>
+                        @endif
+                    <button type="submit" name="guardar" id="guardar" class=" black-text light-blue accent-1
+                    btn boton oculto">Guardar</button>
+                </div>
+
             </div>
         </div>
     </form>
     <script>
-
         function cargaTabla(page) {
             $.ajax({
                 url:'?page='+page
@@ -124,5 +127,8 @@
                 $('.posts').html(data);
             })
         }
+    </script>
+    <script>
+
     </script>
 @endsection

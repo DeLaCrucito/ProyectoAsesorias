@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Sat, 30 Jun 2018 17:19:29 +0000.
+ * Date: Thu, 05 Jul 2018 00:46:41 +0000.
  */
 
 namespace App\Models;
@@ -15,6 +15,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $id
  * @property int $asesor
  * @property int $materia
+ * @property int $code
  * 
  * @property \App\Models\Consultant $consultant
  * @property \App\Models\Subject $subject
@@ -32,7 +33,8 @@ class Assignment extends Eloquent
 
 	protected $fillable = [
 		'asesor',
-		'materia'
+		'materia',
+		'code'
 	];
 
 	public function consultant()

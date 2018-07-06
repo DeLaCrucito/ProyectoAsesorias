@@ -48,7 +48,7 @@ class StudentController extends Controller
     public function create(Request $request){
 
         $this->validate($request, [
-            'matri' => 'required',
+            'matri' => 'required|unique:students,matricula',
             'nombre' => 'required',
             'apellido' => 'required',
             'email' => 'required|email',

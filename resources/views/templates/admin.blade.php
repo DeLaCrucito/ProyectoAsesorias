@@ -36,7 +36,11 @@
             <a  href="{{route('viewaprovechamiento')}}" class="white-text left-align"><i class="material-icons">thumb_up</i>Criterios de Evaluación</a>
         </li>
         <li>
-            <a href="{{ route('adminlogout') }}" class="white-text left-align"><i class="material-icons">exit_to_app</i>Cerrar
+            <a onclick="
+                    if (confirm('¿Desea cerrar sesión?')) {
+                    window.location.href = '{{ route('adminlogout') }}' }
+                    " class="white-text btn-flat left-align"><span></span><i
+                        class="material-icons">exit_to_app</i>Cerrar
                 Sesión</a>
         </li>
     </ul>

@@ -27,8 +27,12 @@
             <a  href="{{route('viewhistory')}}" class="white-text left-align"><i class="material-icons">storage</i>Historial de Solicitud</a>
         </li>
         <li>
-            <a href="{{ route('alumnologout') }}" class="white-text left-align"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a>
-        </li>
+            <a onclick="
+                    if (confirm('¿Desea cerrar sesión?')) {
+                    window.location.href = '{{ route('alumnologout') }}' }
+                    " class="white-text btn-flat left-align"><span></span><i
+                        class="material-icons">exit_to_app</i>Cerrar
+                Sesión</a>        </li>
     </ul>
 @endsection
 
