@@ -23,6 +23,8 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $tipo
  * @property string $apoyo
  * @property string $tema
+ * @property string $folio
+ * @property string $periodo
  * 
  * @property \App\Models\Student $student
  * @property \App\Models\Consultant $consultant
@@ -59,7 +61,9 @@ class Request extends Eloquent
 		'estado',
 		'tipo',
 		'apoyo',
-		'tema'
+		'tema',
+        'folio',
+        'periodo'
 	];
 
 	public function student()
@@ -86,4 +90,8 @@ class Request extends Eloquent
 	{
 		return $this->hasMany(\App\Models\Evaluation::class, 'solicitud');
 	}
+
+    public function getHorarioAttribute($value) {
+        return ucfirst($value);
+    }
 }

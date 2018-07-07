@@ -36,14 +36,23 @@
             <a  href="{{route('viewaprovechamiento')}}" class="white-text left-align"><i class="material-icons">thumb_up</i>Criterios de Evaluación</a>
         </li>
         <li>
-            <a onclick="
-                    if (confirm('¿Desea cerrar sesión?')) {
-                    window.location.href = '{{ route('adminlogout') }}' }
-                    " class="white-text btn-flat left-align"><span></span><i
+            <a href="#signout" class="white-text btn-flat left-align  modal-trigger"><span></span><i
                         class="material-icons">exit_to_app</i>Cerrar
                 Sesión</a>
         </li>
     </ul>
+    <div id="signout" class="modal">
+        <div class="modal-content">
+            <h5>Cerrar sesión</h5>
+            <p>¿Desea finalizar esta sesión?</p>
+        </div>
+        <div class="modal-footer">
+            <a id="" onclick="$('#signout').modal('close');" class="modal-action modal-close waves-effect
+                                            waves-red btn-flat">Cancelar</a>
+            <a id="" onclick="window.location.href = '{{ route('adminlogout') }}'" class="modal-action modal-close waves-effect
+                                            waves-green btn-flat">Aceptar</a>
+        </div>
+    </div>
 @endsection
 
 @section('footer')

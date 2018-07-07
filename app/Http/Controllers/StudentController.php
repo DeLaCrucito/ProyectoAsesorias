@@ -2,29 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assignment;
+use App\Models\Schedule;
 use App\Models\Student;
 use App\Models\Degree;
 use App\Models\Faculty;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
-    public function nuevaSolicitud(){
-        return view('alumno.confirmacion');
-    }
-
-    public function showlogin(){
-        return view('log-in');
-    }
-
-    public function login(){
-        return view('alumno.home');
-    }
-
-    public function confirmaSolicitud(){
-        return view('alumno.exito');
-    }
 
     public function nuevo()
     {
@@ -180,4 +168,61 @@ class StudentController extends Controller
         return redirect()->route('viewalumno');
     }
 
+    function addSolicitud(){
+        $alumno  =  Auth::id();
+        $student = Student::findOrFail($alumno);
+        return view('alumno.newsolicitud',compact('student'));
+    }
+
+    function showunidades(Request $request){
+        if ($request->ajax()){
+            $licenciatura =  Auth::user()->licenciatura;
+            $semestre = $request->semestre;
+            $subjects = Subject::where('licenciatura','=',$licenciatura)->where('semestre','=', $semestre)->get();
+            $vista = view('alumno.ajax.selectunidades', compact('subjects'))->render();
+        }
+        return response()->json(array('success' => true, 'html'=>$vista));
+    }
+
+    function showasesores(Request $request){
+        if ($request->ajax()){
+            $materia = $request->materia;
+            $assignments = Assignment::where('materia','=',$materia)->get();
+            $vista = view('alumno.ajax.selectasesor', compact('assignments'))->render();
+        }
+        return response()->json(array('success' => true, 'html'=>$vista));
+    }
+
+    function showHoras(Request $request){
+        if ($request->ajax()){
+            $fecha = $request->fecha;
+            $asesor = $request->asesor;
+            $dia =  date('w', strtotime( $fecha));
+            $schedules = Schedule::where('asesor','=',$asesor)->where('dia','=',$dia)->get();
+            $horas = \App\Models\Request::all(['horario'])->where('asesor','=',$asesor);
+            $validas = array();
+            foreach ($schedules as $schedule) {
+                $start = strtotime($schedule->hr_inicio);
+                $end = strtotime($schedule->hr_fin);
+                while ($start < $end) {
+                    $bandera = true;
+                    foreach ($horas as $hora){
+                        if ($start === strtotime($hora)){
+                            $bandera = false;
+                            break;
+                        }
+                    }if ($bandera == 1){
+                        $start = strtotime('+30 minutes', $start);
+                        $validas[] = $start;
+                    }
+                }
+            }
+            $vista = view('alumno.ajax.selecthoras', compact('validas'))->render();
+        }
+        return response()->json(array('success' => true, 'html'=>$vista));
+    }
+
+    function showHistorial(){
+        return view('alumno.historial');
+    }
 }

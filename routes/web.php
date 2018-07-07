@@ -48,18 +48,27 @@ Route::post('/newalumno.','StudentController@create')->name('newalumno');
 //Alumnos
 Route::group(['prefix' => 'alumno', 'middleware' => 'auth:alumnos'],function (){
     Route::get('/profile','StudentController@showDatos')->name('profile');
+    Route::post('/profile','StudentController@showDatos')->name('profile');
 
-    Route::get('/nueva',function (){
-        return view('alumno.newsolicitud');
-    })->name('nuevasolicitud');
+    Route::get('/nueva','StudentController@addSolicitud')->name('nuevasolicitud');
+    Route::post('/nueva','StudentController@addSolicitud')->name('nuevasolicitud');
 
-    Route::get('/historial',function (){
-        return view('alumno.historial');
-    })->name('viewhistory');
+    Route::get('/unidades','StudentController@showunidades')->name('aluselectunidad');
+    Route::post('/unidades','StudentController@showunidades')->name('aluselectunidad');
 
-    Route::post('/ready','StudentController@nuevaSolicitud');
+    Route::get('/asesores','StudentController@showasesores')->name('aluselectasesor');
+    Route::post('/asesores','StudentController@showasesores')->name('aluselectasesor');
 
-    Route::post('/confirm','StudentController@confirmaSolicitud');
+    Route::get('/historial','StudentController@showHistorial')->name('viewhistory');
+    Route::post('/historial','StudentController@showHistorial')->name('viewhistory');
+
+    Route::get('/horas','StudentController@showHoras')->name('showhorario');
+    Route::post('/horas','StudentController@showHoras')->name('showhorario');
+
+    Route::post('/ready','RequestController@nuevaSolicitud')->name('confirmarsoli');
+
+    Route::get('/confirm','RequestController@confirmaSolicitud')->name('generasolicitud');
+    Route::post('/confirm','RequestController@confirmaSolicitud')->name('generasolicitud');
 });
 
 //Administrador

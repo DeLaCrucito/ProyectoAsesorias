@@ -21,6 +21,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $correo
  * @property string $password
  * @property bool $is_asesor
+ * @property string $lugar
  * 
  * @property \Illuminate\Database\Eloquent\Collection $assignments
  * @property \Illuminate\Database\Eloquent\Collection $requests
@@ -49,7 +50,8 @@ class Consultant extends Eloquent implements Authenticatable
 		'especialidad',
 		'correo',
 		'password',
-		'is_asesor'
+		'is_asesor',
+        'lugar'
 	];
 
 	public function assignments()

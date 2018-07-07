@@ -40,7 +40,8 @@ class ConsultantController extends Controller
             'nivel_estudio' => 'required',
             'especialidad' => 'required',
             'correo' => 'required|email',
-            'password' => 'required|confirmed|min:8'
+            'password' => 'required|confirmed|min:8',
+            'lugar' => 'required'
         ],[
             'nombre.required' => 'Es necesario ingresar un nombre',
             'apellido.required' => 'Es necesario ingresar un apellido',
@@ -50,7 +51,8 @@ class ConsultantController extends Controller
             'correo.email' => 'Debe introducir un correo electrónico válido',
             'password.required' => 'Es necesario una contraseña',
             'password.confirmed' => 'Las contraseñas no coinciden',
-            'password.min' => 'La contraseña tiene que tener almenos 8 caracteres'
+            'password.min' => 'La contraseña tiene que tener almenos 8 caracteres',
+            'lugar.required' => 'El campo lugar de asesorías es obligatorio'
         ]);
 
         $Consultant = new Consultant();
@@ -60,6 +62,7 @@ class ConsultantController extends Controller
         $Consultant->especialidad = $request->especialidad;
         $Consultant->correo = $request->correo;
         $Consultant->password = $request->password;
+        $Consultant->lugar = $request->lugar;
         $Consultant->save();
 
         return view('administrador.usuarios.asesor.ajax.exito');
@@ -91,7 +94,8 @@ class ConsultantController extends Controller
             'nivel_estudio' => 'required',
             'especialidad' => 'required',
             'correo' => 'required|email',
-            'password' => 'required|confirmed|min:8'
+            'password' => 'required|confirmed|min:8',
+            'lugar' => 'required'
         ],[
             'nombre.required' => 'Es necesario ingresar un nombre',
             'apellido.required' => 'Es necesario ingresar un apellido',
@@ -101,7 +105,8 @@ class ConsultantController extends Controller
             'correo.email' => 'Debe introducir un correo electrónico válido',
             'password.required' => 'Es necesario una contraseña',
             'password.confirmed' => 'Las contraseñas no coinciden',
-            'password.min' => 'La contraseña tiene que tener almenos 8 caracteres'
+            'password.min' => 'La contraseña tiene que tener almenos 8 caracteres',
+            'lugar.required' => 'El campo lugar de asesorías es obligatorio'
         ]);
 
         $Consultant = Consultant::findOrFail($id);
@@ -111,6 +116,7 @@ class ConsultantController extends Controller
         $Consultant -> especialidad = $request -> especialidad;
         $Consultant -> correo = $request -> correo;
         $Consultant -> password = bcrypt($request->password);
+        $Consultant -> lugar = $request -> lugar;
 
         $Consultant -> save();
 
@@ -162,7 +168,7 @@ class ConsultantController extends Controller
 
     public function asignamateria(Request $request, Consultant $consultant){
         $licenciatura = Auth::user()->licenciatura;
-        $subjects = Subject::where('licenciatura','=',$licenciatura)->paginate(5);
+        $subjects = Subject::where('licenciatura','=',$licenciatura)->get();
         $degree = Degree::findOrFail($licenciatura);
         $vista = view('coordinador.asignacion',compact('subjects'))
             ->with(compact('degree'))->with(compact('consultant'));

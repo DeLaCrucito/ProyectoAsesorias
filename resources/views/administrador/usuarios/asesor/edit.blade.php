@@ -39,7 +39,12 @@
                         <input class="white-text"  type="text" id="especialidad" name="especialidad" value="{{ $consultant->especialidad }}" placeholder="Introduzca la especialidad">
                         <label class="white-text"  for="especialidad">Especialidad</label>
                     </div>
-                    <div class="input-field col s12 m12 ">
+                    <div class="input-field col s12 m6 ">
+                        <input class="white-text"  type="text" id="lugar" name="lugar" value="{{ $consultant->lugar }}"
+                               placeholder="Ingrese el sitio en donde se llevarán a cabo las asesorías">
+                        <label class="white-text"  for="correo">Lugar de asesorías</label>
+                    </div>
+                    <div class="input-field col s12 m6 ">
                         <input class="white-text"  type="email" id="correo" name="correo" value="{{ $consultant->correo }}" placeholder="Ingrese correo electrónico institucional">
                         <label class="white-text"  for="correo">Correo Institucional</label>
                     </div>

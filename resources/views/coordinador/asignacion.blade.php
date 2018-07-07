@@ -40,6 +40,22 @@
                 </div>
             </div>
         </div>
+        @foreach($subjects as $subject)
+            <div id="modal{{ $subject->id }}" class="modal">
+                <div class="modal-content">
+                    <h5>Podrá remover la materia posteriormente</h5>
+                    <p>¿Desea asignar la materia {{
+                                                   $subject->nombre }} al asesor
+                        {{$consultant->nombre . ' '. $consultant->apellido}}?</p>
+                </div>
+                <div class="modal-footer">
+                    <a id="#disagree" onclick="cierraModal()" class="modal-action modal-close waves-effect
+                                            waves-red btn-flat">Cancelar</a>
+                    <a id="#agree" onclick="ejecutaAccion()" class="modal-action modal-close waves-effect
+                                            waves-green btn-flat">Aceptar</a>
+                </div>
+            </div>
+        @endforeach
     </form>
     <script>
         function mostrarTabla(val) {

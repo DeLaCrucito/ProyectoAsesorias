@@ -29,15 +29,23 @@
                                         <label class="white-text" for="Matricula">Matricula</label>
                                     </div>
                                     <div class="input-field col s12 m12">
-                                        <input class="white-text" type="text" id="licenciatura" disabled value="Licenciatura" name="licenciatura">
+                                        <input class="white-text" type="text" id="licenciatura" disabled value="{{
+                                        $student->degree->nombre
+                                        }}"
+                                               name="licenciatura">
                                         <label class="white-text" for="licenciatura">Licenciatura</label>
                                     </div>
                                     <div class="input-field col s12 m2">
-                                        <input class="white-text" type="text" id="semestre" disabled value="Semestre" name="semestre">
+                                        <input class="white-text" type="text" id="semestre" disabled value="{{
+                                        $student->semestre
+                                         }}"
+                                               name="semestre">
                                         <label class="white-text" for="semestre">Semestre</label>
                                     </div>
                                     <div class="input-field col s12 m10">
-                                        <input class="white-text" type="text" id="correo" disabled value="Correo" name="correo">
+                                        <input class="white-text" type="text" id="correo" disabled value="{{
+                                        $student->correo }}"
+                                               name="correo">
                                         <label class="white-text" for="correo">Correo</label>
                                     </div>
                                 </div>

@@ -11,14 +11,18 @@
         <tr>
             <td>{{ $subject->nombre }}</td>
             <td>{{ $subject->tipo }}</td>
-            <td><a class="btn-flat blue-text"
-                   onclick="if (confirm('¿Seguro que desea asignar' +
-                        ' esta ' +
-                        'materia?')) {
-                        window.location.href = '{{ route('asignar', ['subject'=>$subject, 'consultant'=>$consultant])
-                        }}';
-                        }"><span></span>Asignar</a></td>
+            <td><a class="btn-flat blue-text modal-trigger"
+                   href="#modal{{ $subject->id }}"><span></span>Asignar</a></td>
         </tr>
+        <script>
+            function ejecutaAccion() {
+                window.location.href = '{{ route('asignar', ['subject'=>$subject, 'consultant'=>$consultant]) }}'
+            }
+
+            function cierraModal() {
+                $('#modal{{ $subject->id }}').modal('close');
+            }
+        </script>
     @endforeach
     </tbody>
 </table>
