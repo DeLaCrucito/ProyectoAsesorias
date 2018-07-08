@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +32,13 @@ class StudentLoginController extends Controller
             return redirect()->intended(route('profile'));
         }
         // if unsuccessful, then redirect back to the login with the form data
-        return redirect()->back()->withInput($request->only('email', 'remember'));
+
+        if (Student::where('correo','=',$request->email)->exists()){
+            return redirect()->back()->withInput($request->only('email', 'remember'))->with('message', 'Error: La contraseña es incorrecta');
+        } else{
+            return redirect()->back()->withInput($request->only('email', 'remember'))->with('message', 'Error: No se encuentra registrado');
+        }
+
     }
 
     public function logout(Request $request) {

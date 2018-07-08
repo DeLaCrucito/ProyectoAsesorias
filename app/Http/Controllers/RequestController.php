@@ -6,6 +6,7 @@ use App\Models\Consultant;
 use App\Models\Coordinator;
 use App\Models\Student;
 use App\Models\Subject;
+use Carbon\Carbon;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -178,6 +179,8 @@ class RequestController extends Controller
         $datos['folio'] = $folio;
         $datos['fecha'] = $fecha;
         $datos['hora'] = $hora;
+
+        $newfecha = Carbon::createFromFormat('Y-m-d H:i', $fecha .' '. $hora);
         $student = (new \App\Models\Student)->where('id','=',$alumno)->first();
         $consultant = (new \App\Models\Consultant)->where('id','=',$asesor)->first();
         $subject = (new \App\Models\Subject)->where('id','=',$unidad)->first();
@@ -202,7 +205,7 @@ class RequestController extends Controller
         $Solicitud -> asesor = $asesor;
         $Solicitud -> coordinador = $coordinador;
         $Solicitud -> materia = $unidad;
-        $Solicitud -> fecha = $fecha;
+        $Solicitud -> fecha = $newfecha;
         $Solicitud -> horario = strtotime($hora);
         $Solicitud -> apoyo = $apoyo;
         $Solicitud -> tipo = $tipo;
@@ -221,7 +224,7 @@ class RequestController extends Controller
                 $Solicitud -> asesor = $asesor;
                 $Solicitud -> coordinador = $coordinador;
                 $Solicitud -> materia = $unidad;
-                $Solicitud -> fecha = $fecha;
+                $Solicitud -> fecha = $newfecha;
                 $Solicitud -> horario = strtotime($hora);
                 $Solicitud -> apoyo = $apoyo;
                 $Solicitud -> tipo = $tipo;
@@ -238,7 +241,7 @@ class RequestController extends Controller
                 $Solicitud -> asesor = $asesor;
                 $Solicitud -> coordinador = $coordinador;
                 $Solicitud -> materia = $unidad;
-                $Solicitud -> fecha = $fecha;
+                $Solicitud -> fecha = $newfecha;
                 $Solicitud -> horario = strtotime($hora);
                 $Solicitud -> apoyo = $apoyo;
                 $Solicitud -> tipo = $tipo;
@@ -254,7 +257,7 @@ class RequestController extends Controller
                 $Solicitud -> asesor = $asesor;
                 $Solicitud -> coordinador = $coordinador;
                 $Solicitud -> materia = $unidad;
-                $Solicitud -> fecha = $fecha;
+                $Solicitud -> fecha = $newfecha;
                 $Solicitud -> horario = strtotime($hora);
                 $Solicitud -> apoyo = $apoyo;
                 $Solicitud -> tipo = $tipo;

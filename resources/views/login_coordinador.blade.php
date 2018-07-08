@@ -37,16 +37,16 @@
                         {{ csrf_field() }}
                         <h5 class="white-text center-align">Coordinador</h5>
                         <div class="row ">
+                            @if(session()->has('message'))
+                                <div class="red darken-1 white-text col s12 m12 center-align" style="border-radius: 25px">
+                                    {{ session()->get('message') }}
+                                </div>
+                            @endif
                             <div class="row">
                                 <div class="input-field col s12">
                                     <i class="material-icons prefix" style="focus: white">account_circle</i>
                                     <input placeholder="" type="email"  name="email" id="email" />
                                     <label for="email">Correo institucional</label>
-                                    @if ($errors->has('email'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                    @endif
                                 </div>
                             </div>
                             <div class="row">

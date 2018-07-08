@@ -8,6 +8,7 @@ use App\Models\Student;
 use App\Models\Degree;
 use App\Models\Faculty;
 use App\Models\Subject;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -195,11 +196,11 @@ class StudentController extends Controller
 
     function showHoras(Request $request){
         if ($request->ajax()){
-            $fecha = $request->fecha;
+            $fecha = date($request->fecha);
             $asesor = $request->asesor;
             $dia =  date('w', strtotime( $fecha));
             $schedules = Schedule::where('asesor','=',$asesor)->where('dia','=',$dia)->get();
-            $horas = \App\Models\Request::where('asesor','=',$asesor)->where('fecha','=',$fecha)->get();
+            $horas = \App\Models\Request::where('asesor','=',$asesor)->get();
             $validas = array();
             foreach ($schedules as $schedule) {
                 $start = strtotime($schedule->hr_inicio);
@@ -207,9 +208,12 @@ class StudentController extends Controller
                 while ($start < $end) {
                     $bandera = true;
                     foreach ($horas as $hora){
-                        if ($start === strtotime($hora->horario)){
-                            $bandera = false;
-                            break;
+                        $fechasoli = $hora->fecha->format('Y-m-d');
+                        if ($fecha === $fechasoli){
+                            if ($start === strtotime($hora->horario)){
+                                $bandera = false;
+                                break;
+                            }
                         }
                     }if ($bandera == 1){
                         $validas[] = $start;
@@ -222,7 +226,17 @@ class StudentController extends Controller
         return response()->json(array('success' => true, 'html'=>$vista));
     }
 
-    function showHistorial(){
-        return view('alumno.historial');
+    function showHistorial(Request $request){
+        $alumno  =  Auth::id();
+        $colecion = \App\Models\Request::where('alumno','=',$alumno)->get();
+        $materias =$colecion->unique('materia');
+        $estados = $colecion->unique('estado');
+        $solicituds = \App\Models\Request::where('alumno','=',$alumno)->orderBy('fecha', 'asc')->paginate(5);
+        if ($request->ajax()){
+            $alumno  =  Auth::id();
+            $solicituds = \App\Models\Request::where('alumno','=',$alumno)->orderBy('fecha', 'asc')->paginate(5);
+            return view('alumno.ajax.tablahistorial')->with(compact('solicituds'))->render();
+        }
+        return view('alumno.historial')->with(compact('solicituds'))->with(compact('materias'))->with(compact('estados'));
     }
 }

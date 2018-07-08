@@ -7,6 +7,7 @@
 
 namespace App\Models;
 
+use Jenssegers\Date\Date;
 use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
@@ -37,6 +38,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
 class Request extends Eloquent
 {
 	public $timestamps = false;
+
 
 	protected $casts = [
 		'alumno' => 'int',
@@ -94,4 +96,10 @@ class Request extends Eloquent
     public function getHorarioAttribute($value) {
         return ucfirst($value);
     }
+
+    public function getFechaAttribute($value) {
+        return new Date($value);
+    }
+
+
 }
