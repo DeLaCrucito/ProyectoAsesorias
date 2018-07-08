@@ -199,7 +199,7 @@ class StudentController extends Controller
             $asesor = $request->asesor;
             $dia =  date('w', strtotime( $fecha));
             $schedules = Schedule::where('asesor','=',$asesor)->where('dia','=',$dia)->get();
-            $horas = \App\Models\Request::all(['horario'])->where('asesor','=',$asesor);
+            $horas = \App\Models\Request::where('asesor','=',$asesor)->where('fecha','=',$fecha)->get();
             $validas = array();
             foreach ($schedules as $schedule) {
                 $start = strtotime($schedule->hr_inicio);
@@ -207,14 +207,14 @@ class StudentController extends Controller
                 while ($start < $end) {
                     $bandera = true;
                     foreach ($horas as $hora){
-                        if ($start === strtotime($hora)){
+                        if ($start === strtotime($hora->horario)){
                             $bandera = false;
                             break;
                         }
                     }if ($bandera == 1){
-                        $start = strtotime('+30 minutes', $start);
                         $validas[] = $start;
                     }
+                    $start = strtotime('+30 minutes', $start);
                 }
             }
             $vista = view('alumno.ajax.selecthoras', compact('validas'))->render();

@@ -65,7 +65,7 @@
                             </div>
                         </div>
                         <div class="row col s12 m6" >
-                            <div class="row col s12 m6" >
+                            <div class="row col s12 m4" >
                                 <label><h6 class="white-text left-align">Tipo de Asesoría</h6></label>
                                 <p>
                                     <input class="white-text" name="tipo" type="radio" id="T1"
@@ -78,21 +78,30 @@
                                     <label class="white-text" for="T2">Grupal</label>
                                 </p>
                             </div>
-                            <div class="input-field col s12 m6">
-                                <div id="grupal" style="display: none">
-                                    <input class="white-text" type="text" id="varios" name="varios"/>
-                                    <label class="active white-text" for="varios">Matriculas</label>
-                                </div>
-                            </div>
-                            <div class="input-field col s12 m12">
-                                <input class="white-text" type="text" name="textema" id="textema" required>
+                            <div class="input-field col s12 m8">
+                                <input class="white-text " type="text" name="textema" id="textema" required>
                                 <label class="white-text" for="textema">Tema</label>
                             </div>
-
+                            <div class="input-field col s12 m12 oculto">
+                                <div id="grupal" >
+                                    <p class="white-text">Introduce las matriculas de tus compañeros, puedes
+                                        generar una solicitud con un máximo de hasta dos compañeros.</p><br>
+                                    <div class="input-field col s12 m6">
+                                        <input class="white-text" type="number" min="11111" max="99999"
+                                               placeholder="Matricula" id="compa1"
+                                               name="compa1"/>
+                                        <label class=" white-text" for="compa1">Compañero 1</label>
+                                    </div>
+                                    <div class="input-field col s12 m6">
+                                        <input class="white-text" placeholder="Matricula"
+                                               type="number" min="11111" max="99999" id="compa2"
+                                               name="compa2"/>
+                                        <label class=" white-text" for="compa2">Compañero 2</label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
                     </div>
-
                     <div class="row col s12 m12" style="display: inline-flex">
                         <div class="row col s12 m6" >
 
@@ -100,13 +109,11 @@
                             <label><h6 class="white-text center-align">Seleccione el periodo actual</h6></label>
                             <div class="row center-align" style="display: inline-block">
                                 <p>
-                                    <input class="white-text" name="periodo" type="radio" id="P1" value="Primer
-                                    Parcial"/>
+                                    <input class="white-text" name="periodo" type="radio" id="P1" value="Primer Parcial"/>
                                     <label class="white-text" for="P1">Primer Parcial</label>
                                 </p>
                                 <p>
-                                    <input class="white-text" name="periodo" type="radio" id="P2" value="Segundo
-                                    Parcial"/>
+                                    <input class="white-text" name="periodo" type="radio" id="P2" value="Segundo Parcial"/>
                                     <label class="white-text" for="P2">Segundo Parcial</label>
                                 </p>
                                 <p>
@@ -159,17 +166,15 @@
                 </div>
             </div>
     </form>
-
     <script>
         function ValidarTipo(tipo) {
             var valor = tipo.getAttribute('value');
-            var divoculto = document.getElementById('grupal');
+            var divoculto = document.getElementsByClassName("oculto");;
             if (valor == 'Grupal') {
-                divoculto.style.display = 'block';
-
+                MostrarOcultos();
             }
             if (valor == 'Individual') {
-                divoculto.style.display = 'none';
+                $(divoculto).css('display','none');
             }
         }
 
@@ -241,6 +246,4 @@
             });
         }
     </script>
-
-
 @endsection

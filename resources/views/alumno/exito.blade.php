@@ -12,7 +12,7 @@
                                     <div class="row col s12 m9">
                                         <blockquote>
                                             <h4 class="left-align thin white-text">Asesoría programada.</h4>
-                                            <h5 class="left-align thin white-text">Folio:</h5>
+                                            <h5 class="left-align thin white-text">Folio: {{ $datos['folio'] }}</h5>
                                         </blockquote>
                                     </div>
                                 </div>
@@ -20,7 +20,9 @@
                                     <div class="row col s12 m6">
                                         <div class="row col s12 m12">
                                             <div class="input-field col s12 m12">
-                                                <input type="text" disabled name="Nombre" id="Nombre" value="Nombre Completo" class="white-text"/>
+                                                <input type="text" disabled name="Nombre" id="Nombre"
+                                                       value="{{ $student->nombre .' '. $student->apellido }}"
+                                                       class="white-text"/>
                                                 <label class="white-text" for="Nombre">Alumno</label>
                                             </div>
                                         </div>
@@ -28,7 +30,9 @@
                                     <div class="row col s12 m6 ">
                                         <div class="row col s12 m12">
                                             <div class="input-field col s12 m12">
-                                                <input class="white-text" type="text" id="unidad_aprendizaje" disabled value="Unidad de Aprendizaje" name="unidad_aprendizaje">
+                                                <input class="white-text" type="text" id="unidad_aprendizaje"
+                                                       disabled  value="{{ $subject->nombre }}"
+                                                       name="unidad_aprendizaje">
                                                 <label class="white-text" for="unidad_aprendizaje">Unidad de aprendizaje</label>
                                             </div>
 
@@ -37,11 +41,14 @@
                                     <div class="row col s12 m6">
                                         <div class="row col s12 m12">
                                             <div class="input-field col s12 12">
-                                                <input class="white-text" type="text" id="Asesor" disabled value="Asesor" name="Asesor">
+                                                <input class="white-text" type="text" id="Asesor" disabled
+                                                       value="{{ $consultant->nombre .' '. $consultant->apellido }}"
+                                                       name="Asesor">
                                                 <label class="white-text" for="Asesor">Asesor</label>
                                             </div>
                                             <div class="input-field col s12 m12">
-                                                <input class="white-text" type="text" id="Lugar" disabled value="Lugar" name="Lugar">
+                                                <input class="white-text" type="text" id="Lugar" disabled
+                                                       value="{{ $consultant->lugar }}" name="Lugar">
                                                 <label class="white-text" for="Lugar">Lugar de asesoría</label>
                                             </div>
                                         </div>
@@ -50,11 +57,14 @@
                                         <div class="row col s12 m12">
 
                                             <div class="input-field col s12 m8">
-                                                <input class="white-text" type="text" id="fecha" disabled value="fecha" name="fecha">
+                                                <input class="white-text" type="text" id="fecha" disabled
+                                                       value="{{ $datos['fecha'] }}"
+                                                       name="fecha">
                                                 <label class="white-text" for="fecha">Fecha de asesoría</label>
                                             </div>
                                             <div class="input-field col s12 m4">
-                                                <input class="white-text" type="text" id="hora" disabled value="hora" name="hora">
+                                                <input class="white-text" type="text" id="hora" disabled
+                                                       value="{{ $datos['hora'] }}" name="hora">
                                                 <label class="white-text" for="hora">Hora</label>
                                             </div>
                                         </div>
@@ -67,7 +77,9 @@
                                     <p></p>
                                     <button type="submit" name="historial" id="historial" class="black-text light-blue accent-1 btn boton">Ver historial</button>
                                     <p></p>
-                                    <a name="cierras" id="cierras" class="white-text red darken-1 btn boton">Cerrar sesión</a>
+                                    <a name="cierras" id="cierras" href="#signout" class="white-text red darken-1 btn
+                                     boton modal-trigger">Cerrar
+                                        sesión</a>
                                 </div>
                             </div>
                         </div>

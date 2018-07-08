@@ -1,15 +1,7 @@
 @extends('alumno.base')
 @section('elementos')
-    <form class="col s12" method="post" action="{{ route('generasolicitud', ([
-    'fecha'=> encrypt($datos['fecha']),
-    'hora'=> encrypt($datos['hora']),
-    'tipo' => encrypt($datos['tipo']),
-    'tema'=> encrypt($datos['tema']),
-    'periodo'=> encrypt($datos['periodo']),
-    'apoyo' => encrypt($datos['apoyo']),
-    'asesor'=> encrypt($consultant->id),
-    'unidad' => encrypt($subject->id)
-     ])) }}">
+
+    <form class="col s12" method="post" action="{{route('generasolicitud', $data) }}">
         {{ csrf_field() }}
             <div class="row">
                 <div class="col s12 m12">
@@ -111,16 +103,38 @@
                     <div class="row col s12 m12">
                         <div class="row col s12 m12" style="display: inline-flex">
                             <div class="row col s12 m6" >
-                                <div class="input-field">
+                                <div class="input-field col s12 m12">
                                     <input class="white-text" type="text" id="apoyo" name="apoyo"
                                            disabled value="{{ $datos['apoyo'] }}">
                                     <label class="white-text" for="apoyo">Apoyo en la solicitud</label>
                                 </div>
                                 @if($datos['tipo'] != 'Individual')
-                                <div class="input-field">
-                                    <input class="white-text" type="text" id="otros" name="otros" disabled value="matriculas">
-                                    <label class="white-text" for="otros">Compañeros</label>
-                                </div>
+                                    <h5 class="white-text thin">Compañeros</h5>
+                                    <div class="input-field col s12 m9">
+                                        <input type="text" disabled name="Nombre" id="Nombre" value="{{
+                                    $companero1->nombre . ' ' . $companero1->apellido
+                                    }}"
+                                               class="white-text"/>
+                                        <label class="white-text" for="Nombre">Nombre</label>
+                                    </div>
+                                    <div class="input-field col s12 m3">
+                                        <input class="white-text" type="text" id="Matricula" disabled
+                                               value="{{ $companero1->matricula }}" name="Matricula">
+                                        <label class="white-text" for="Matricula">Matricula</label>
+                                    </div>
+                                    @if($datos['compas'] != 1 )
+                                        <div class="input-field col s12 m9">
+                                            <input type="text" disabled name="Nombre" id="Nombre" value="{{
+                                                $companero2->nombre . ' ' . $companero2->apellido  }}"
+                                                   class="white-text"/>
+                                            <label class="white-text" for="Nombre">Nombre</label>
+                                        </div>
+                                        <div class="input-field col s12 m3">
+                                            <input class="white-text" type="text" id="Matricula" disabled
+                                                   value="{{ $companero2->matricula }}" name="Matricula">
+                                            <label class="white-text" for="Matricula">Matricula</label>
+                                        </div>
+                                    @endif
                                 @endif
                             </div>
 

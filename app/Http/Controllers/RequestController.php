@@ -49,9 +49,6 @@ class RequestController extends Controller
         $periodo = $request->periodo;
         $apoyo = $request->apoyo;
 
-        $subject = Subject::findOrFail($unidad);
-        $consultant = Consultant::findOrFail($asesor);
-
         $datos = [];
         $datos['fecha'] = $fecha;
         $datos['hora'] = $hora;
@@ -60,16 +57,108 @@ class RequestController extends Controller
         $datos['periodo'] = $periodo;
         $datos['apoyo'] = $apoyo;
 
+        $subject = Subject::findOrFail($unidad);
+        $consultant = Consultant::findOrFail($asesor);
+
+        if ($tipo != 'Individual'){
+            $this->validate($request, [
+                'compa1' => 'required|exists:students,matricula'
+            ],[
+                'compa1.required' => 'Debe introducir la matricula de sus compañeros',
+                'compa1.exists' => 'El compañero 1 no se encuentra registrado en el sistema. Para continuar es necesario crear una cuenta.'
+            ]);
+            $compa1 = $request->compa1;
+            $compa2 = $request->compa2;
+
+            $companero1 = Student::where('matricula','=',$compa1)->first();
+            $compa1id = $companero1->id;
+            $datos['compa1'] = $compa1id;
+            $datos['compas'] = 1;
+
+            $data = ([
+                'fecha'=> encrypt($datos['fecha']),
+                'hora'=> encrypt($datos['hora']),
+                'tipo' => encrypt($datos['tipo']),
+                'tema'=> encrypt($datos['tema']),
+                'periodo'=> encrypt($datos['periodo']),
+                'apoyo' => encrypt($datos['apoyo']),
+                'asesor'=> encrypt($consultant->id),
+                'unidad' => encrypt($subject->id),
+                'compa1' => encrypt($datos['compa1']),
+                'compas' => encrypt($datos['compas'])
+            ]);
+
+
+            if (isset($compa2)){
+                $this->validate($request, [
+                    'compa2' => 'required|exists:students,matricula',
+                ],[
+                    'compa2.exists' => 'El compañero 2 no se encuentra registrado en el sistema. Para continuar es necesario crear una cuenta.'
+                ]);
+                $compa2 = $request->compa2;
+                $companero2 = Student::where('matricula','=',$compa2)->first();
+                $compa2id = $companero2->id;
+                $datos['compa2'] = $compa2id;
+                $datos['compas'] = 2;
+
+                $data = ([
+                    'fecha'=> encrypt($datos['fecha']),
+                    'hora'=> encrypt($datos['hora']),
+                    'tipo' => encrypt($datos['tipo']),
+                    'tema'=> encrypt($datos['tema']),
+                    'periodo'=> encrypt($datos['periodo']),
+                    'apoyo' => encrypt($datos['apoyo']),
+                    'asesor'=> encrypt($consultant->id),
+                    'unidad' => encrypt($subject->id),
+                    'compa1' => encrypt($datos['compa1']),
+                    'compa2' => encrypt($datos['compa2']),
+                    'compas' => encrypt($datos['compas'])
+                ]);
+
+                return view('alumno.confirmacion')
+                    ->with(compact('student'))
+                    ->with(compact('subject'))
+                    ->with(compact('consultant'))
+                    ->with(compact('datos'))
+                    ->with(compact('companero1'))
+                    ->with(compact('companero2'))
+                    ->with(compact('data'))
+                    ;
+            }
+
+
+            return view('alumno.confirmacion')
+                ->with(compact('student'))
+                ->with(compact('subject'))
+                ->with(compact('consultant'))
+                ->with(compact('datos'))
+                ->with(compact('companero1'))
+                ->with(compact('data'))
+                ;
+        }
+
+        $data = ([
+            'fecha'=> encrypt($datos['fecha']),
+            'hora'=> encrypt($datos['hora']),
+            'tipo' => encrypt($datos['tipo']),
+            'tema'=> encrypt($datos['tema']),
+            'periodo'=> encrypt($datos['periodo']),
+            'apoyo' => encrypt($datos['apoyo']),
+            'asesor'=> encrypt($consultant->id),
+            'unidad' => encrypt($subject->id)
+        ]);
+
         return view('alumno.confirmacion')
             ->with(compact('student'))
             ->with(compact('subject'))
             ->with(compact('consultant'))
-            ->with(compact('datos'));
+            ->with(compact('datos'))
+            ->with(compact('data'));
     }
 
     public function confirmaSolicitud(Request $request){
         $licenciatura = Auth::user()->licenciatura;
-        $coordinator = Coordinator::where('licenciatura','=',$licenciatura)->first();
+        $coordinator = (new \App\Models\Coordinator)->where('licenciatura','=',$licenciatura)->first();
         $alumno  =  Auth::id();
         $asesor = decrypt($request->asesor);
         $coordinador = $coordinator->id;
@@ -85,7 +174,15 @@ class RequestController extends Controller
         $foliofecha = str_replace('-', '', $fecha);
         $folio = $alumno .'-'.$asesor.'-'.$coordinador.'-'.$unidad.'-'.$foliofecha.'-'.$foliohora;
 
-        $solicituds = \App\Models\Request::where('asesor','=',$asesor)->get();
+        $datos = [];
+        $datos['folio'] = $folio;
+        $datos['fecha'] = $fecha;
+        $datos['hora'] = $hora;
+        $student = (new \App\Models\Student)->where('id','=',$alumno)->first();
+        $consultant = (new \App\Models\Consultant)->where('id','=',$asesor)->first();
+        $subject = (new \App\Models\Subject)->where('id','=',$unidad)->first();
+
+        $solicituds = (new \App\Models\Request)->where('asesor','=',$asesor)->get();
 
         foreach ($solicituds as $solicitud){
             $fechasoli = str_replace('-', '', $solicitud->fecha);
@@ -95,7 +192,7 @@ class RequestController extends Controller
             }
         }
 
-        if (\App\Models\Request::where('folio','=',$folio)->exists()){
+        if ((new \App\Models\Request)->where('folio','=',$folio)->exists()){
             return redirect()->route('nuevasolicitud')->with('message', 'Error: La solicitud no pudo ser procesada con este asesor,
             fecha y horario');
         }
@@ -114,6 +211,66 @@ class RequestController extends Controller
         $Solicitud -> folio = $folio;
         $Solicitud -> save();
 
-        return view('alumno.prueba')->with(compact('fecha'))->with(compact('hora'))->with(compact('folio'));
+        if ($tipo != 'Individual'){
+            $compas = decrypt($request->compas);
+            if ($compas == 1){
+                $alumno = decrypt($request->compa1);
+                $folio = $alumno .'-'.$asesor.'-'.$coordinador.'-'.$unidad.'-'.$foliofecha.'-'.$foliohora;
+                $Solicitud = new \App\Models\Request();
+                $Solicitud -> alumno = $alumno;
+                $Solicitud -> asesor = $asesor;
+                $Solicitud -> coordinador = $coordinador;
+                $Solicitud -> materia = $unidad;
+                $Solicitud -> fecha = $fecha;
+                $Solicitud -> horario = strtotime($hora);
+                $Solicitud -> apoyo = $apoyo;
+                $Solicitud -> tipo = $tipo;
+                $Solicitud -> tema = $tema;
+                $Solicitud -> periodo = $periodo;
+                $Solicitud -> folio = $folio;
+                $Solicitud -> save();
+            }
+            if ($compas != 1){
+                $alumno = decrypt($request->compa1);
+                $folio = $alumno .'-'.$asesor.'-'.$coordinador.'-'.$unidad.'-'.$foliofecha.'-'.$foliohora;
+                $Solicitud = new \App\Models\Request();
+                $Solicitud -> alumno = $alumno;
+                $Solicitud -> asesor = $asesor;
+                $Solicitud -> coordinador = $coordinador;
+                $Solicitud -> materia = $unidad;
+                $Solicitud -> fecha = $fecha;
+                $Solicitud -> horario = strtotime($hora);
+                $Solicitud -> apoyo = $apoyo;
+                $Solicitud -> tipo = $tipo;
+                $Solicitud -> tema = $tema;
+                $Solicitud -> periodo = $periodo;
+                $Solicitud -> folio = $folio;
+                $Solicitud -> save();
+
+                $alumno = decrypt($request->compa2);
+                $folio = $alumno .'-'.$asesor.'-'.$coordinador.'-'.$unidad.'-'.$foliofecha.'-'.$foliohora;
+                $Solicitud = new \App\Models\Request();
+                $Solicitud -> alumno = $alumno;
+                $Solicitud -> asesor = $asesor;
+                $Solicitud -> coordinador = $coordinador;
+                $Solicitud -> materia = $unidad;
+                $Solicitud -> fecha = $fecha;
+                $Solicitud -> horario = strtotime($hora);
+                $Solicitud -> apoyo = $apoyo;
+                $Solicitud -> tipo = $tipo;
+                $Solicitud -> tema = $tema;
+                $Solicitud -> periodo = $periodo;
+                $Solicitud -> folio = $folio;
+                $Solicitud -> save();
+            }
+        }
+
+
+        return view('alumno.exito')
+            ->with(compact('student'))
+            ->with(compact('consultant'))
+            ->with(compact('subject'))
+            ->with(compact('datos'));
+        //return view('alumno.prueba')->with(compact('fecha'))->with(compact('hora'))->with(compact('datos'));
     }
 }
