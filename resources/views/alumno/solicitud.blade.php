@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 @extends('alumno.base')
 @section('elementos')
     <form class="col s12" method="post" >
@@ -59,8 +58,7 @@
                         <div class="row col s12 m12">
                             <div class="input-field col s12 12">
                                 <input class="white-text" type="text" id="Asesor" disabled
-                                       value="{{ $solicitud->consultant->nombre .' '. $solicitud->consultant->apellido
-                                        }}"
+                                       value="{{ $solicitud->consultant->nombre .' '. $solicitud->consultant->apellido}}"
                                        name="Asesor">
                                 <label class="white-text" for="Asesor">Asesor</label>
                             </div>
