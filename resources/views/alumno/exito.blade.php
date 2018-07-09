@@ -1,5 +1,6 @@
 @extends('templates.alumno')
 @section('main')
+
     <div class="section">
         <div class="row" style="background-color: transparent" id="SolicitudAdd">
             <form class="col s12" method="post" >
@@ -81,7 +82,12 @@
                                     <p></p>
                                     <a name="cierras" id="cierras" href="#signout" class="white-text red darken-1 btn
                                      boton modal-trigger">Cerrar
-                                        sesión</a>
+                                        sesión</a> <br>
+                                    <a name="cierras" id="cierras"
+                                       target="_blank"
+                                       href="{{ route('pdfsolicitud',$infopdf) }}"
+                                       class="white-text red darken-1 btn
+                                     boton">Imprimir</a>
                                 </div>
                             </div>
                         </div>
