@@ -3,6 +3,7 @@
 
     <form class="col s12" method="post" action="{{route('generasolicitud', $data) }}">
         {{ csrf_field() }}
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="row">
                 <div class="col s12 m12">
                     <div class="row center ">

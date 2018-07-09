@@ -19,7 +19,6 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $coordinador
  * @property int $materia
  * @property \Carbon\Carbon $fecha
- * @property \Carbon\Carbon $horario
  * @property int $estado
  * @property string $tipo
  * @property string $apoyo
@@ -59,7 +58,6 @@ class Request extends Eloquent
 		'coordinador',
 		'materia',
 		'fecha',
-		'horario',
 		'estado',
 		'tipo',
 		'apoyo',
@@ -97,10 +95,6 @@ class Request extends Eloquent
 	{
 		return $this->hasMany(\App\Models\Evaluation::class, 'solicitud');
 	}
-
-    public function getHorarioAttribute($value) {
-        return ucfirst($value);
-    }
 
     public function getFechaAttribute($value) {
         return new Date($value);

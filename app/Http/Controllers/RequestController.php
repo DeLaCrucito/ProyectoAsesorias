@@ -188,9 +188,8 @@ class RequestController extends Controller
         $solicituds = (new \App\Models\Request)->where('asesor','=',$asesor)->get();
 
         foreach ($solicituds as $solicitud){
-            $fechasoli = str_replace('-', '', $solicitud->fecha);
-            $horasoli = str_replace(':', '', $solicitud->horario);
-            if ($fechasoli === $foliofecha && $horasoli === $foliohora){
+            $fechasoli = $solicitud->fecha;
+            if ($fechasoli === $newfecha){
                 return redirect()->route('nuevasolicitud')->with('message', 'Error: El asesor ya tiene una solicitud agendada con esta fecha y hora');
             }
         }
@@ -206,7 +205,6 @@ class RequestController extends Controller
         $Solicitud -> coordinador = $coordinador;
         $Solicitud -> materia = $unidad;
         $Solicitud -> fecha = $newfecha;
-        $Solicitud -> horario = strtotime($hora);
         $Solicitud -> apoyo = $apoyo;
         $Solicitud -> tipo = $tipo;
         $Solicitud -> tema = $tema;
@@ -225,7 +223,6 @@ class RequestController extends Controller
                 $Solicitud -> coordinador = $coordinador;
                 $Solicitud -> materia = $unidad;
                 $Solicitud -> fecha = $newfecha;
-                $Solicitud -> horario = strtotime($hora);
                 $Solicitud -> apoyo = $apoyo;
                 $Solicitud -> tipo = $tipo;
                 $Solicitud -> tema = $tema;
@@ -242,7 +239,6 @@ class RequestController extends Controller
                 $Solicitud -> coordinador = $coordinador;
                 $Solicitud -> materia = $unidad;
                 $Solicitud -> fecha = $newfecha;
-                $Solicitud -> horario = strtotime($hora);
                 $Solicitud -> apoyo = $apoyo;
                 $Solicitud -> tipo = $tipo;
                 $Solicitud -> tema = $tema;
@@ -258,7 +254,6 @@ class RequestController extends Controller
                 $Solicitud -> coordinador = $coordinador;
                 $Solicitud -> materia = $unidad;
                 $Solicitud -> fecha = $newfecha;
-                $Solicitud -> horario = strtotime($hora);
                 $Solicitud -> apoyo = $apoyo;
                 $Solicitud -> tipo = $tipo;
                 $Solicitud -> tema = $tema;

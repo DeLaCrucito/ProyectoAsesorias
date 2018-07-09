@@ -210,7 +210,7 @@ class StudentController extends Controller
                     foreach ($horas as $hora){
                         $fechasoli = $hora->fecha->format('Y-m-d');
                         if ($fecha === $fechasoli){
-                            if ($start === strtotime($hora->horario)){
+                            if ($start === strtotime($hora->fecha->format('H:i'))){
                                 $bandera = false;
                                 break;
                             }
