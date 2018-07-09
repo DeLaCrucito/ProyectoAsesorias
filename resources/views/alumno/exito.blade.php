@@ -13,7 +13,8 @@
                                     <div class="row col s12 m9">
                                         <blockquote>
                                             <h4 class="left-align thin white-text">Asesoría programada.</h4>
-                                            <h5 class="left-align thin white-text">Folio: {{ $datos['folio'] }}</h5>
+                                            <h5 class="left-align thin white-text">Folio: {{ $Nueva->folio
+                                            }}</h5>
                                         </blockquote>
                                     </div>
                                 </div>
@@ -22,7 +23,8 @@
                                         <div class="row col s12 m12">
                                             <div class="input-field col s12 m12">
                                                 <input type="text" disabled name="Nombre" id="Nombre"
-                                                       value="{{ $student->nombre .' '. $student->apellido }}"
+                                                       value="{{ $Nueva->student->nombre .' '.
+                                                       $Nueva->student->apellido}}"
                                                        class="white-text"/>
                                                 <label class="white-text" for="Nombre">Alumno</label>
                                             </div>
@@ -32,7 +34,7 @@
                                         <div class="row col s12 m12">
                                             <div class="input-field col s12 m12">
                                                 <input class="white-text" type="text" id="unidad_aprendizaje"
-                                                       disabled  value="{{ $subject->nombre }}"
+                                                       disabled  value="{{ $Nueva->subject->nombre }}"
                                                        name="unidad_aprendizaje">
                                                 <label class="white-text" for="unidad_aprendizaje">Unidad de aprendizaje</label>
                                             </div>
@@ -43,13 +45,13 @@
                                         <div class="row col s12 m12">
                                             <div class="input-field col s12 12">
                                                 <input class="white-text" type="text" id="Asesor" disabled
-                                                       value="{{ $consultant->nombre .' '. $consultant->apellido }}"
+                                                       value="{{ $Nueva->consultant->nombre .' '. $Nueva->consultant->apellido  }}"
                                                        name="Asesor">
                                                 <label class="white-text" for="Asesor">Asesor</label>
                                             </div>
                                             <div class="input-field col s12 m12">
                                                 <input class="white-text" type="text" id="Lugar" disabled
-                                                       value="{{ $consultant->lugar }}" name="Lugar">
+                                                       value="{{ $Nueva->consultant->lugar }}" name="Lugar">
                                                 <label class="white-text" for="Lugar">Lugar de asesoría</label>
                                             </div>
                                         </div>
@@ -59,13 +61,13 @@
 
                                             <div class="input-field col s12 m8">
                                                 <input class="white-text" type="text" id="fecha" disabled
-                                                       value="{{ $datos['fecha'] }}"
+                                                       value="{{ $Nueva->fecha->format('D, d M Y') }}"
                                                        name="fecha">
                                                 <label class="white-text" for="fecha">Fecha de asesoría</label>
                                             </div>
                                             <div class="input-field col s12 m4">
                                                 <input class="white-text" type="text" id="hora" disabled
-                                                       value="{{ $datos['hora'] }}" name="hora">
+                                                       value="{{ $Nueva->fecha->format('h:i A') }}" name="hora">
                                                 <label class="white-text" for="hora">Hora</label>
                                             </div>
                                         </div>
@@ -90,7 +92,7 @@
                                     <a target="_blank"
                                        id="autoimprime"
                                        name="autoimprime"
-                                       href="{{ route('pdfautogenerate',$infopdf) }}"
+                                       href="{{ route('pdfautogenerate', encrypt($Nueva->id)) }}"
                                        class="oculto white-text red darken-1 btn
                                      boton">Imprimir</a>
                                 </div>

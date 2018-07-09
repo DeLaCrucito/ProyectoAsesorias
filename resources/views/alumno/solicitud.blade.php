@@ -98,6 +98,10 @@
                     <a name="cierras" id="cierras" href="#signout" class="white-text red darken-1 btn
                      boton modal-trigger">Cerrar
                         sesión</a>
+                    <a target="_blank"
+                       href="{{ route('pdfsolicitud', encrypt($solicitud->id)) }}"
+                       class="white-text red darken-1 btn
+                                     boton">Imprimir</a>
                 </div>
             </div>
         </div>

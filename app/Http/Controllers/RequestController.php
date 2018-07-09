@@ -182,37 +182,11 @@ class RequestController extends Controller
         $matricula = Auth::user()->matricula;
         $nombre = Auth::user()->nombre;
 
-        $datos = [];
-        $datos['folio'] = $folio;
-        $datos['fecha'] = $fecha;
-        $datos['hora'] = $hora;
-        $datos['nombre'] = $nombre;
-        $datos['asesor'] = $asesor;
-        $datos['tema'] = $tema;
-        $datos['unidad'] = $unidad;
-        $datos['lugar'] = $lugar;
-        $datos['matricula'] = $matricula;
-
         $newfecha = Carbon::createFromFormat('Y-m-d H:i', $fecha .' '. $hora);
         $student = (new \App\Models\Student)->where('id','=',$alumno)->first();
         $consultant = (new \App\Models\Consultant)->where('id','=',$asesor)->first();
         $subject = (new \App\Models\Subject)->where('id','=',$unidad)->first();
 
-        $infopdf = ([
-            'folio' => encrypt($folio),
-            'fecha' => encrypt($fecha),
-            'hora' => encrypt($hora),
-            'nombre' => encrypt($nombre),
-            'asesor' => encrypt($asesor),
-            'tema'=> encrypt($tema),
-            'unidad' => encrypt($unidad),
-            'lugar' => encrypt($lugar),
-            'matricula' => encrypt($matricula),
-            'alumno' => encrypt($alumno),
-            'coordinador' => encrypt($coordinador),
-            'foliofecha' => encrypt($foliofecha),
-            'foliohora' => encrypt($foliohora)
-        ]);
 
         $solicituds = (new \App\Models\Request)->where('asesor','=',$asesor)->get();
 
@@ -240,6 +214,8 @@ class RequestController extends Controller
         $Solicitud -> periodo = $periodo;
         $Solicitud -> folio = $folio;
         $Solicitud -> save();
+        $identificador = $Solicitud->id;
+        $Nueva = \App\Models\Request::where('id','=',$identificador)->first();
 
         if ($tipo != 'Individual'){
             $compas = decrypt($request->compas);
@@ -296,8 +272,7 @@ class RequestController extends Controller
             ->with(compact('student'))
             ->with(compact('consultant'))
             ->with(compact('subject'))
-            ->with(compact('datos'))
-            ->with(compact('infopdf'));
+            ->with(compact('Nueva'));
         //return view('alumno.prueba')->with(compact('fecha'))->with(compact('hora'))->with(compact('datos'));
     }
 
@@ -330,80 +305,40 @@ class RequestController extends Controller
         }
     }
 
-
-
     public function autogeneratePDF(Request $request, $infopdf){
-        $asesor = decrypt($request->asesor);
-        $nombre = decrypt($request->nombre);
-        $fecha = decrypt($request->fecha);
-        $hora = decrypt($request->hora);
-        $unidad  = decrypt($request->unidad);
-        $tema = decrypt($request->tema);
-        $matricula = decrypt($request->matricula);
-        $lugar = decrypt($request->lugar);
-        $alumno = decrypt($request->alumno);
-        $coordinador = decrypt($request->coordinador);
-        $foliofecha = decrypt($request->foliofecha);
-        $foliohora = decrypt($request->foliohora);
-
-        $folio = $alumno .'-'.$asesor.'-'.$coordinador.'-'.$unidad.'-'.$foliofecha.'-'.$foliohora;
-
-        $datos = [];
-        $datos['folio'] = $folio;
-        $datos['asesor'] = $asesor;
-        $datos['nombre'] = $nombre;
-        $datos['fecha'] = $fecha;
-        $datos['hora'] = $hora;
-        $datos['unidad'] = $unidad;
-        $datos['tema'] = $tema;
-        $datos['matricula'] = $matricula;
-        $datos['lugar'] = $lugar;
+        $solicitud = (new \App\Models\Request)->where('id', '=',decrypt($infopdf))->first();
 
         $options = new Options();
         $options->setIsRemoteEnabled(true);
         $dompdf = new Dompdf($options);
-        $dompdf->loadHtml(view('alumno.pdf.solicitud', compact('datos'))->render());
+        $dompdf->loadHtml(view('alumno.pdf.solicitud', compact('solicitud'))->render());
         $dompdf->render();
         $dompdf->stream('solicitud',array('Attachment'=>0));
     }
 
-    public function generatePDF(Request $request, $datos){
-        $asesor = decrypt($request->asesor);
-        $nombre = decrypt($request->nombre);
-        $fecha = decrypt($request->fecha);
-        $hora = decrypt($request->hora);
-        $unidad  = decrypt($request->unidad);
-        $tema = decrypt($request->tema);
-        $matricula = decrypt($request->matricula);
-        $lugar = decrypt($request->lugar);
-        $alumno = decrypt($request->alumno);
-        $coordinador = decrypt($request->coordinador);
-        $foliofecha = decrypt($request->foliofecha);
-        $foliohora = decrypt($request->foliohora);
-
-        $folio = $alumno .'-'.$asesor.'-'.$coordinador.'-'.$unidad.'-'.$foliofecha.'-'.$foliohora;
-
-        $datos = [];
-        $datos['folio'] = $folio;
-        $datos['asesor'] = $asesor;
-        $datos['nombre'] = $nombre;
-        $datos['fecha'] = $fecha;
-        $datos['hora'] = $hora;
-        $datos['unidad'] = $unidad;
-        $datos['tema'] = $tema;
-        $datos['matricula'] = $matricula;
-        $datos['lugar'] = $lugar;
-
-        $options = new Options();
-        $options->setIsRemoteEnabled(true);
-        $dompdf = new Dompdf($options);
-        $dompdf->loadHtml(view('alumno.pdf.solicitud', compact('datos'))->render());
-        $dompdf->render();
-        $dompdf->stream('solicitud',array('Attachment'=>0));
-    }
     public function detalles(Request $request){
         $id = decrypt($request->id);
         $solicitud = (new \App\Models\Request)->where('id','=',$id)->first();
         return view('alumno.solicitud')->with(compact('solicitud'));
+    }
+
+    public function generatePDF(Request $request, $id){
+        $solicitud = (new \App\Models\Request)->where('id', '=',decrypt($id))->first();
+        $nombre = $solicitud->student->nombre;
+        $asesor = $solicitud->consultant->nombre;
+        $folio = $solicitud->folio;
+        $fecha = $solicitud->fecha->format('D, d M Y');
+        $hora = $solicitud->fecha->format('h:i A');
+        $unidad = $solicitud->subject->nombre;
+        $tema = $solicitud->tema;
+        $matricula = $solicitud->student->matricula;
+        $lugar = $solicitud->consultant->lugar;
+
+        $options = new Options();
+        $options->setIsRemoteEnabled(true);
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml(view('alumno.pdf.solicitud', compact('solicitud'))->render());
+        $dompdf->render();
+        $dompdf->stream('solicitud',array('Attachment'=>0));
     }
 }
