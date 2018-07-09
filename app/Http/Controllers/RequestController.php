@@ -177,16 +177,7 @@ class RequestController extends Controller
         $foliofecha = str_replace('-', '', $fecha);
         $folio = $alumno .'-'.$asesor.'-'.$coordinador.'-'.$unidad.'-'.$foliofecha.'-'.$foliohora;
 
-        $consultant = (new \App\Models\Consultant)->where('id','=',$asesor)->first();
-        $lugar = $consultant->lugar;
-        $matricula = Auth::user()->matricula;
-        $nombre = Auth::user()->nombre;
-
         $newfecha = Carbon::createFromFormat('Y-m-d H:i', $fecha .' '. $hora);
-        $student = (new \App\Models\Student)->where('id','=',$alumno)->first();
-        $consultant = (new \App\Models\Consultant)->where('id','=',$asesor)->first();
-        $subject = (new \App\Models\Subject)->where('id','=',$unidad)->first();
-
 
         $solicituds = (new \App\Models\Request)->where('asesor','=',$asesor)->get();
 
@@ -215,7 +206,7 @@ class RequestController extends Controller
         $Solicitud -> folio = $folio;
         $Solicitud -> save();
         $identificador = $Solicitud->id;
-        $Nueva = \App\Models\Request::where('id','=',$identificador)->first();
+        $Nueva = (new \App\Models\Request)->where('id','=',$identificador)->first();
 
         if ($tipo != 'Individual'){
             $compas = decrypt($request->compas);
@@ -269,9 +260,6 @@ class RequestController extends Controller
         }
 
         return view('alumno.exito')
-            ->with(compact('student'))
-            ->with(compact('consultant'))
-            ->with(compact('subject'))
             ->with(compact('Nueva'));
         //return view('alumno.prueba')->with(compact('fecha'))->with(compact('hora'))->with(compact('datos'));
     }
@@ -324,15 +312,6 @@ class RequestController extends Controller
 
     public function generatePDF(Request $request, $id){
         $solicitud = (new \App\Models\Request)->where('id', '=',decrypt($id))->first();
-        $nombre = $solicitud->student->nombre;
-        $asesor = $solicitud->consultant->nombre;
-        $folio = $solicitud->folio;
-        $fecha = $solicitud->fecha->format('D, d M Y');
-        $hora = $solicitud->fecha->format('h:i A');
-        $unidad = $solicitud->subject->nombre;
-        $tema = $solicitud->tema;
-        $matricula = $solicitud->student->matricula;
-        $lugar = $solicitud->consultant->lugar;
 
         $options = new Options();
         $options->setIsRemoteEnabled(true);

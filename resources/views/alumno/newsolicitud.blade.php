@@ -52,7 +52,9 @@
                                 <div class="input-field col s12 m6">
                                     <input class="white-text" type="date" onchange="selectHorario(this.value)"
                                            name="fecha" id="fecha"
-                                           min="<?php echo(date('o-m-d')) ?>" max="2099-12-31" step="any"
+                                           min="{{ \Carbon\Carbon::tomorrow()->format('Y-m-d') }}"
+                                           max="{{ \Carbon\Carbon::now()->endOfWeek()->format('Y-m-d') }}"
+
                                            required/>
                                     <label for="fecha" class="white-text active">Fecha de Asesoría</label>
                                 </div>

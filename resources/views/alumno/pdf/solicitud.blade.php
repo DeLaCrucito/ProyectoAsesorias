@@ -37,7 +37,7 @@
             {{ $solicitud->consultant->nombre .' '. $solicitud->consultant->apellido }}.
         </p>
         <br>
-        <p>Dicho apoyo académico corresponde a la Unidad de Aprendizaje {{ $solicitud->subject->nombre }}} en el/los
+        <p>Dicho apoyo académico corresponde a la Unidad de Aprendizaje {{ $solicitud->subject->nombre }} en el/los
             tema(s)
         {{ $solicitud->tema }} con un total de alumno(s) a asesorar con matrícula(s) {{ $solicitud->student->matricula }}
         , a solicitud de {{ $solicitud->student->nombre .' '. $solicitud->student->apellido }}.</p>
