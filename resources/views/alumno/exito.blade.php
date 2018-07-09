@@ -75,7 +75,9 @@
                                 </div>
                                 <div class="row col s12 m12">
                                     <p></p>
-                                    <button type="submit" name="historial" id="historial" class="black-text light-blue accent-1 btn boton">Ver historial</button>
+                                    <button type="submit" name="historial" href="{{ route('viewhistory') }}" id="historial"
+                                            class="black-text
+                                    light-blue accent-1 btn boton">Ver historial</button>
                                     <p></p>
                                     <a name="cierras" id="cierras" href="#signout" class="white-text red darken-1 btn
                                      boton modal-trigger">Cerrar

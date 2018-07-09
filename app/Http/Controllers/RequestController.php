@@ -300,4 +300,10 @@ class RequestController extends Controller
             }
         }
     }
+
+    public function detalles(Request $request){
+        $id = decrypt($request->id);
+        $solicitud = (new \App\Models\Request)->where('id','=',$id)->first();
+        return view('alumno.solicitud')->with(compact('solicitud'));
+    }
 }

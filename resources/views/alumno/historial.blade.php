@@ -15,8 +15,8 @@
                     <div class="row">
                         <p class="white-text center-align">* Usted puede filtrar los datos con las siguientes opciones.</p>
                         <div class="input-field col s12 m6 white-text">
-                            <select id="Unidads" name="Unidads" >
-                                <option value="" disabled selected>Buscar por Unidad de Aprendizaje</option>
+                            <select id="Unidads" onchange="filtros()" name="Unidads" >
+                                <option value="0" disabled selected>Buscar por Unidad de Aprendizaje</option>
                                 @foreach($materias as $materia)
                                     <option value="{{ $materia->materia }}">{{ $materia->subject->nombre }}</option>
                                 @endforeach
@@ -24,8 +24,8 @@
                             <label class="white-text">Unidad de Aprendizaje</label>
                         </div>
                         <div class="input-field col s12 m6 white-text">
-                            <select id="Estados" name="Estados" >
-                                <option value="" disabled selected>Buscar por estado</option>
+                            <select id="Estados" name="Estados" onchange="filtros()">
+                                <option value="0" disabled selected>Buscar por estado</option>
                                 @foreach($estados as $estado)
                                     <option value="{{ $estado->estado }}">{{ $estado->state->nombre }}</option>
                                 @endforeach
@@ -54,7 +54,8 @@
                                            data-tooltip="{{ $solicitud->state->mensaje }}" class="black-text {{
                                            $solicitud->state->color }} btn-floating tooltipped"><i
                                            class="material-icons">{{ $solicitud->state->icon }}</i></a></td>
-                                    <td><a class="white-text" href="">VER DETALLES</a></td>
+                                    <td><a href="{{ route('detallesolicitud',['id'=>encrypt($solicitud->id)]) }}"
+                                           class="btn-flat white-text"><span></span>Ver Detalles</a></td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -67,9 +68,36 @@
         </div>
     </form>
     <script>
+        function filtros() {
+            var estado = document.getElementById('Estados').value;
+            var unidad = document.getElementById('Unidads').value;
+            $.ajax({
+                type: 'post',
+                url: '{{route('ajaxunidadhistorial')}}',
+                beforeSend: function (xhr) {
+                    var token = $('meta[name="csrf-token"]').attr('content');
+                    if (token) {
+                        return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                    }
+                },
+                data: {
+                    estado: estado,
+                    unidad: unidad
+                },
+                success: function (response) {
+                    document.getElementById('posts').innerHTML = response.html;
+                    $('.tooltipped').tooltip({delay: 50});
+                }
+            });
+        }
+
         function cargaTabla(page) {
+            var estado = document.getElementById('Estados').value;
+            var unidad = document.getElementById('Unidads').value;
             $.ajax({
                 data: {
+                    estado: estado,
+                    unidad: unidad
                 },
                 url:'?page='+page
             }).done(function (data) {

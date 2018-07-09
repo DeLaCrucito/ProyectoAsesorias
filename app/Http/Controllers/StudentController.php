@@ -232,11 +232,63 @@ class StudentController extends Controller
         $materias =$colecion->unique('materia');
         $estados = $colecion->unique('estado');
         $solicituds = \App\Models\Request::where('alumno','=',$alumno)->orderBy('fecha', 'asc')->paginate(5);
+        $vista =  view('alumno.historial')->with(compact('solicituds'))->with(compact('materias'))->with(compact('estados'));
         if ($request->ajax()){
             $alumno  =  Auth::id();
-            $solicituds = \App\Models\Request::where('alumno','=',$alumno)->orderBy('fecha', 'asc')->paginate(5);
-            return view('alumno.ajax.tablahistorial')->with(compact('solicituds'))->render();
+            $unidad = $request->unidad;
+            $estado = $request->estado;
+            if ($unidad === 0 && $estado === 0){
+                $solicituds = \App\Models\Request::where('alumno','=',$alumno)->orderBy('fecha', 'asc')->paginate(5);
+            }elseif ($unidad != 0 && $estado != 0){
+                $solicituds = \App\Models\Request::where('alumno','=',$alumno)
+                    ->where('materia','=',$unidad)
+                    ->where('materia','=',$unidad)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            }elseif ($unidad != 0 && $estado == 0){
+                $solicituds = \App\Models\Request::where('alumno','=',$alumno)
+                    ->where('materia','=',$unidad)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            }elseif ($unidad == 0 && $estado != 0){
+                $solicituds = \App\Models\Request::where('alumno','=',$alumno)
+                    ->where('estado','=',$estado)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            }
+            $vista = view('alumno.ajax.tablahistorial')->with(compact('solicituds'))->render();
         }
-        return view('alumno.historial')->with(compact('solicituds'))->with(compact('materias'))->with(compact('estados'));
+        return $vista;
+    }
+
+    public function unidadHistorial(Request $request){
+        if ($request->ajax()){
+            $alumno  =  Auth::id();
+            $unidad = $request->unidad;
+            $estado = $request->estado;
+            if ($unidad === 0 && $estado === 0){
+                $solicituds = \App\Models\Request::where('alumno','=',$alumno)->orderBy('fecha', 'asc')->paginate(5);
+            }elseif ($unidad != 0 && $estado != 0){
+                $solicituds = \App\Models\Request::where('alumno','=',$alumno)
+                    ->where('materia','=',$unidad)
+                    ->where('materia','=',$unidad)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            }elseif ($unidad != 0 && $estado == 0){
+                $solicituds = \App\Models\Request::where('alumno','=',$alumno)
+                    ->where('materia','=',$unidad)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            }elseif ($unidad == 0 && $estado != 0){
+                $solicituds = \App\Models\Request::where('alumno','=',$alumno)
+                    ->where('estado','=',$estado)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            }
+            $vista = view('alumno.ajax.tablahistorial')->with(compact('solicituds'))->render();
+        }
+        return response()->json(array('success' => true, 'html'=>$vista));
+
+    }
+
+    public function estadoHistorial(Request $request){
+        if ($request->ajax()){
+            $request->unidad;
+            $request->estado;
+        }
     }
 }
