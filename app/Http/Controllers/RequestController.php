@@ -276,4 +276,33 @@ class RequestController extends Controller
             ->with(compact('datos'));
         //return view('alumno.prueba')->with(compact('fecha'))->with(compact('hora'))->with(compact('datos'));
     }
+
+    public function actualizarEstado(){
+        $solicituds = (new \App\Models\Request)->where('estado','=','1')->get();
+        $today = Carbon::now()->format('Y-m-d');
+        foreach ($solicituds as $solicitud){
+            $id = $solicitud->id;
+            $fechasoli = $solicitud->fecha->format('Y-m-d');
+            if ($fechasoli === $today){
+                $nuevasoli = (new \App\Models\Request)->findOrFail($id);
+                $nuevasoli->estado = 4;
+                $nuevasoli->save();
+            }
+            if ($fechasoli < $today){
+                $nuevasoli = (new \App\Models\Request)->findOrFail($id);
+                $nuevasoli->estado = 2;
+                $nuevasoli->save();
+            }
+        }
+        $soliruns = (new \App\Models\Request())->where('estado','=','4')->get();
+        foreach ($soliruns as $solirun){
+            $id = $solirun->id;
+            $fecha = $solirun->fecha->format('Y-m-d');
+            if ($fecha < $today){
+                $actualiza = (new \App\Models\Request)->findOrFail($id);
+                $actualiza->estado = 2;
+                $actualiza->save();
+            }
+        }
+    }
 }

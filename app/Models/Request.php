@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Thu, 05 Jul 2018 00:46:41 +0000.
+ * Date: Sun, 08 Jul 2018 16:43:46 -0500.
  */
 
 namespace App\Models;
@@ -27,6 +27,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $folio
  * @property string $periodo
  * 
+ * @property \App\Models\State $state
  * @property \App\Models\Student $student
  * @property \App\Models\Consultant $consultant
  * @property \App\Models\Coordinator $coordinator
@@ -38,7 +39,6 @@ use Reliese\Database\Eloquent\Model as Eloquent;
 class Request extends Eloquent
 {
 	public $timestamps = false;
-
 
 	protected $casts = [
 		'alumno' => 'int',
@@ -64,9 +64,14 @@ class Request extends Eloquent
 		'tipo',
 		'apoyo',
 		'tema',
-        'folio',
-        'periodo'
+		'folio',
+		'periodo'
 	];
+
+	public function state()
+	{
+		return $this->belongsTo(\App\Models\State::class, 'estado');
+	}
 
 	public function student()
 	{
@@ -100,6 +105,5 @@ class Request extends Eloquent
     public function getFechaAttribute($value) {
         return new Date($value);
     }
-
 
 }

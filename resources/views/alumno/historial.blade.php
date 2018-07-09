@@ -50,7 +50,10 @@
                                     <td>{{ $solicitud->subject->nombre }}</td>
                                     <td>{{ $solicitud->fecha->diffForHumans() }}</td>
                                     <td>{{ $solicitud->fecha->format('D, d M Y, h:i a') }}</td>
-                                    <td><a name="cancel" style=" cursor: default;" id="cancel" data-position="top" data-delay="10" data-tooltip="No completada" class="black-text red btn-floating tooltipped"><i class="material-icons">close</i></a></td>
+                                    <td><a style=" cursor: default;"  data-position="top" data-delay="10"
+                                           data-tooltip="{{ $solicitud->state->mensaje }}" class="black-text {{
+                                           $solicitud->state->color }} btn-floating tooltipped"><i
+                                           class="material-icons">{{ $solicitud->state->icon }}</i></a></td>
                                     <td><a class="white-text" href="">VER DETALLES</a></td>
                                 </tr>
                             @endforeach
