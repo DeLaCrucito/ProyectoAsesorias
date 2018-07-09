@@ -83,10 +83,15 @@
                                     <a name="cierras" id="cierras" href="#signout" class="white-text red darken-1 btn
                                      boton modal-trigger">Cerrar
                                         sesión</a> <br>
-                                    <a name="cierras" id="cierras"
-                                       target="_blank"
+                                    {{--<a target="_blank"
                                        href="{{ route('pdfsolicitud',$infopdf) }}"
                                        class="white-text red darken-1 btn
+                                     boton">Imprimir</a>--}}
+                                    <a target="_blank"
+                                       id="autoimprime"
+                                       name="autoimprime"
+                                       href="{{ route('pdfautogenerate',$infopdf) }}"
+                                       class="oculto white-text red darken-1 btn
                                      boton">Imprimir</a>
                                 </div>
                             </div>
@@ -96,4 +101,15 @@
             </form>
         </div>
     </div>
+
+@endsection
+@section('scripts')
+    <script>
+        $(document).ready(function(){
+            setTimeout(function () {
+                document.getElementById("autoimprime").click();
+                console.log('se abre');
+            }, 2000);
+        });
+    </script>
 @endsection

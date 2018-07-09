@@ -76,8 +76,11 @@ Route::group(['prefix' => 'alumno', 'middleware' => 'auth:alumnos'],function (){
     Route::get('/confirm','RequestController@confirmaSolicitud')->name('generasolicitud');
     Route::post('/confirm','RequestController@confirmaSolicitud')->name('generasolicitud');
 
-    Route::get('/pdf{infopdf}','RequestController@generatePDF')->name('pdfsolicitud');
-    Route::post('/pdf{infopdf}','RequestController@generatePDF')->name('pdfsolicitud');
+    Route::get('/autopdf{infopdf}','RequestController@autogeneratePDF')->name('pdfautogenerate');
+    Route::post('/autopdf{infopdf}','RequestController@autogeneratePDF')->name('pdfautogenerate');
+
+    Route::get('/pdf{datos}','RequestController@generatePDF')->name('pdfsolicitud');
+    Route::post('/pdf{datos}','RequestController@generatePDF')->name('pdfsolicitud');
 });
 
 //Administrador

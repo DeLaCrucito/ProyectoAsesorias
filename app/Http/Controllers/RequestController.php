@@ -330,7 +330,9 @@ class RequestController extends Controller
         }
     }
 
-    public function generatePDF(Request $request, $infopdf){
+
+
+    public function autogeneratePDF(Request $request, $infopdf){
         $asesor = decrypt($request->asesor);
         $nombre = decrypt($request->nombre);
         $fecha = decrypt($request->fecha);
@@ -365,6 +367,40 @@ class RequestController extends Controller
         $dompdf->stream('solicitud',array('Attachment'=>0));
     }
 
+    public function generatePDF(Request $request, $datos){
+        $asesor = decrypt($request->asesor);
+        $nombre = decrypt($request->nombre);
+        $fecha = decrypt($request->fecha);
+        $hora = decrypt($request->hora);
+        $unidad  = decrypt($request->unidad);
+        $tema = decrypt($request->tema);
+        $matricula = decrypt($request->matricula);
+        $lugar = decrypt($request->lugar);
+        $alumno = decrypt($request->alumno);
+        $coordinador = decrypt($request->coordinador);
+        $foliofecha = decrypt($request->foliofecha);
+        $foliohora = decrypt($request->foliohora);
+
+        $folio = $alumno .'-'.$asesor.'-'.$coordinador.'-'.$unidad.'-'.$foliofecha.'-'.$foliohora;
+
+        $datos = [];
+        $datos['folio'] = $folio;
+        $datos['asesor'] = $asesor;
+        $datos['nombre'] = $nombre;
+        $datos['fecha'] = $fecha;
+        $datos['hora'] = $hora;
+        $datos['unidad'] = $unidad;
+        $datos['tema'] = $tema;
+        $datos['matricula'] = $matricula;
+        $datos['lugar'] = $lugar;
+
+        $options = new Options();
+        $options->setIsRemoteEnabled(true);
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml(view('alumno.pdf.solicitud', compact('datos'))->render());
+        $dompdf->render();
+        $dompdf->stream('solicitud',array('Attachment'=>0));
+    }
     public function detalles(Request $request){
         $id = decrypt($request->id);
         $solicitud = (new \App\Models\Request)->where('id','=',$id)->first();
