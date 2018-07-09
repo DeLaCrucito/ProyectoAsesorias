@@ -75,6 +75,8 @@ Route::group(['prefix' => 'alumno', 'middleware' => 'auth:alumnos'],function (){
 
     Route::get('/confirm','RequestController@confirmaSolicitud')->name('generasolicitud');
     Route::post('/confirm','RequestController@confirmaSolicitud')->name('generasolicitud');
+
+    Route::get('pdf','RequestController@confirmaSolicitud')->name('pdfsolicitud');
 });
 
 //Administrador

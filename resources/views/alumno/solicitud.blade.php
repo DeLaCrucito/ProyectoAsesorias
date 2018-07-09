@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @extends('alumno.base')
 @section('elementos')
     <form class="col s12" method="post" >

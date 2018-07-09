@@ -175,10 +175,27 @@ class RequestController extends Controller
         $foliofecha = str_replace('-', '', $fecha);
         $folio = $alumno .'-'.$asesor.'-'.$coordinador.'-'.$unidad.'-'.$foliofecha.'-'.$foliohora;
 
+        $consultant = (new \App\Models\Consultant)->where('id','=',$asesor)->first();
+        $lugar = $consultant->lugar;
+        $matricula = Auth::user()->matricula;
+        $nombre = Auth::user()->nombre;
+
         $datos = [];
         $datos['folio'] = $folio;
         $datos['fecha'] = $fecha;
         $datos['hora'] = $hora;
+        $datos['nombre'] = $nombre;
+        $datos['asesor'] = $asesor;
+        $datos['tema'] = $tema;
+        $datos['unidad'] = $unidad;
+        $datos['lugar'] = $lugar;
+        $datos['matricula'] = $matricula;
+
+        $viewpdf = \View::make('pdf.solicitud', compact('datos'))->render();
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadHTML($viewpdf);
+        return $pdf->download('solicitudpdf');
+
 
         $newfecha = Carbon::createFromFormat('Y-m-d H:i', $fecha .' '. $hora);
         $student = (new \App\Models\Student)->where('id','=',$alumno)->first();
@@ -262,7 +279,6 @@ class RequestController extends Controller
                 $Solicitud -> save();
             }
         }
-
 
         return view('alumno.exito')
             ->with(compact('student'))
