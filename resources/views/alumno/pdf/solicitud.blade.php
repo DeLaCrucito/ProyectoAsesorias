@@ -7,54 +7,66 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Notificación</title>
-    <img type="png" src="{{ asset('images/top.png') }}">
+    <img type="png" src="{{ asset('images/top.png') }}" width="730">
 
+    <style>
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100px;
+        }
+
+        h2,h4,h5,p{
+            line-height: 1.5;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            font-weight: normal;
+            color: rgba(0, 0, 0, 0.87);
+        }
+    </style>
 </head>
 <body>
     <div align="center">
-        <h2>NOTIFICACIÓN DE ASESORÍA ACADÉMICA</h2>
+        <h2><b>NOTIFICACIÓN DE ASESORÍA ACADÉMICA</b></h2>
         <br>
         <br>
     </div>
 
     <div>
-        <h3>PARA   : {{ $solicitud->consultant->nombre .' '
+        <h4><b>PARA   :</b> {{ $solicitud->consultant->nombre .' '
         . $solicitud->consultant->apellido }}, {{ $solicitud->student->nombre .' '
-        . $solicitud->student->apellido }}</h3>
-        <h3>CC     : RESPONSABLE DE PIA EN LA ESCUELA O FACULTAD</h3>
-        <h3>ASUNTO : NOTIFICACIÓN DE ASESORÍA PROGRAMADA</h3>
-        <br>
+        . $solicitud->student->apellido }}</h4>
+        <h4><b>CC     :</b> RESPONSABLE DE PIA EN LA ESCUELA O FACULTAD</h4>
+        <h4><b>ASUNTO :</b> NOTIFICACIÓN DE ASESORÍA PROGRAMADA</h4>
         <br>
         <br>
     </div>
 
     <div>
-        <h3>A QUIEN CORRESPONDA</h3>
-        <h3>PRESENTE</h3>
+        <h5><b>A QUIEN CORRESPONDA</b></h5>
+        <h5><b>PRESENTE</b></h5>
         <p>Sirva a bien el presente medio para notificar la Asesoría Académica programada con número de folio {{ $solicitud->folio }}
-            el dia {{ $solicitud->fecha->format('l, d M Y') }} a las {{ $solicitud->fecha->format('h:i A') }} hrs.
-            con duración de 30 min. en
-            {{ $solicitud->consultant->lugar }} asignado al asesor
-            {{ $solicitud->consultant->nombre .' '. $solicitud->consultant->apellido }}.
+            el dia <b>{{ $solicitud->fecha->format('l, d F Y') }}</b> a las <b>{{ $solicitud->fecha->format('h:i A') }} hrs.</b> con duración de 30 min. en
+            <b>{{ $solicitud->consultant->lugar }}</b> asignado al asesor
+            <b>{{ $solicitud->consultant->nombre .' '. $solicitud->consultant->apellido }}</b>.
         </p>
-        <br>
         <p>Dicho apoyo académico corresponde a la Unidad de Aprendizaje {{ $solicitud->subject->nombre }} en el/los
             tema(s)
-        {{ $solicitud->tema }} con un total de alumno(s) a asesorar con matrícula(s) {{ $solicitud->student->matricula }}
+            <b>{{ $solicitud->tema }}</b> con un total de alumno(s) a asesorar con matrícula(s) {{ $solicitud->student->matricula }}
         , a solicitud de {{ $solicitud->student->nombre .' '. $solicitud->student->apellido }}.</p>
         <br>
         <p>Recomendando la puntualidad y asistencia de las partes interesadas y agradeciendo el compromiso con el Programa
         Institucional de Asesorías Académicas (PIA) quedo a sus órdenes.</p>
         <br>
         <br>
-    </div>
-
-    <div>
-        <h3>ATTE.</h3>
         <br>
-        <h3>RESPONSABLE DE PIA EN LA ESCUELA O FACULTAD</h3>
-        <br>
-        <p>PD. Le sugerimos guardar este correo electrónico en el ciclo escolar activo para cualquier aclaración</p>
     </div>
+    <footer>
+        <div >
+            <h4><b>ATTENTAMENTE</b></h4>
+            <h4><b>RESPONSABLE DE PIA EN LA ESCUELA O FACULTAD</b></h4>
+            <p><b>PD.</b> Le sugerimos guardar este correo electrónico en el ciclo escolar activo para cualquier aclaración</p>
+        </div>
+    </footer>
 </body>
 </html>
