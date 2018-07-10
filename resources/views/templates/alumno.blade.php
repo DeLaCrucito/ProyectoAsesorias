@@ -24,7 +24,14 @@
             <a  href="{{route('nuevasolicitud')}}" class="white-text left-align"><i class="material-icons">queue</i>Solicitar Asesoría</a>
         </li>
         <li>
-            <a  href="{{route('viewhistory')}}" class="white-text left-align"><i class="material-icons">storage</i>Historial de Solicitud</a>
+            <a  href="{{route('viewhistory')}}" class="white-text left-align"><i
+                        class="material-icons">storage</i><span style="border-radius: 15px" class="new badge red
+                        darken-2
+                        white-text"
+                                                                data-badge-caption="En
+                        proceso">{{
+                        $nuevas
+                        }}</span>Solicitudes</a>
         </li>
         <li>
             <a href="#signout" class="white-text btn-flat left-align  modal-trigger"><span></span><i

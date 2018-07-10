@@ -49,7 +49,7 @@
                                 <tr>
                                     <td>{{ $solicitud->subject->nombre }}</td>
                                     <td>{{ $solicitud->fecha->diffForHumans() }}</td>
-                                    <td>{{ $solicitud->fecha->format('D, d M Y, h:i a') }}</td>
+                                    <td>{{ $solicitud->fecha->format('l, d F Y, h:i a') }}</td>
                                     <td><a style=" cursor: default;"  data-position="top" data-delay="10"
                                            data-tooltip="{{ $solicitud->state->mensaje }}" class="black-text {{
                                            $solicitud->state->color }} btn-floating tooltipped"><i

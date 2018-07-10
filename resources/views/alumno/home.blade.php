@@ -1,5 +1,5 @@
-@extends('templates.alumno')
-@section('main')
+@extends('alumno.base')
+@section('elementos')
     <div class="section">
         <div class="row" style="background-color: transparent" id="SolicitudAdd">
             {{ csrf_field() }}

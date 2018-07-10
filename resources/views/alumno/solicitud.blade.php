@@ -74,7 +74,7 @@
 
                             <div class="input-field col s12 m8">
                                 <input class="white-text" type="text" id="fecha" disabled
-                                       value="{{ $solicitud->fecha->format('D, d M Y') }}"
+                                       value="{{ $solicitud->fecha->format('l, d F Y') }}"
                                        name="fecha">
                                 <label class="white-text" for="fecha">Fecha de asesoría</label>
                             </div>

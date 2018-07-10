@@ -178,6 +178,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Jenssegers\Date\DateServiceProvider::class,
+        App\Providers\ComposerServiceProvider::class,
     ],
 
     /*
