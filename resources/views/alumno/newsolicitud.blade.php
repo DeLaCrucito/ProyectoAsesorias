@@ -1,5 +1,5 @@
-@extends('templates.alumno')
-@section('main')
+@extends('alumno.base')
+@section('elementos')
     <form class="col s12" method="post"  id="solicitudAs" action="{{ route('confirmarsoli') }}">
         {{ csrf_field() }}
             <div class="row">
@@ -50,12 +50,8 @@
                             </div>
                             <div class="row">
                                 <div class="input-field col s12 m6">
-                                    <input class="white-text" type="date" onchange="selectHorario(this.value)"
-                                           name="fecha" id="fecha"
-                                           min="{{ \Carbon\Carbon::tomorrow()->format('Y-m-d') }}"
-                                           max="{{ \Carbon\Carbon::now()->endOfWeek()->format('Y-m-d') }}"
-
-                                           required/>
+                                    <input class="white-text datepicker" type="date" onchange="selectHorario(this
+                                    .value)" name="fecha" id="fecha" required placeholder="Seleccione una fecha" />
                                     <label for="fecha" class="white-text active">Fecha de Asesoría</label>
                                 </div>
                                 <div class="input-field col s12 m6">
@@ -247,5 +243,25 @@
                 }
             });
         }
+    </script>
+@endsection
+@section('scripts')
+    <script>
+        $('.datepicker').pickadate({
+            selectMonths: true,
+            today:false,
+            clear: false,
+            closeOnSelect: true,
+            format: 'yyyy-mm-dd',
+            close: false,
+            min: "{{ \Carbon\Carbon::tomorrow()->format('Y,m,d') }}",
+            disable: [
+                @foreach($fechas as $date)
+                {{  '('.$date->format('Y,m,d').')' }} ,
+                @endforeach
+            ]
+
+        });
+
     </script>
 @endsection

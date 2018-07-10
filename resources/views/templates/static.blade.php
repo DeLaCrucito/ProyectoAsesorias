@@ -129,28 +129,35 @@
             position: relative;
             /* sort out borders */
         }
+
         table.responsive-table td:empty:before {
             content: '\00a0';
         }
+
         table.responsive-table th,
         table.responsive-table td {
             margin: 0;
             vertical-align: top;
         }
+
         table.responsive-table th {
             text-align: left;
         }
+
         table.responsive-table thead {
             display: block;
             float: left;
         }
+
         table.responsive-table thead tr {
             display: block;
             padding: 0 10px 0 0;
         }
+
         table.responsive-table thead tr th::before {
             content: "\00a0";
         }
+
         table.responsive-table tbody {
             display: block;
             width: auto;
@@ -158,55 +165,76 @@
             overflow-x: auto;
             white-space: nowrap;
         }
+
         table.responsive-table tbody tr {
             display: inline-block;
             vertical-align: top;
         }
+
         table.responsive-table th {
             display: block;
             text-align: right;
         }
+
         table.responsive-table td {
             display: block;
             min-height: 1.25em;
             text-align: left;
         }
+
         table.responsive-table tr {
             padding: 0 10px;
         }
+
         table.responsive-table thead {
             border: 0;
             border-right: 1px solid rgb(255, 255, 255);
         }
+
         table.responsive-table.bordered th {
             border-bottom: 0;
             border-left: 0;
         }
+
         table.responsive-table.bordered td {
             border-left: 0;
             border-right: 0;
             border-bottom: 0;
         }
+
         table.responsive-table.bordered tr {
             border: 0;
         }
+
         table.responsive-table.bordered tbody tr {
             border-right: 1px solid rgba(0, 0, 0, 0.12);
         }
-        .oculto {
-            display: none;
-        }
-
-
-
     }
+    .oculto {
+        display: none;
+    }
+    .picker__date-display, .picker__weekday-display{
+        background-color: #212121;
+    }
+
+    div.picker__day.picker__day--infocus.picker__day--selected.picker__day--highlighted {
+        background-color: #212121;
+    }
+    html {
+        line-height: 1.5;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+        font-weight: normal;
+        color: rgba(0, 0, 0, 0.87);
+    }
+
+
+
 </style>
 <body class="iris">
 @yield('body')
 <!--Import jQuery before materialize.js-->
-<script type="text/javascript" src="{{asset('js/jquery-3.2.1.min.js')}}"></script>
-<script type="text/javascript" src={{asset('js/materialize.js')}}></script>
-<script type="text/javascript" src="{{ asset('js/materialize.clockpicker.js') }}"></script>
+<script type="text/javascript" src="{{asset('js/jquery-3.3.1.min.js')}}"></script>
+<script type="text/javascript" src={{asset('js/materialize.min.js')}}></script>
 <script>
     $(document).ready(function() {
         $('select').material_select();
@@ -227,14 +255,16 @@
         $('.timepicker').pickatime({
             default: 'now', // Set default time: 'now', '1:30AM', '16:30'
             fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
-            twelvehour: false, // Use AM/PM or 24-hour format
+            twelvehour: true, // Use AM/PM or 24-hour format
             donetext: 'Aceptar', // text for done-button
             cleartext: 'Reiniciar', // text for clear-button
             canceltext: 'Cancelar', // Text for cancel-button,
             container: undefined, // ex. 'body' will append picker to body
             autoclose: false, // automatic close timepicker
             ampmclickable: true, // make AM PM clickable
-            aftershow: function(){} //Function for after opening timepicker
+            disable: [
+                { from: [2,0], to: [5,30] }
+            ]
         });
 
             // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered

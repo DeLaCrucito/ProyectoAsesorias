@@ -154,7 +154,7 @@ class ConsultantController extends Controller
 
     public function detalles(Request $request, Consultant $consultant){
         $value = Auth::user()->licenciatura;
-        $schedules = Schedule::with('consultant')->where('asesor','=',$consultant->id)->get();
+        $schedules = Schedule::with('consultant')->where('asesor','=',$consultant->id)->orderBy('dia','desc')->get();
         $subjects = Assignment::with('subject')->where('asesor','=',$consultant->id)->paginate(5);
         $asignaturas = Assignment::with('subject')->where('asesor','=',$consultant->id)->get();
         $vista = view('coordinador.detalleasesor',compact('consultant'))->with(compact('subjects'))->with(compact('schedules'))->with(compact('asignaturas'));

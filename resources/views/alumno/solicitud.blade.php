@@ -1,6 +1,6 @@
 @extends('alumno.base')
 @section('elementos')
-    <form class="col s12" method="post" >
+    <form class="col s12" method="post" action="{{ route('updateestado', ['id' => encrypt($solicitud->id)]) }}">
         {{ csrf_field() }}
         <div class="row">
             <div class="col s12 m12">
@@ -86,24 +86,65 @@
                         </div>
                     </div>
                 </div>
-                <div class="col s12 m12 white-text">
-                    <h6 class="center-align">* Los detalles de la solicitud han sido enviados a su correo institucional.</h6>
-                </div>
+                @if(session()->has('message'))
+                    <div class="green darken-1 white-text col s12 m12 center-align" style="border-radius: 25px">
+                        {{ session()->get('message') }}
+                    </div>
+                @endif
+                @if($solicitud->estado === 4)
+                    @if ($errors->any())
+                        <div class="red darken-1 white-text center-align" style="border-radius: 25px">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <div class="row col s12 m12" >
+                        <label><h6 class="white-text center-align">¿La asesoría fue completada con éxito?</h6></label>
+                        <div class="row center-align" style="display: inline-block">
+                            <p>
+                                <input class="white-text" name="check" type="radio" value="1" id="Ap0"/>
+                                <label class="white-text" for="Ap0">Si</label>
+                            </p>
+                            <p>
+                                <input class="white-text" name="check" type="radio" value="0" id="Ap1"/>
+                                <label class="white-text" for="Ap1">No</label>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row col s12 m12">
+                        <div style="display: inline-flex">
+                            <input type="checkbox" onclick="Validacaja(this)" class="filled-in" id="validar"/>
+                            <label class="white-text" for="validar">Acepto que los cambios son correctos</label>
+                        </div>
+                        <p></p>
+                        <button type="submit" name="save" id="save" class="disabled black-text light-blue
+                        accent-1 btn boton">Guardar</button>
+                    </div>
+                @endif
                 <div class="row col s12 m12">
-                    <p></p>
-                    <button type="submit" name="historial" href="{{ route('viewhistory') }}" id="historial"
-                            class="black-text
-                    light-blue accent-1 btn boton">Ver historial</button>
-                    <p></p>
-                    <a name="cierras" id="cierras" href="#signout" class="white-text red darken-1 btn
-                     boton modal-trigger">Cerrar
-                        sesión</a>
                     <a target="_blank"
                        href="{{ route('pdfsolicitud', encrypt($solicitud->id)) }}"
-                       class="white-text red darken-1 btn
+                       class="white-text pink darken-1 btn
                                      boton">Imprimir</a>
                 </div>
             </div>
         </div>
     </form>
+@endsection
+@section('scripts')
+    <script>
+        function Validacaja(caja) {
+            var finalizar = document.getElementById('save');
+            finalizar.getAttribute('class');
+            if (caja.checked === true){
+                finalizar.setAttribute('class','black-text light-blue accent-1 btn boton');
+            }else if(caja.checked === false){
+                finalizar.setAttribute('class','disabled black-text light-blue accent-1 btn boton');
+            }
+        }
+    </script>
 @endsection

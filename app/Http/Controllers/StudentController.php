@@ -9,6 +9,7 @@ use App\Models\Degree;
 use App\Models\Faculty;
 use App\Models\Subject;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -164,15 +165,28 @@ class StudentController extends Controller
     }
 
     public function destroy(Request $request){
-        $post = Student::findOrFail($request -> id);
+        $post = (new \App\Models\Student)->findOrFail($request -> id);
         $post -> delete();
         return redirect()->route('viewalumno');
     }
 
     function addSolicitud(){
         $alumno  =  Auth::id();
-        $student = Student::findOrFail($alumno);
-        return view('alumno.newsolicitud',compact('student'));
+        $student = (new \App\Models\Student)->findOrFail($alumno);
+
+        $month = Carbon::now();
+        $start = Carbon::parse($month)->startOfMonth();
+        $end = Carbon::parse($month)->endOfMonth();
+        $fechas = array();
+        $period = CarbonPeriod::create($start, $end);
+        foreach ($period as $date) {
+            if (Carbon::parse($date)->isWeekend()){
+                $fechas[] = $date;
+            }
+
+        }
+
+        return view('alumno.newsolicitud',compact('student'))->with(compact('fechas'));
     }
 
     function showunidades(Request $request){

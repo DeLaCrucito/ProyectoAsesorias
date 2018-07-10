@@ -49,12 +49,11 @@
                         </blockquote>
                     </div>
                     <div class="posts row" id="posts">
-                        <table class="white-text highlight">
+                        <table class="white-text highlight centered">
                             <thead>
                             <tr>
                                 <th>Dia</th>
-                                <th>Hora de Inicio</th>
-                                <th>Hora de fin</th>
+                                <th>Horario disponible</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
@@ -62,8 +61,9 @@
                             @foreach($schedules as $schedule)
                                 <tr>
                                     <td>{{ $schedule->dia }}</td>
-                                    <td>{{ $schedule->hr_inicio }}</td>
-                                    <td>{{ $schedule->hr_fin }}</td>
+                                    <td>{{ \Carbon\Carbon::createFromTimeString($schedule->hr_inicio)->format('h:i
+                                    A') .' - '. Carbon\Carbon::createFromTimeString($schedule->hr_fin)->format
+                                    ('h:i A') }}</td>
                                     <td><a class="btn-flat blue-text modal-trigger"
                                            href="#modal{{ $schedule->id }}"><span></span>Eliminar</a></td>
 

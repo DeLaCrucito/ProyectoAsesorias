@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Consultant;
 use App\Models\Schedule;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -11,7 +12,8 @@ class ScheduleController extends Controller
 {
     public function nuevohorario(Request $request, Consultant $consultant){
         $horas = Schedule::with('consultant')->where('asesor','=',$consultant->id)->get();
-        $schedules = Schedule::with('consultant')->where('asesor','=',$consultant->id)->paginate(5);
+        $schedules = Schedule::with('consultant')->where('asesor','=',$consultant->id)->orderBy('dia','desc')
+            ->paginate(5);
         $vista = view('coordinador.horarios',compact('consultant'))->with(compact('schedules'))->with(compact('horas'));
         if($request->ajax()){
             $schedules = Schedule::with('consultant')->where('asesor','=',$consultant->id)->paginate(5);
@@ -22,8 +24,8 @@ class ScheduleController extends Controller
 
     public function destroy(Request $request){
         $consultant = $request->consultant;
-        $post = Schedule::findOrFail($request -> id);
-        $post -> delete();
+        $post = (new \App\Models\Schedule)->findOrFail($request -> id);
+        $post->delete();
         return redirect()->back();
     }
 
@@ -33,8 +35,8 @@ class ScheduleController extends Controller
         $hr_fin = $request->hr_fin;
         $code = $day . '-' . $hr_inicio .'-'. $hr_fin . '-'. $consultant->id;
 
-        $inicio = str_replace(':', '', $hr_inicio);
-        $fin = str_replace(':','',$hr_fin);
+        $inicio = Carbon::createFromTimeString($hr_inicio);
+        $fin =  Carbon::createFromTimeString($hr_fin);
 
         $this->validate($request, [
             'dia' => 'required',
@@ -46,20 +48,16 @@ class ScheduleController extends Controller
             'hr_fin.required' => 'Debe seleccionar un horario de fin'
         ]);
 
-        $schedules = Schedule::where('asesor','=',$consultant->id)->where('dia','=',$day)->get();
+        $schedules = (new \App\Models\Schedule)->where('asesor','=',$consultant->id)->where('dia','=',$day)->get();
 
-
-        // 0800 1200
         foreach ($schedules as $schedule){
-            $codigo = $schedule->code;
-            $array = explode('-',$codigo);
-            $init = str_replace(':', '', $array[1]);
-            $finish = str_replace(':', '', $array[2]);
+            $init = $schedule->hr_inicio;
+            $finish = $schedule->hr_fin;
             if ($inicio > $init && $inicio < $finish){
                 return redirect()->back()->with('message', 'Error: No fue posible asignar el horario porque ya exite un horario que causa conflicto');
             }else if ($fin < $finish && $fin > $init){
                 return redirect()->back()->with('message', 'Error: No fue posible asignar el horario porque ya exite un horario que causa conflicto');
-            } else if(Schedule::where('code', '=', $code)->exists()) {
+            } else if((new \App\Models\Schedule)->where('code', '=', $code)->exists()) {
                 return redirect()->back()->with('message', 'Error: El horario ya existe');
             } else if ($fin < $inicio){
                 return redirect()->back()->with('message', 'Error: La hora de fin debe ser mayor a la de inicio');
@@ -74,6 +72,9 @@ class ScheduleController extends Controller
                 return view('coordinador.ajax.exito',compact('consultant'));
             }
         }
+        if ($fin < $inicio){
+            return redirect()->back()->with('message', 'Error: La hora de fin debe ser mayor a la de inicio');
+        } else{
             $horario = new Schedule();
             $horario->hr_inicio = strtotime($hr_inicio);
             $horario->hr_fin = strtotime($hr_fin);
@@ -82,6 +83,6 @@ class ScheduleController extends Controller
             $horario->dia=$day;
             $horario->save();
             return view('coordinador.ajax.exito',compact('consultant'));
-
+        }
     }
 }

@@ -98,20 +98,20 @@
                     <p class="white-text">Se muestra un listado con el horario que el asesor dispone para dar
                         asesorías.</p>
                     <div class=" row" id="">
-                        <table class="white-text highlight">
+                        <table class="white-text highlight centered">
                             <thead>
                             <tr>
                                 <th>Día</th>
-                                <th>Inicio</th>
-                                <th>Fin </th>
+                                <th>Horario Disponible</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($schedules as $schedule)
                                 <tr>
                                     <td>{{ $schedule->dia }}</td>
-                                    <td>{{ $schedule->hr_inicio }}</td>
-                                    <td>{{ $schedule->hr_fin }}</td>
+                                    <td>{{ \Carbon\Carbon::createFromTimeString($schedule->hr_inicio)->format('h:i
+                                    A') .' - '. Carbon\Carbon::createFromTimeString($schedule->hr_fin)->format
+                                    ('h:i A') }}</td>
                                 </tr>
                             @endforeach
                             </tbody>

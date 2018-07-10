@@ -51,11 +51,11 @@ class Schedule extends Eloquent
 	}
 
     public function getHrInicioAttribute($value) {
-        return ucfirst($value);
+        return Date($value);
     }
 
     public function getHrFinAttribute($value) {
-        return ucfirst($value);
+        return Date($value);
     }
     public function getDiaAttribute($value) {
         switch ($value) {

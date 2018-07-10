@@ -261,7 +261,6 @@ class RequestController extends Controller
 
         return view('alumno.exito')
             ->with(compact('Nueva'));
-        //return view('alumno.prueba')->with(compact('fecha'))->with(compact('hora'))->with(compact('datos'));
     }
 
     public function actualizarEstado(){
@@ -308,6 +307,30 @@ class RequestController extends Controller
         $id = decrypt($request->id);
         $solicitud = (new \App\Models\Request)->where('id','=',$id)->first();
         return view('alumno.solicitud')->with(compact('solicitud'));
+    }
+
+    public function updateestado(Request $request){
+        $this->validate($request, [
+            'check' => 'required|numeric',
+        ],[
+            'check.required' => 'Debe seleccionar una opción',
+            'check.numeric' => 'Los datos no son correctos'
+        ]);
+        $check = $request->check;
+        $id = decrypt($request->id);
+        if ($check == 1){
+            $Solicitud = \App\Models\Request::where('id','=',$id)->first();
+            $Solicitud->estado = 2;
+            $Solicitud->save();
+            return redirect()->back()->with('message', 'Se ha actualizado el estado de la solicitud');
+        }
+        if ($check == 0){
+            $Solicitud = \App\Models\Request::where('id','=',$id)->first();
+            $Solicitud->estado = 3;
+            $Solicitud->save();
+            return redirect()->back()->with('message', 'Se ha actualizado el estado de la solicitud, Lamentamos que no se haya realizado la solicitud');
+        }
+
     }
 
     public function generatePDF(Request $request, $id){

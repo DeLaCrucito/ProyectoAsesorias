@@ -65,8 +65,8 @@ Route::group(['prefix' => 'alumno', 'middleware' => 'auth:alumnos'],function (){
     Route::get('/historialunidad','StudentController@unidadHistorial')->name('ajaxunidadhistorial');
     Route::post('/historialunidad','StudentController@unidadHistorial')->name('ajaxunidadhistorial');
 
-    Route::get('/detalles{id}','RequestController@detalles')->name('detallesolicitud');
-    Route::post('/detalles{id}','RequestController@detalles')->name('detallesolicitud');
+    Route::get('/detalles/{id}','RequestController@detalles')->name('detallesolicitud');
+    Route::post('/detalles/{id}','RequestController@detalles')->name('detallesolicitud');
 
     Route::get('/horas','StudentController@showHoras')->name('showhorario');
     Route::post('/horas','StudentController@showHoras')->name('showhorario');
@@ -76,11 +76,14 @@ Route::group(['prefix' => 'alumno', 'middleware' => 'auth:alumnos'],function (){
     Route::get('/confirm','RequestController@confirmaSolicitud')->name('generasolicitud');
     Route::post('/confirm','RequestController@confirmaSolicitud')->name('generasolicitud');
 
-    Route::get('/autopdf{infopdf}','RequestController@autogeneratePDF')->name('pdfautogenerate');
-    Route::post('/autopdf{infopdf}','RequestController@autogeneratePDF')->name('pdfautogenerate');
+    Route::get('/autopdf/{infopdf}','RequestController@autogeneratePDF')->name('pdfautogenerate');
+    Route::post('/autopdf/{infopdf}','RequestController@autogeneratePDF')->name('pdfautogenerate');
 
-    Route::get('/pdf{id}','RequestController@generatePDF')->name('pdfsolicitud');
-    Route::post('/pdf{id}','RequestController@generatePDF')->name('pdfsolicitud');
+    Route::get('/pdf/{id}','RequestController@generatePDF')->name('pdfsolicitud');
+    Route::post('/pdf/{id}','RequestController@generatePDF')->name('pdfsolicitud');
+
+    Route::get('/updateestado/','RequestController@updateestado')->name('updateestado');
+    Route::post('/updateestado/','RequestController@updateestado')->name('updateestado');
 });
 
 //Administrador

@@ -32,7 +32,8 @@
         <h3>A QUIEN CORRESPONDA</h3>
         <h3>PRESENTE</h3>
         <p>Sirva a bien el presente medio para notificar la Asesoría Académica programada con número de folio {{ $solicitud->folio }}
-            el dia {{ $solicitud->fecha->format('D, d M Y') }} a las {{ $solicitud->fecha->format('h:i A') }} hrs. con duración de 30 min. en
+            el dia {{ $solicitud->fecha->format('l, d M Y') }} a las {{ $solicitud->fecha->format('h:i A') }} hrs.
+            con duración de 30 min. en
             {{ $solicitud->consultant->lugar }} asignado al asesor
             {{ $solicitud->consultant->nombre .' '. $solicitud->consultant->apellido }}.
         </p>
