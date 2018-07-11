@@ -209,7 +209,9 @@ class RequestController extends Controller
         $Solicitud -> folio = $folio;
         $Solicitud -> save();
         $identificador = $Solicitud->id;
+
         $Nueva = (new \App\Models\Request)->where('id','=',$identificador)->first();
+        Mail::to($Nueva->student->correo)->send(new DemoEmail($Nueva));
 
         if ($tipo != 'Individual'){
             $compas = decrypt($request->compas);
@@ -228,6 +230,10 @@ class RequestController extends Controller
                 $Solicitud -> periodo = $periodo;
                 $Solicitud -> folio = $folio;
                 $Solicitud -> save();
+                $id1 = $Solicitud->id;
+                $S1 = (new \App\Models\Request)->where('id','=',$id1)->first();
+                Mail::to($S1->student->correo)->send(new DemoEmail($S1));
+
             }
             if ($compas != 1){
                 $alumno = decrypt($request->compa1);
@@ -244,6 +250,9 @@ class RequestController extends Controller
                 $Solicitud -> periodo = $periodo;
                 $Solicitud -> folio = $folio;
                 $Solicitud -> save();
+                $id1 = $Solicitud->id;
+                $S1 = (new \App\Models\Request)->where('id','=',$id1)->first();
+                Mail::to($S1->student->correo)->send(new DemoEmail($S1));
 
                 $alumno = decrypt($request->compa2);
                 $folio = $alumno .'-'.$asesor.'-'.$coordinador.'-'.$unidad.'-'.$foliofecha.'-'.$foliohora;
@@ -259,6 +268,9 @@ class RequestController extends Controller
                 $Solicitud -> periodo = $periodo;
                 $Solicitud -> folio = $folio;
                 $Solicitud -> save();
+                $id2 = $Solicitud->id;
+                $S2 = (new \App\Models\Request)->where('id','=',$id2)->first();
+                Mail::to($S2->student->correo)->send(new DemoEmail($S2));
             }
         }
 
@@ -297,19 +309,18 @@ class RequestController extends Controller
 
     public function autogeneratePDF(Request $request, $infopdf){
         $solicitud = (new \App\Models\Request)->where('id', '=',decrypt($infopdf))->first();
-
+        $folio = $solicitud->folio;
         $options = new Options();
         $options->setIsRemoteEnabled(true);
         $dompdf = new Dompdf($options);
-        $dompdf->loadHtml(view('alumno.pdf.solicitud', compact('solicitud'))->render());
+        $dompdf->loadHtml(view('pdf.solicitud', compact('solicitud'))->render());
         $dompdf->render();
-        $dompdf->stream('solicitud',array('Attachment'=>0));
+        $dompdf->stream($folio,array('Attachment'=>0));
     }
 
     public function detalles(Request $request){
         $id = decrypt($request->id);
         $solicitud = (new \App\Models\Request)->where('id','=',$id)->first();
-        Mail::to($solicitud->student->correo)->send(new DemoEmail($solicitud));
         return view('alumno.solicitud')->with(compact('solicitud'));
     }
 
@@ -339,13 +350,14 @@ class RequestController extends Controller
 
     public function generatePDF(Request $request, $id){
         $solicitud = (new \App\Models\Request)->where('id', '=',decrypt($id))->first();
-
+        $folio = $solicitud->folio;
         $options = new Options();
         $options->setIsRemoteEnabled(true);
+        $options->getDefaultPaperSize('A4');
         $dompdf = new Dompdf($options);
-        $dompdf->loadHtml(view('alumno.pdf.solicitud', compact('solicitud'))->render());
+        $dompdf->loadHtml(view('pdf.solicitud', compact('solicitud'))->render());
         $dompdf->render();
-        $dompdf->stream('solicitud',array('Attachment'=>0));
+        $dompdf->stream($folio,array('Attachment'=>0));
     }
 
     public function allSolicitudCoordinador(){

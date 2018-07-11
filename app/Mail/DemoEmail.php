@@ -31,7 +31,7 @@ class DemoEmail extends Mailable
     public function build()
     {
         return $this->from('soporteAsesoriasUACAM@gmail.com')
-            ->view('alumno.pdf.solicitud')
-            ->with(compact('solicitud'));
+            ->view('mail.solicitud')
+            ->with(compact('solicitud'))->subject('Asesoría Académica Programada');
     }
 }

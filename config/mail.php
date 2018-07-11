@@ -117,6 +117,7 @@ return [
 
         'paths' => [
             resource_path('views/vendor/mail'),
+            public_path('images')
         ],
     ],
 
