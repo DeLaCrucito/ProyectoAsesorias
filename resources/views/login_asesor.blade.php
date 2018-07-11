@@ -62,8 +62,8 @@
                             </div>
                             <div class="row center">
                                 <button type="submit" name="btn_login"  class=" black-text light-blue accent-1 btn
-                                boton"> Iniciar Sesión</button>
-                                <br>
+                                boton"> Iniciar Sesión</button><br>
+                                <p></p>
                                 <a style="color: #bbdefb" href="{{ route('generalhome') }}">No soy un asesor</a>
                             </div>
                         </div>

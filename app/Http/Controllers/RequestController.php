@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\DemoEmail;
 use App\Models\Consultant;
 use App\Models\Coordinator;
+use App\Models\Degree;
 use App\Models\Student;
 use App\Models\Subject;
 use Carbon\Carbon;
@@ -13,6 +15,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Mail;
 
 class RequestController extends Controller
 {
@@ -306,6 +309,7 @@ class RequestController extends Controller
     public function detalles(Request $request){
         $id = decrypt($request->id);
         $solicitud = (new \App\Models\Request)->where('id','=',$id)->first();
+        Mail::to($solicitud->student->correo)->send(new DemoEmail($solicitud));
         return view('alumno.solicitud')->with(compact('solicitud'));
     }
 
@@ -342,5 +346,13 @@ class RequestController extends Controller
         $dompdf->loadHtml(view('alumno.pdf.solicitud', compact('solicitud'))->render());
         $dompdf->render();
         $dompdf->stream('solicitud',array('Attachment'=>0));
+    }
+
+    public function allSolicitudCoordinador(){
+        $coordinador  =  Auth::id();
+        $coordinator = (new \App\Models\Coordinator)->where('id','=',$coordinador)->first();
+        $solicituds = (new \App\Models\Request)->where('coordinador','=',$coordinador)->paginate(5);
+        $vista = view('coordinador.historial')->with(compact('solicituds'))->with(compact('coordinator'));
+        return $vista;
     }
 }

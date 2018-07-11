@@ -29,7 +29,7 @@
                         class="material-icons">account_circle</i>Asesores</a>
         </li>
         <li>
-            <a  href="{{route('viewusuarios')}}" class="white-text left-align"><i
+            <a  href="{{route('allsolicitud')}}" class="white-text left-align"><i
                         class="material-icons">list</i>Solicitudes</a>
         </li>
         <li>

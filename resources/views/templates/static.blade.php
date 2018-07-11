@@ -215,16 +215,41 @@
     }
     .picker__date-display, .picker__weekday-display{
         background-color: #212121;
+
     }
 
     div.picker__day.picker__day--infocus.picker__day--selected.picker__day--highlighted {
         background-color: #212121;
+
     }
+    .picker__box{
+        border-color: #212121;
+        border-radius: 30px;
+    }
+
+    ul.dropdown-content.select-dropdown li span {
+        color: #ffffff; /* no need for !important :) */
+        background-color: #212121;
+    }
+
     html {
         line-height: 1.5;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
         font-weight: normal;
         color: rgba(0, 0, 0, 0.87);
+    }
+
+    .modal{
+        border-radius: 35px;
+    }
+
+    .btn{
+        border-radius: 35px;
+    }
+
+
+    .picker__day.picker__day--today {
+        color: red;
     }
 
 
@@ -271,14 +296,15 @@
         $('.modal').modal();
 
     });
-</script>
-<script>
+
     function MostrarOcultos() {
         var ocultos = document.getElementsByClassName("oculto");
         for (var i = 0; i<=ocultos.length; i++){
             $(ocultos[i]).css('display','block');
         }
     }
+
+
 </script>
 @yield('scripts')
 </body>

@@ -309,6 +309,9 @@ Route::group(['prefix' => 'coordinador', 'middleware' => 'auth:coordinadores'],f
     Route::get('/unidad{subject}','SubjectController@detalleunidad')->name('coordetalleunidad');
     Route::post('/unidad{subject}','SubjectController@detalleunidad')->name('coordetalleunidad');
 
+    Route::get('/solicitudes','RequestController@allSolicitudCoordinador')->name('allsolicitud');
+    Route::post('/solicitudes','RequestController@allSolicitudCoordinador')->name('allsolicitud');
+
     Route::group(['prefix' => 'ajax'], function (){
         Route::get('/unidades','SubjectController@ajaxlistaunidades')->name('coorajaxunidades');
         Route::post('/unidades','SubjectController@ajaxlistaunidades')->name('coorajaxunidades');
