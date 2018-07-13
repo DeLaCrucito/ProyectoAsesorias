@@ -7,6 +7,7 @@
     "require": {
         "php": ">=5.6.4",
         "dompdf/dompdf": "^0.8.2",
+        "fzaninotto/faker": "^1.8",
         "jenssegers/date": "^3.4",
         "landish/pagination": "^1.3",
         "laravel/framework": "5.4.*",
@@ -14,7 +15,6 @@
         "reliese/laravel": "^0.0.13"
     },
     "require-dev": {
-        "fzaninotto/faker": "~1.4",
         "ignasbernotas/laravel-model-generator": "^1.2",
         "krlove/eloquent-model-generator": "^1.2",
         "mockery/mockery": "0.9.*",

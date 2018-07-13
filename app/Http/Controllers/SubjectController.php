@@ -150,12 +150,14 @@ class SubjectController extends Controller
     public function listaunidadescoor(Request $request){
         $licenciatura = Auth::user()->licenciatura;
         $degree = Degree::findOrFail($licenciatura);
-        $subjects = Subject::where('licenciatura','=',$licenciatura)->paginate(5);
+        $subjects = Subject::where('licenciatura','=',$licenciatura)->orderBy('semestre','asc')->paginate(5);
         $vista = view('coordinador.unidades')->with(compact('subjects'))->with(compact('degree'));
         if ($request->ajax()){
-            $licenciatura = Auth::user()->licenciatura;
             $semestre = $request->semestre;
-            $subjects = Subject::where('licenciatura','=',$licenciatura)->where('semestre','=',$semestre)->paginate(5);
+            if(($semestre != 0)){
+                $subjects = Subject::where('licenciatura','=',$licenciatura)->where('semestre','=',$semestre)->paginate(5);
+
+            }
             $vista = view('coordinador.ajax.tablaunidades')->with(compact('subjects'))->render();
         }
         return $vista;

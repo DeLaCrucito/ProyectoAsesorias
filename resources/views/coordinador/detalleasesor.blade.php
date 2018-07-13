@@ -128,13 +128,14 @@
             </div>
         </div>
     </form>
+@endsection
+@section('scripts')
     <script>
-
         function cargaTabla(page) {
-            var asesor = "{{ $consultant->id }}";
+            var asesor = "{{ encrypt($consultant->id) }}";
             $.ajax({
                 data:{
-                    asesor: asesor
+                    id: asesor
                 },
                 url:'?page='+page
             }).done(function (data) {

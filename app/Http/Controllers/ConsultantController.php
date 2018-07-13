@@ -161,7 +161,6 @@ class ConsultantController extends Controller
         $asignaturas = Assignment::with('subject')->where('asesor','=',$consultant->id)->get();
         $vista = view('coordinador.detalleasesor',compact('consultant'))->with(compact('subjects'))->with(compact('schedules'))->with(compact('asignaturas'));
         if($request->ajax()){
-            $subjects = Assignment::with('subject')->where('asesor','=',$consultant->id)->paginate(5);
             $vista = view('coordinador.ajax.tabla_asignaturas',compact('subjects'))->with(compact('consultant'));
         }
         return $vista;
@@ -169,14 +168,17 @@ class ConsultantController extends Controller
 
     public function asignamateria(Request $request){
         $licenciatura = Auth::user()->licenciatura;
-        $subjects = Subject::where('licenciatura','=',$licenciatura)->paginate(5);
+        $subjects = Subject::where('licenciatura','=',$licenciatura)->orderBy('semestre','asc')->paginate(5);
         $degree = Degree::findOrFail($licenciatura);
         $asesor = decrypt($request->consultant);
         $consultant = Consultant::where('id','=',$asesor)->first();
         $vista = view('coordinador.asignacion',compact('subjects'))
             ->with(compact('degree'))->with(compact('consultant'));
         if($request->ajax()){
-
+            $semestre = $request->semestre;
+            if(($semestre != 0)){
+                $subjects = Subject::where('licenciatura','=',$licenciatura)->where('semestre','=',$semestre)->paginate(5);
+            }
             $vista = view('coordinador.ajax.tablaasignacion')->with(compact('subjects'))->with(compact('consultant'))->render();
         }
         return $vista;

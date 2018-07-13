@@ -2,6 +2,7 @@
     <thead>
     <tr>
         <th>Unidad de Aprendizaje</th>
+        <th>Semestre</th>
         <th>Tipo de asignatura</th>
         <th>Acciones</th>
     </tr>
@@ -10,6 +11,7 @@
     @foreach($subjects as $subject)
         <tr>
             <td>{{ $subject->nombre }}</td>
+            <td>{{ $subject->semestre }}</td>
             <td>{{ $subject->tipo }}</td>
             <td><a class="btn-flat blue-text modal-trigger"
                    href="#modal{{ $subject->id }}"><span></span>Asignar</a></td>
