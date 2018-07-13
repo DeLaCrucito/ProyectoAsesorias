@@ -16,4 +16,7 @@
     @endforeach
     </tbody>
 </table>
+@unless (count($consultants))
+    <p class="white-text center-align">No existen asesores.</p>
+@endunless
 {!! $consultants->links() !!}

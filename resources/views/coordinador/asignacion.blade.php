@@ -36,26 +36,47 @@
                     @endif
                     <input type="hidden" id="asesor" value="{{ $consultant->id }}">
                     <div class="posts row" id="posts">
+                        <table class="white-text highlight">
+                            <thead>
+                            <tr>
+                                <th>Unidad de Aprendizaje</th>
+                                <th>Tipo de asignatura</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($subjects as $subject)
+                                <tr>
+                                    <td>{{ $subject->nombre }}</td>
+                                    <td>{{ $subject->tipo }}</td>
+                                    <td><a class="btn-flat blue-text modal-trigger"
+                                           href="#modal{{ $subject->id }}"><span></span>Asignar</a></td>
+                                </tr>
+                                <div id="modal{{ $subject->id }}" class="modal">
+                                    <div class="modal-content">
+                                        <h5>Podrá remover la materia posteriormente</h5>
+                                        <p>¿Desea asignar la materia {{
+                                                   $subject->nombre }} al asesor
+                                            {{$consultant->nombre . ' '. $consultant->apellido}}?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a id="#disagree" onclick="$('#modal{{ $subject->id }}').modal('close');" class="modal-action modal-close
+                                        waves-effect
+                                            waves-red btn-flat">Cancelar</a>
+                                        <a id="#agree" onclick="{{ route('asignar', ['subject'=>$subject, 'consultant'=>$consultant->id]) }}" class="modal-action
+                                        modal-close
+                                        waves-effect
+                                            waves-green btn-flat">Aceptar</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                            </tbody>
+                        </table>
+                        {!! $subjects->links() !!}
                     </div>
                 </div>
             </div>
         </div>
-        @foreach($subjects as $subject)
-            <div id="modal{{ $subject->id }}" class="modal">
-                <div class="modal-content">
-                    <h5>Podrá remover la materia posteriormente</h5>
-                    <p>¿Desea asignar la materia {{
-                                                   $subject->nombre }} al asesor
-                        {{$consultant->nombre . ' '. $consultant->apellido}}?</p>
-                </div>
-                <div class="modal-footer">
-                    <a id="#disagree" onclick="cierraModal()" class="modal-action modal-close waves-effect
-                                            waves-red btn-flat">Cancelar</a>
-                    <a id="#agree" onclick="ejecutaAccion()" class="modal-action modal-close waves-effect
-                                            waves-green btn-flat">Aceptar</a>
-                </div>
-            </div>
-        @endforeach
     </form>
     <script>
         function mostrarTabla(val) {
@@ -75,6 +96,9 @@
                 },
                 success: function (response) {
                     document.getElementById('posts').innerHTML = response.html;
+                    $('.modal').modal();
+                    $('.tooltipped').tooltip({delay: 50});
+                    console.log(response.html);
                 }
             });
         }
@@ -89,8 +113,11 @@
                 },
                 url:'?page='+page
             }).done(function (data) {
-                console.log(data)
+                console.log(data);
                 $('.posts').html(data);
+                $('.modal').modal();
+                $('.tooltipped').tooltip({delay: 50});
+
             })
         }
     </script>

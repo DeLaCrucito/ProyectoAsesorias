@@ -26,7 +26,7 @@ class ScheduleController extends Controller
         $consultant = $request->consultant;
         $post = (new \App\Models\Schedule)->findOrFail($request -> id);
         $post->delete();
-        return redirect()->back();
+        return redirect()->back()->with('message', 'El horario se eliminó correctamente');
     }
 
     public function savehorario(Request $request, Consultant $consultant){

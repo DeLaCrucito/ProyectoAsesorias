@@ -309,12 +309,25 @@ Route::group(['prefix' => 'coordinador', 'middleware' => 'auth:coordinadores'],f
     Route::get('/unidad{subject}','SubjectController@detalleunidad')->name('coordetalleunidad');
     Route::post('/unidad{subject}','SubjectController@detalleunidad')->name('coordetalleunidad');
 
-    Route::get('/solicitudes','RequestController@allSolicitudCoordinador')->name('allsolicitud');
-    Route::post('/solicitudes','RequestController@allSolicitudCoordinador')->name('allsolicitud');
+    Route::get('/solicitudes','CoordinatorController@allSolicitudCoordinador')->name('allsolicitud');
+    Route::post('/solicitudes','CoordinatorController@allSolicitudCoordinador')->name('allsolicitud');
+
+    Route::get('/evaluate/{id}','CoordinatorController@evaluar')->name('evaluacion');
+    Route::post('/evaluate/{id}','CoordinatorController@evaluar')->name('evaluacion');
+
+    Route::get('/calificar/','EvaluationController@calificar')->name('calificar');
+    Route::post('/calificar/','EvaluationController@calificar')->name('calificar');
+
 
     Route::group(['prefix' => 'ajax'], function (){
         Route::get('/unidades','SubjectController@ajaxlistaunidades')->name('coorajaxunidades');
         Route::post('/unidades','SubjectController@ajaxlistaunidades')->name('coorajaxunidades');
+
+        Route::get('/selectunidades','SubjectController@showunidades')->name('coorselectunidades');
+        Route::post('/selectunidades','SubjectController@showunidades')->name('coorselectunidades');
+
+        Route::get('/historialunidad','CoordinatorController@filtros')->name('filtrohistorial');
+        Route::post('/historialunidad','CoordinatorController@filtros')->name('filtrohistorial');
 
         Route::get('/asesortabla','ConsultantController@especialidad')->name('filtroespecialidad');
         Route::post('/asesortabla','ConsultantController@especialidad')->name('filtroespecialidad');

@@ -10,6 +10,11 @@
                     </blockquote>
                 </div>
             </div>
+            @if(session()->has('message'))
+                <div class="green darken-4 white-text col s12 m12 center-align" style="border-radius: 25px">
+                    <h5>{{ session()->get('message') }}</h5>
+                </div><br>
+            @endif
             <div style="margin-top: 50px">
                 @if ($errors->any())
                     <div class="red darken-1 white-text" style="border-radius: 25px">
@@ -68,19 +73,29 @@
                                            href="#modal{{ $schedule->id }}"><span></span>Eliminar</a></td>
 
                                 </tr>
-                                <script>
-                                    function ejecutaAccion() {
-                                        window.location.href = '{{ route('delhorario', ['id'=>$schedule,
-                                                   'consultant'=>$consultant]) }}'
-                                    }
-                                    
-                                    function cierraModal() {
-                                        $('#modal{{ $schedule->id }}').modal('close');
-                                    }
-                                </script>
+                                <div id="modal{{ $schedule->id }}" class="modal">
+                                    <div class="modal-content">
+                                        <h5>Esta acción no se puede deshacer</h5>
+                                        <p>¿Seguro que desea eliminar el horario con el día {{
+                                                   $schedule->dia .' y horario '. $schedule->hr_inicio .' - '.
+                                                   $schedule->hr_fin
+                                                   }} para el asesor {{$consultant->nombre . ' '.
+                                                   $consultant->apellido}}?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a id="#disagree" onclick=" $('#modal{{ $schedule->id }}').modal('close');" class="modal-action modal-close waves-effect
+                                            waves-red btn-flat">Cancelar</a>
+                                        <a id="#agree" href="{{ route('delhorario', ['id'=>$schedule,
+                                                   'consultant'=>$consultant]) }}" class="modal-action modal-close waves-effect
+                                            waves-green btn-flat">Aceptar</a>
+                                    </div>
+                                </div>
                             @endforeach
                             </tbody>
                         </table>
+                        @unless (count($schedules))
+                            <p class="white-text center-align">No existen horarios.</p>
+                        @endunless
                         {!! $schedules->links() !!}
                     </div>
                 </div>
@@ -123,24 +138,6 @@
 
             </div>
         </div>
-        @foreach($horas as $hora)
-            <div id="modal{{ $hora->id }}" class="modal">
-                <div class="modal-content">
-                    <h5>Esta acción no se puede deshacer</h5>
-                    <p>¿Seguro que desea eliminar el horario con el día {{
-                                                   $hora->dia .' y horario '. $hora->hr_inicio .' - '.
-                                                   $hora->hr_fin
-                                                   }} para el asesor {{$consultant->nombre . ' '.
-                                                   $consultant->apellido}}?</p>
-                </div>
-                <div class="modal-footer">
-                    <a id="#disagree" onclick="cierraModal()" class="modal-action modal-close waves-effect
-                                            waves-red btn-flat">Cancelar</a>
-                    <a id="#agree" onclick="ejecutaAccion()" class="modal-action modal-close waves-effect
-                                            waves-green btn-flat">Aceptar</a>
-                </div>
-            </div>
-        @endforeach
     </form>
     <script>
         function cargaTabla(page) {

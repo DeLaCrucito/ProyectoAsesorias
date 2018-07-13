@@ -71,16 +71,22 @@
                                            href="#modal{{ $subject->id }}"><span></span>Remover</a></td>
 
                                 </tr>
-                                <script>
-                                    function ejecutaAccion() {
-                                        window.location.href = '{{ route('delasignacion', ['id'=>$subject,
-                                                   'consultant'=>$consultant]) }}'
-                                    }
-
-                                    function cierraModal() {
-                                        $('#modal{{ $subject->id }}').modal('close');
-                                    }
-                                </script>
+                                <div id="modal{{ $subject->id }}" class="modal">
+                                    <div class="modal-content">
+                                        <h5>Esta acción no se puede deshacer</h5>
+                                        <p>¿Seguro que desea remover la materia {{
+                                                   $subject->subject->nombre }} para el asesor
+                                            {{$subject->nombre . ' '.
+                                                                       $subject->apellido}}?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a id="#disagree" onclick="$('#modal{{ $subject->id }}').modal('close');" class="modal-action modal-close waves-effect
+                                            waves-red btn-flat">Cancelar</a>
+                                        <a id="#agree" href="{{ route('delasignacion', ['id'=>$subject,
+                                                   'consultant'=>$consultant]) }}" class="modal-action modal-close waves-effect
+                                            waves-green btn-flat">Aceptar</a>
+                                    </div>
+                                </div>
                             @endforeach
                             </tbody>
                         </table>
@@ -120,23 +126,6 @@
                 </div>
             </div>
         </div>
-        @foreach($asignaturas as $asignatura)
-            <div id="modal{{ $asignatura->id }}" class="modal">
-                <div class="modal-content">
-                    <h5>Esta acción no se puede deshacer</h5>
-                    <p>¿Seguro que desea remover la materia {{
-                                                   $asignatura->subject->nombre }} para el asesor
-                        {{$consultant->nombre . ' '.
-                                                   $consultant->apellido}}?</p>
-                </div>
-                <div class="modal-footer">
-                    <a id="#disagree" onclick="cierraModal()" class="modal-action modal-close waves-effect
-                                            waves-red btn-flat">Cancelar</a>
-                    <a id="#agree" onclick="ejecutaAccion()" class="modal-action modal-close waves-effect
-                                            waves-green btn-flat">Aceptar</a>
-                </div>
-            </div>
-        @endforeach
     </form>
     <script>
 
@@ -149,6 +138,8 @@
                 url:'?page='+page
             }).done(function (data) {
                 $('.posts').html(data);
+                $('.modal').modal();
+                $('.tooltipped').tooltip({delay: 50});
             })
         }
     </script>

@@ -64,6 +64,7 @@
                             </thead>
                             <tbody>
                             @foreach($consultants as $consultant)
+
                                 <tr >
                                     <td>{{ $consultant->consultant->nombre .' '. $consultant->consultant->apellido
                                     }}</td>
@@ -73,19 +74,29 @@
                                            href="#modal{{ $consultant->id }}"><span></span>Remover</a></td>
 
                                 </tr>
-                                <script>
-                                    function ejecutaAccion() {
-                                        window.location.href = '{{ route('delasignacion', ['id'=>$consultant,
-                                                   'consultant'=>$consultant->id] ) }}'
-                                    }
-
-                                    function cierraModal() {
-                                        $('#modal{{ $subject->id }}').modal('close');
-                                    }
-                                </script>
+                                <div id="modal{{ $asignatura->id }}" class="modal">
+                                    <div class="modal-content">
+                                        <h5>Puede reasignar al asesor posteriormente</h5>
+                                        <p>¿Desea remover al asesor {{
+                                                   $asignatura->consultant->nombre . ' '.
+                                                   $asignatura->consultant->apellido }}
+                                            de la materia
+                                            {{ $subject->nombre  }}?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a id="#disagree" onclick=" $('#modal{{ $subject->id }}').modal('close');" class="modal-action modal-close waves-effect
+                                            waves-red btn-flat">Cancelar</a>
+                                        <a id="#agree" href="{{ route('delasignacion', ['id'=>$consultant,
+                                                   'consultant'=>$consultant->id] ) }}" class="modal-action modal-close waves-effect
+                                            waves-green btn-flat">Aceptar</a>
+                                    </div>
+                                </div>
                             @endforeach
                             </tbody>
                         </table>
+                        @unless (count($consultants))
+                            <p class="white-text center-align">Este materia no tiene asignado ningún asesor.</p>
+                        @endunless
                         {!! $consultants->links() !!}
                     </div>
                 </div>
@@ -93,24 +104,6 @@
 
             </div>
         </div>
-        @foreach($asignaturas as $asignatura)
-            <div id="modal{{ $asignatura->id }}" class="modal">
-                <div class="modal-content">
-                    <h5>Puede reasignar al asesor posteriormente</h5>
-                    <p>¿Desea remover al asesor {{
-                                                   $asignatura->consultant->nombre . ' '.
-                                                   $asignatura->consultant->apellido }}
-                        de la materia
-                        {{ $subject->nombre  }}?</p>
-                </div>
-                <div class="modal-footer">
-                    <a id="#disagree" onclick="cierraModal()" class="modal-action modal-close waves-effect
-                                            waves-red btn-flat">Cancelar</a>
-                    <a id="#agree" onclick="ejecutaAccion()" class="modal-action modal-close waves-effect
-                                            waves-green btn-flat">Aceptar</a>
-                </div>
-            </div>
-        @endforeach
     </form>
     <script>
 

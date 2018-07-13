@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Coordinator;
 use App\Models\Degree;
+use App\Models\Evaluation;
 use App\Models\Faculty;
 use App\Models\Subject;
 use Illuminate\Http\Request;
@@ -127,4 +128,82 @@ class CoordinatorController extends Controller
         $post -> delete();
         return redirect()->route('viewcoordinador');
     }
+
+    public function allSolicitudCoordinador(Request $request){
+        $coordinador  =  Auth::id();
+        $coordinator = (new \App\Models\Coordinator)->where('id','=',$coordinador)->first();
+        $colecion = (new \App\Models\Request)->where('coordinador','=',$coordinador)->get();
+        $materias =$colecion->unique('materia');
+        $estados = $colecion->unique('estado');
+        $solicituds = (new \App\Models\Request)->where('coordinador','=',$coordinador)->orderBy('fecha', 'asc')->paginate(5);
+        $vista =  view('coordinador.historial')->with(compact('solicituds'))->with(compact('materias'))->with(compact
+        ('estados'))->with(compact('coordinator'));
+        if ($request->ajax()){
+            $coordinador  =  Auth::id();
+            $unidad = $request->unidad;
+            $estado = $request->estado;
+            if ($unidad === 0 && $estado === 0){
+                $solicituds = (new \App\Models\Request)->where('coordinador','=',$coordinador)->orderBy('fecha', 'asc')->paginate(5);
+            }elseif ($unidad != 0 && $estado != 0){
+                $solicituds = (new \App\Models\Request)->where('coordinador','=',$coordinador)
+                    ->where('materia','=',$unidad)
+                    ->where('materia','=',$unidad)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            }elseif ($unidad != 0 && $estado == 0){
+                $solicituds = (new \App\Models\Request)->where('coordinador','=',$coordinador)
+                    ->where('materia','=',$unidad)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            }elseif ($unidad == 0 && $estado != 0){
+                $solicituds = (new \App\Models\Request)->where('coordinador','=',$coordinador)
+                    ->where('estado','=',$estado)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            }
+            $vista = view('coordinador.ajax.tablahistorial')->with(compact('solicituds'))->render();
+        }
+        return $vista;
+    }
+
+    public function filtros(Request $request)
+    {
+        if ($request->ajax()) {
+            $coordinator = Auth::id();
+            $unidad = $request->unidad;
+            $estado = $request->estado;
+            if ($unidad === 0 && $estado === 0) {
+                $solicituds = (new \App\Models\Request)->where('coordinador', '=', $coordinator)->orderBy('fecha', 'asc')->paginate(5);
+            } elseif ($unidad != 0 && $estado != 0) {
+                $solicituds = (new \App\Models\Request)->where('coordinador', '=', $coordinator)
+                    ->where('materia', '=', $unidad)
+                    ->where('estado', '=', $estado)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            } elseif ($unidad != 0 && $estado == 0) {
+                $solicituds = (new \App\Models\Request)->where('coordinador', '=', $coordinator)
+                    ->where('materia', '=', $unidad)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            } elseif ($unidad == 0 && $estado != 0) {
+                $solicituds = (new \App\Models\Request)->where('coordinador', '=', $coordinator)
+                    ->where('estado', '=', $estado)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            }
+            $vista = view('coordinador.ajax.tablahistorial')->with(compact('solicituds'))->render();
+        }
+        return response()->json(array('success' => true, 'html' => $vista));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function evaluar(Request $request){
+        $id = decrypt($request->id);
+        $evaluada = (new \App\Models\Evaluation)->where('solicitud','=',$id)->exists();
+        if ($evaluada){
+            $evaluation = (new \App\Models\Evaluation)->where('solicitud','=',$id)->first();
+        }
+
+        $solicitud = (new \App\Models\Request)->where('id','=',$id)->first();
+        return view('coordinador.solicitud')->with(compact('solicitud'))->with(compact('evaluada'))->with(compact('evaluation'));
+    }
+
+
 }

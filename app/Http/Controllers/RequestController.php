@@ -360,11 +360,6 @@ class RequestController extends Controller
         $dompdf->stream($folio,array('Attachment'=>0));
     }
 
-    public function allSolicitudCoordinador(){
-        $coordinador  =  Auth::id();
-        $coordinator = (new \App\Models\Coordinator)->where('id','=',$coordinador)->first();
-        $solicituds = (new \App\Models\Request)->where('coordinador','=',$coordinador)->paginate(5);
-        $vista = view('coordinador.historial')->with(compact('solicituds'))->with(compact('coordinator'));
-        return $vista;
-    }
+
+
 }

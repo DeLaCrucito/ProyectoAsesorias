@@ -166,27 +166,26 @@ class ConsultantController extends Controller
         return $vista;
     }
 
-    public function asignamateria(Request $request, Consultant $consultant){
+    public function asignamateria(Request $request){
         $licenciatura = Auth::user()->licenciatura;
-        $subjects = Subject::where('licenciatura','=',$licenciatura)->get();
+        $subjects = Subject::where('licenciatura','=',$licenciatura)->paginate(5);
         $degree = Degree::findOrFail($licenciatura);
+        $asesor = $request->consultant;
+        $consultant = Consultant::where('id','=',$asesor)->first();
         $vista = view('coordinador.asignacion',compact('subjects'))
             ->with(compact('degree'))->with(compact('consultant'));
         if($request->ajax()){
-            $asesor = $request->asesor;
-            $semestre = $request->semestre;
-            $subjects = Subject::where('semestre', '=',$semestre)->where('licenciatura','=',$licenciatura)->paginate(5);
-            $datos = compact('subjects',$subjects);
-            $vista = view('coordinador.ajax.tablaasignacion', $datos)->with(compact('consultant'))->render();
+
+            $vista = view('coordinador.ajax.tablaasignacion')->with(compact('subjects'))->with(compact('consultant'))->render();
         }
         return $vista;
     }
 
     public function tbasignacion(Request $request){
-
         if($request->ajax()){
             $semestre = $request->semestre;
-            $consultant = $request->asesor;
+            $asesor = $request->asesor;
+            $consultant = Consultant::where('id','=',$asesor)->first();
             $licenciatura = Auth::user()->licenciatura;
             $subjects = Subject::where('semestre', '=',$semestre)->where('licenciatura','=',$licenciatura)->paginate(5);
             $datos = compact('subjects',$subjects);

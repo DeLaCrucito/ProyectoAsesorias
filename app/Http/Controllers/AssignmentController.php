@@ -28,6 +28,7 @@ class AssignmentController extends Controller
         $consultant = $request->consultant;
         $post = Assignment::findOrFail($request -> id);
         $post -> delete();
-        return redirect()->back();
+        return redirect()->back()->with('message', 'La materia fue removida con éxito');
+
     }
 }

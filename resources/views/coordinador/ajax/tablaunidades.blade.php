@@ -22,4 +22,7 @@
     @endforeach
     </tbody>
 </table>
+@unless (count($subjects))
+    <p class="white-text center-align">No existen unidades de aprendizaje.</p>
+@endunless
 {!! $subjects->links() !!}

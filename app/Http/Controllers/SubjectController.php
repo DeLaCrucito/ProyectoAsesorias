@@ -178,4 +178,42 @@ class SubjectController extends Controller
         (compact('asignaturas'));
         return $vista;
     }
+
+    function showunidades(Request $request){
+        if ($request->ajax()){
+            $licenciatura =  Auth::user()->licenciatura;
+            $semestre = $request->semestre;
+            $subjects = Subject::where('licenciatura','=',$licenciatura)->where('semestre','=', $semestre)->get();
+            $vista = view('coordinador.ajax.selectunidades', compact('subjects'))->render();
+        }
+        return response()->json(array('success' => true, 'html'=>$vista));
+    }
+
+    public function unidadHistorial(Request $request){
+        if ($request->ajax()){
+            $coordinador  =  Auth::id();
+            $unidad = $request->unidad;
+            $estado = $request->estado;
+            if ($unidad === 0 && $estado === 0){
+                $solicituds = \App\Models\Request::where('coordinador','=',$coordinador)->orderBy('fecha', 'asc')->paginate
+                (5);
+            }elseif ($unidad != 0 && $estado != 0){
+                $solicituds = \App\Models\Request::where('coordinador','=',$coordinador)
+                    ->where('materia','=',$unidad)
+                    ->where('estado','=',$estado)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            }elseif ($unidad != 0 && $estado == 0){
+                $solicituds = \App\Models\Request::where('coordinador','=',$coordinador)
+                    ->where('materia','=',$unidad)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            }elseif ($unidad == 0 && $estado != 0){
+                $solicituds = \App\Models\Request::where('coordinador','=',$coordinador)
+                    ->where('estado','=',$estado)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            }
+            $vista = view('alumno.ajax.tablahistorial')->with(compact('solicituds'))->render();
+        }
+        return response()->json(array('success' => true, 'html'=>$vista));
+
+    }
 }
