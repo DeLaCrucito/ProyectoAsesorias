@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Assignment;
+use App\Models\Consultant;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 
 class AssignmentController extends Controller
@@ -11,8 +13,10 @@ class AssignmentController extends Controller
         $unidad = decrypt($request->subject);
         $asesor = decrypt($request->consultant);
         $code = $unidad.'-'. $asesor;
+        $materia = Subject::where('id','=',$unidad)->first();
         if (Assignment::where('code', '=', $code)->exists()) {
-            return redirect()->back()->with('message', 'Materia ya asignada para el asesor. Seleccione otra materia');
+            $texto = 'La materia '.$materia->nombre.' ya está asignada, intente con otra materia.';
+            return redirect()->back()->with('alert', $texto);
         } else{
             $Assignment = new Assignment();
             $Assignment -> materia = $unidad;
@@ -20,7 +24,9 @@ class AssignmentController extends Controller
             $Assignment -> code = $code;
             $Assignment -> save();
 
-            return view('coordinador.ajax.exit',compact('asesor'));
+
+            $texto = 'La materia '.$materia->nombre.' se agregó con éxito';
+            return redirect()->back()->with('message', $texto);
         }
     }
 
@@ -30,5 +36,38 @@ class AssignmentController extends Controller
         $post->delete();
         return redirect()->back()->with('message', 'La materia fue removida con éxito');
 
+    }
+
+    public function listaasesores(Request $request){
+        $unidad = decrypt($request->unidad);
+        $consultants = Consultant::with('schedules')->orderBy('apellido','asc')->paginate(5);
+        $subject = (new \App\Models\Subject)->where('id','=',$unidad)->first();
+        $vista = view('coordinador.variosasesores')->with(compact('consultants'))->with(compact('subject'));
+        if($request->ajax()){
+            $unidad = decrypt($request->unidad);
+            $especialidad = $request->especialidad;
+            if ($especialidad != 'nada'){
+                $consultants = (new \App\Models\Consultant)->where('especialidad', '=',$especialidad)->orderBy('apellido','asc')
+                    ->paginate(5);
+                $subject = (new \App\Models\Subject)->where('id','=',$unidad)->first();
+
+            }
+            $vista = view('coordinador.ajax.tablavariosasesores')->with(compact('consultants'))->with(compact('subject'))->render();
+        }
+        return $vista;
+    }
+
+    public function especialidad(Request $request){
+        if($request->ajax()){
+            $unidad = decrypt($request->unidad);
+            $especialidad = $request->especialidad;
+            $consultants = (new \App\Models\Consultant)->where('especialidad', '=',$especialidad)->orderBy('apellido','asc')->paginate
+            (5);
+            $subject = (new \App\Models\Subject)->where('id','=',$unidad)->first();
+
+            $vista = view('coordinador.ajax.tablavariosasesores')->with(compact('consultants'))->with(compact('subject'))
+                ->render();
+        }
+        return response()->json(array('success' => true, 'html'=>$vista));
     }
 }

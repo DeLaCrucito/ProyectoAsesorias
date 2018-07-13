@@ -19,5 +19,7 @@ class Asesor extends Seeder
         $asesor -> nivel_estudio = 'Maestría';
         $asesor -> especialidad = 'Redes';
         $asesor -> save();
+
+
     }
 }

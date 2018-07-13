@@ -176,9 +176,13 @@ class SubjectController extends Controller
     public function detalleunidad(Request $request ){
         $id = decrypt($request->id);
         $subject = Subject::where('id','=',$id)->first();
+        session()->put('asignar','verdad','unidad',$subject->id);
         $consultants = Assignment::with('consultant')->where('materia','=',$subject->id)->paginate(5);
         $vista = view('coordinador.detalleunidad')->with(compact('consultants'))->with(compact('subject'))->with
         (compact('asignaturas'));
+        if ($request->ajax()){
+            $vista = view('coordinador.ajax.tabladetalleunidad')->with(compact('consultants'))->with(compact('subject'));
+        }
         return $vista;
     }
 

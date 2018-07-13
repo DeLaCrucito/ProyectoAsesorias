@@ -72,7 +72,7 @@ class ScheduleController extends Controller
                 $horario->asesor = $consultant->id;
                 $horario->dia=$day;
                 $horario->save();
-                return view('coordinador.ajax.exito',compact('consultant'));
+                return redirect()->back()->with('message', 'El horario se agregó correctamente');
             }
         }
         if ($fin < $inicio){
@@ -85,7 +85,7 @@ class ScheduleController extends Controller
             $horario->asesor = $consultant->id;
             $horario->dia=$day;
             $horario->save();
-            return view('coordinador.ajax.exito',compact('consultant'));
+            return redirect()->back()->with('message', 'El horario se agregó correctamente');
         }
     }
 }

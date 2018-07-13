@@ -288,6 +288,9 @@ Route::group(['prefix' => 'coordinador', 'middleware' => 'auth:coordinadores'],f
     Route::get('/listaasesores','ConsultantController@listaasesores')->name('verasesores');
     Route::post('/listaasesores','ConsultantController@listaasesores')->name('verasesores');
 
+    Route::get('/asignarasesores','AssignmentController@listaasesores')->name('asignaasesor');
+    Route::post('/asignarasesores','AssignmentController@listaasesores')->name('asignaasesor');
+
     Route::get('/detalles/','ConsultantController@detalles')->name('detalleasesor');
     Route::post('/detalles/','ConsultantController@detalles')->name('detalleasesor');
 
@@ -331,6 +334,9 @@ Route::group(['prefix' => 'coordinador', 'middleware' => 'auth:coordinadores'],f
 
         Route::get('/asesortabla','ConsultantController@especialidad')->name('filtroespecialidad');
         Route::post('/asesortabla','ConsultantController@especialidad')->name('filtroespecialidad');
+
+        Route::get('/espe','AssignmentController@especialidad')->name('buscarespe');
+        Route::post('/espe','AssignmentController@especialidad')->name('buscarespe');
 
         Route::get('/semestres','SubjectController@ajaxsemestre')->name('coorajaxsemestre');
         Route::post('/semestres','SubjectController@ajaxsemestre')->name('coorajaxsemestre');

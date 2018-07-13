@@ -10,6 +10,11 @@
                     </blockquote>
                 </div>
             </div>
+            @if(session()->has('message'))
+                <div class="green darken-4 white-text col s12 m12 center-align" style="border-radius: 25px">
+                    <h5>{{ session()->get('message') }}</h5>
+                </div><br>
+            @endif
             <div style="margin-top: 50px">
                 @if ($errors->any())
                     <div class="red darken-1 white-text" style="border-radius: 25px">
@@ -51,6 +56,11 @@
                             <h5 class="left-align thin white-text">Asesores que imparten la materia</h5>
                         </blockquote>
                     </div>
+                    <a href="{{ route('asignaasesor',['unidad'=>encrypt($subject->id)]) }}"
+                       class="white-text red
+                    darken-1 btn
+                     boton">Añadir asesores</a>
+
                     <p class="white-text center-align">Se muestra un listado con los asesores que imparten la materia.</p>
                     <div class="posts row" id="posts">
                         <table class="white-text highlight">
@@ -109,10 +119,10 @@
     <script>
 
         function cargaTabla(page) {
-            var asesor = "{{ $subject->id }}";
+            var asesor = "{{ encrypt($subject->id) }}";
             $.ajax({
                 data:{
-                    asesor: asesor
+                    id: asesor
                 },
                 url:'?page='+page
             }).done(function (data) {

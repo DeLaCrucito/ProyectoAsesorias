@@ -10,8 +10,19 @@
                     </blockquote>
                 </div>
             </div>
+            @if(session()->has('message'))
+                <div class="green darken-4 white-text col s12 m12 center-align" style="border-radius: 25px">
+                    <h5>{{ session()->get('message') }}</h5>
+                </div><br>
+            @endif
+            @if(session()->has('alert'))
+                <div class="red darken-4 white-text col s12 m12 center-align" style="border-radius: 25px">
+                    <h5>{{ session()->get('alert') }}</h5>
+                </div><br>
+            @endif
             <div style="margin-top: 50px">
                 <div class="row">
+                    <h5 class="white-text">Agregar asesores a la materia {{ $subject->nombre }}</h5>
                     <div class="row input-field col s12 m6">
                         <label class="active white-text" for="tipo">Especialidad</label>
                         <select class="white-text" id="especialidad" name="especialidad" onchange="mostrarTabla(this
@@ -36,12 +47,28 @@
                                 <tr>
                                     <td>{{ $consultant->nombre ." ". $consultant->apellido}}</td>
                                     <td>{{ $consultant->especialidad }}</td>
+                                    <td><a class="btn-flat blue-text modal-trigger"
+                                           href="#modal{{ $consultant->id }}"><span></span>Asignar</a></td>
 
-                                        <td><a class="tooltipped" data-position="top" data-delay="50"
-                                               data-tooltip="Consultar detalles de materias y horarios"
-                                               href="{{ route('detalleasesor', ['id'=>encrypt($consultant->id)]) }}" >Ver
-                                                detalles</a></td>
-
+                                    <div id="modal{{ $consultant->id }}" class="modal">
+                                        <div class="modal-content">
+                                            <h5>Podrá remover la materia posteriormente</h5>
+                                            <p>¿Desea asignar la materia {{
+                                                   $subject->nombre }} al asesor
+                                                {{$consultant->nombre . ' '. $consultant->apellido}}?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a id="#disagree" onclick="$('#modal{{ $consultant->id }}').modal('close');" class="modal-action modal-close
+                                        waves-effect
+                                            waves-red btn-flat">Cancelar</a>
+                                            <a id="#agree" href="{{ route('asignar', ['subject'=>encrypt($subject->id),
+                'consultant'=>encrypt($consultant->id)]) }}"
+                                               class="modal-action
+                                        modal-close
+                                        waves-effect
+                                            waves-green btn-flat">Aceptar</a>
+                                        </div>
+                                    </div>
 
                                 </tr>
                             @endforeach
@@ -60,7 +87,7 @@
         function mostrarTabla(val) {
             $.ajax({
                 type: 'post',
-                url: '{{route('filtroespecialidad')}}',
+                url: '{{route('buscarespe')}}',
                 beforeSend: function (xhr) {
                     var token = $('meta[name="csrf-token"]').attr('content');
                     if (token) {
@@ -68,7 +95,8 @@
                     }
                 },
                 data: {
-                    especialidad: val
+                    especialidad: val,
+                    unidad : '{{ encrypt($subject->id) }}'
                 },
                 success: function (response) {
                     document.getElementById('posts').innerHTML = response.html;
@@ -80,9 +108,11 @@
 
         function cargaTabla(page) {
             var tipo = document.getElementById('especialidad').value;
+            var unidad = '{{encrypt($subject->id)}}';
             $.ajax({
                 data: {
-                    especialidad: tipo
+                    especialidad: tipo,
+                    unidad: unidad
                 },
                 url:'?page='+page
             }).done(function (data) {

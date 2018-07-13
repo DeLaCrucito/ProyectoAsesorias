@@ -124,22 +124,26 @@ class ConsultantController extends Controller
     }
 
     public function listaasesores(Request $request){
-        $consultants = DB::table('consultants')->paginate(5);
-        $datos = compact('consultants',$consultants);
-        $vista = view('coordinador.asesores',$datos);
+        $consultants = Consultant::with('schedules')->orderBy('apellido','asc')->paginate(5);
+        $vista = view('coordinador.asesores')->with(compact('consultants'));
         if($request->ajax()){
             $especialidad = $request->especialidad;
-            $consultants = Consultant::where('especialidad', '=',$especialidad)->paginate(5);
-            $datos = compact('consultants',$consultants);
-            $vista = view('coordinador.ajax.tablaasesor', $datos)->render();
+            if ($especialidad != 'nada'){
+                $consultants = Consultant::where('especialidad', '=',$especialidad)->orderBy('apellido','asc')
+                    ->paginate(5);
+            }
+            $vista = view('coordinador.ajax.tablaasesor')->with(compact('consultants'))->render();
         }
         return $vista;
     }
 
+
+
     public function especialidad(Request $request){
         if($request->ajax()){
             $especialidad = $request->especialidad;
-            $consultants = Consultant::where('especialidad', '=',$especialidad)->paginate(5);
+            $consultants = Consultant::where('especialidad', '=',$especialidad)->orderBy('apellido','asc')->paginate
+            (5);
             $datos = compact('consultants',$consultants);
             $vista = view('coordinador.ajax.tablaasesor', $datos)->render();
         }
