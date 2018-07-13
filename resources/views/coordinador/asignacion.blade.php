@@ -15,6 +15,11 @@
                     </blockquote>
                 </div>
             </div>
+            @if(session()->has('message'))
+                <div class="green darken-4 white-text col s12 m12 center-align" style="border-radius: 25px">
+                    <h5>{{ session()->get('message') }}</h5>
+                </div><br>
+            @endif
             <div style="margin-top: 50px">
                 <div class="row">
                     <h5 class="white-text">Nueva materia para {{ $consultant->nombre . ' ' .
@@ -29,11 +34,7 @@
                         </select>
                         <label for="semestre" class="white-text">Semestre de la unidad de aprendizaje</label>
                     </div>
-                    @if(session()->has('message'))
-                        <div class="red darken-1 white-text col s12 m12" style="border-radius: 25px">
-                            {{ session()->get('message') }}
-                        </div>
-                    @endif
+
                     <input type="hidden" id="asesor" value="{{ $consultant->id }}">
                     <div class="posts row" id="posts">
                         <table class="white-text highlight">
@@ -63,7 +64,8 @@
                                         <a id="#disagree" onclick="$('#modal{{ $subject->id }}').modal('close');" class="modal-action modal-close
                                         waves-effect
                                             waves-red btn-flat">Cancelar</a>
-                                        <a id="#agree" onclick="{{ route('asignar', ['subject'=>$subject, 'consultant'=>$consultant->id]) }}" class="modal-action
+                                        <a id="#agree" href="{{ route('asignar', ['subject'=>encrypt($subject->id),
+                                        'consultant'=>encrypt($consultant->id)]) }}" class="modal-action
                                         modal-close
                                         waves-effect
                                             waves-green btn-flat">Aceptar</a>

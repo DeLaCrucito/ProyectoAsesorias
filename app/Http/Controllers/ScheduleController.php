@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\DB;
 
 class ScheduleController extends Controller
 {
-    public function nuevohorario(Request $request, Consultant $consultant){
+    public function nuevohorario(Request $request){
+        $id = decrypt($request->consultant);
+        $consultant = (new \App\Models\Consultant)->where('id','=',$id)->first();
         $horas = Schedule::with('consultant')->where('asesor','=',$consultant->id)->get();
         $schedules = Schedule::with('consultant')->where('asesor','=',$consultant->id)->orderBy('dia','desc')
             ->paginate(5);
@@ -23,8 +25,9 @@ class ScheduleController extends Controller
     }
 
     public function destroy(Request $request){
-        $consultant = $request->consultant;
-        $post = (new \App\Models\Schedule)->findOrFail($request -> id);
+        $consultant = decrypt($request->consultant);
+        $id = decrypt($request->id);
+        $post = (new \App\Models\Schedule)->findOrFail($id);
         $post->delete();
         return redirect()->back()->with('message', 'El horario se eliminó correctamente');
     }

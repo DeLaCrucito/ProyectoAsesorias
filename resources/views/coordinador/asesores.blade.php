@@ -38,7 +38,7 @@
                                     <td>{{ $consultant->especialidad }}</td>
                                     <td><a class="tooltipped" data-position="top" data-delay="50"
                                            data-tooltip="Consultar detalles de materias y horarios"
-                                           href="{{ route('detalleasesor', ($consultant->id)) }}" >Ver
+                                           href="{{ route('detalleasesor', ['id'=>encrypt($consultant->id)]) }}" >Ver
                                             detalles</a></td>
                                 </tr>
                             @endforeach
@@ -69,6 +69,8 @@
                 },
                 success: function (response) {
                     document.getElementById('posts').innerHTML = response.html;
+                    $('.modal').modal();
+                    $('.tooltipped').tooltip({delay: 50});
                 }
             });
         }
@@ -83,6 +85,8 @@
             }).done(function (data) {
                 console.log(data)
                 $('.posts').html(data);
+                $('.modal').modal();
+                $('.tooltipped').tooltip({delay: 50});
             })
         }
     </script>

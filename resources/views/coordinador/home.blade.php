@@ -34,6 +34,38 @@
                                     </div>
                                 </div>
                             </div>
+
+                        </div>
+                        <div class="row col s12 m12" style="display: inline-flex">
+                            <div class="row col s12 m6">
+                                <table class="white-text centered">
+                                    <thead>
+                                    <tr>
+                                        <th>Aprovechamiento de alumnos</th>
+                                        <th>Porcentaje</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Insuficiente</td>
+                                        <td>{{ $insuficientes }}%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Satisfactorio</td>
+                                        <td>{{ $satisfactorios }}%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bueno</td>
+                                        <td>{{ $buenos }}%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Excelente</td>
+                                        <td>{{ $excelentes }}%</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
                     </div>
                 </div>

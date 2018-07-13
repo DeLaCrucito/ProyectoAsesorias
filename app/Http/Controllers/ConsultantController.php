@@ -152,14 +152,15 @@ class ConsultantController extends Controller
         return redirect()->route('viewasesor');
     }
 
-    public function detalles(Request $request, Consultant $consultant){
+    public function detalles(Request $request){
         $value = Auth::user()->licenciatura;
+        $id = decrypt($request->id);
+        $consultant = (new \App\Models\Consultant)->where('id','=',$id)->first();
         $schedules = Schedule::with('consultant')->where('asesor','=',$consultant->id)->orderBy('dia','desc')->get();
         $subjects = Assignment::with('subject')->where('asesor','=',$consultant->id)->paginate(5);
         $asignaturas = Assignment::with('subject')->where('asesor','=',$consultant->id)->get();
         $vista = view('coordinador.detalleasesor',compact('consultant'))->with(compact('subjects'))->with(compact('schedules'))->with(compact('asignaturas'));
         if($request->ajax()){
-            $consultant = $consultant;
             $subjects = Assignment::with('subject')->where('asesor','=',$consultant->id)->paginate(5);
             $vista = view('coordinador.ajax.tabla_asignaturas',compact('subjects'))->with(compact('consultant'));
         }
@@ -170,7 +171,7 @@ class ConsultantController extends Controller
         $licenciatura = Auth::user()->licenciatura;
         $subjects = Subject::where('licenciatura','=',$licenciatura)->paginate(5);
         $degree = Degree::findOrFail($licenciatura);
-        $asesor = $request->consultant;
+        $asesor = decrypt($request->consultant);
         $consultant = Consultant::where('id','=',$asesor)->first();
         $vista = view('coordinador.asignacion',compact('subjects'))
             ->with(compact('degree'))->with(compact('consultant'));

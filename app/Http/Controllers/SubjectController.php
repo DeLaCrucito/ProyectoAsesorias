@@ -155,7 +155,7 @@ class SubjectController extends Controller
         if ($request->ajax()){
             $licenciatura = Auth::user()->licenciatura;
             $semestre = $request->semestre;
-            $subjects = Subject::where('licenciatura','=',$licenciatura)->paginate(5);
+            $subjects = Subject::where('licenciatura','=',$licenciatura)->where('semestre','=',$semestre)->paginate(5);
             $vista = view('coordinador.ajax.tablaunidades')->with(compact('subjects'))->render();
         }
         return $vista;
@@ -171,8 +171,9 @@ class SubjectController extends Controller
         return response()->json(array('success' => true, 'html'=>$vista));
     }
 
-    public function detalleunidad(Request $request, Subject $subject){
-        $asignaturas = Assignment::with('consultant')->where('materia','=',$subject->id)->get();
+    public function detalleunidad(Request $request ){
+        $id = decrypt($request->id);
+        $subject = Subject::where('id','=',$id)->first();
         $consultants = Assignment::with('consultant')->where('materia','=',$subject->id)->paginate(5);
         $vista = view('coordinador.detalleunidad')->with(compact('consultants'))->with(compact('subject'))->with
         (compact('asignaturas'));

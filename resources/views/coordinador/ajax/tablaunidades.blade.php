@@ -16,13 +16,10 @@
             <td><a class="tooltipped" data-position="top" data-delay="50"
                    data-tooltip="Podrá consultar los detalles de la unidad, así como ver los
                                            asesores que imparten la materia" href="{{ route('coordetalleunidad',
-                                           $subject) }}" >Ver
+                                           ['id'=>encrypt($subject->id)]) }}" >Ver
                     detalles</a></td>
         </tr>
     @endforeach
     </tbody>
 </table>
-@unless (count($subjects))
-    <p class="white-text center-align">No existen unidades de aprendizaje.</p>
-@endunless
 {!! $subjects->links() !!}

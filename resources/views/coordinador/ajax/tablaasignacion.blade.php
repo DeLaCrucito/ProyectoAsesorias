@@ -25,7 +25,8 @@
                 <a id="#disagree" onclick="$('#modal{{ $subject->id }}').modal('close');" class="modal-action modal-close
                                         waves-effect
                                             waves-red btn-flat">Cancelar</a>
-                <a id="#agree" href="{{ route('asignar', ['subject'=>$subject, 'consultant'=>$consultant->id]) }}"
+                <a id="#agree" href="{{ route('asignar', ['subject'=>encrypt($subject->id),
+                'consultant'=>encrypt($consultant->id)]) }}"
                    class="modal-action
                                         modal-close
                                         waves-effect

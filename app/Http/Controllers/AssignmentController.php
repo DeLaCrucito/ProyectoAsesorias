@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 class AssignmentController extends Controller
 {
     public function asignar(Request $request){
-        $unidad = $request -> subject;
-        $asesor = $request -> consultant;
+        $unidad = decrypt($request->subject);
+        $asesor = decrypt($request->consultant);
         $code = $unidad.'-'. $asesor;
         if (Assignment::where('code', '=', $code)->exists()) {
             return redirect()->back()->with('message', 'Materia ya asignada para el asesor. Seleccione otra materia');
@@ -25,9 +25,9 @@ class AssignmentController extends Controller
     }
 
     public function destroy(Request $request){
-        $consultant = $request->consultant;
-        $post = Assignment::findOrFail($request -> id);
-        $post -> delete();
+        $consultant = decrypt($request->id);
+        $post = (new \App\Models\Assignment)->where('id','=',$consultant)->first();
+        $post->delete();
         return redirect()->back()->with('message', 'La materia fue removida con éxito');
 
     }

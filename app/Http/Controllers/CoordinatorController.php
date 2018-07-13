@@ -115,12 +115,25 @@ class CoordinatorController extends Controller
     }
 
     public function showDatos(){
-        if (Auth::check())
-        {
-            $id  =  Auth::id();
-            $coordinator = Coordinator::with('degree')->findOrFail($id);
-            return view('coordinador.home',compact('coordinator'));
-        }
+        $id  =  Auth::id();
+        $evaluations = (new \App\Models\Evaluation)->count();
+        $insuficiente = (new \App\Models\Evaluation)->where('aprovechamiento','=',1)->count();
+        $satisfactorio = (new \App\Models\Evaluation)->where('aprovechamiento','=',2)->count();
+        $bueno = (new \App\Models\Evaluation)->where('aprovechamiento','=',3)->count();
+        $excelente = (new \App\Models\Evaluation)->where('aprovechamiento','=',4)->count();
+
+        $insuficientes = $insuficiente/$evaluations*100;
+        $satisfactorios = $satisfactorio/$evaluations*100;
+        $buenos = $bueno/$evaluations*100;
+        $excelentes = $excelente/$evaluations*100;
+
+        $coordinator = Coordinator::with('degree')->findOrFail($id);
+        return view('coordinador.home',compact('coordinator'))
+            ->with(compact('insuficientes'))
+            ->with(compact('satisfactorios'))
+            ->with(compact('buenos'))
+            ->with(compact('excelentes'));
+
     }
 
     public function destroy(Request $request){

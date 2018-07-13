@@ -11,7 +11,10 @@
         <tr>
             <td>{{ $consultant->nombre ." ". $consultant->apellido}}</td>
             <td>{{ $consultant->especialidad }}</td>
-            <td><a href="{{ route('detalleasesor', $consultant->id) }}" >Ver detalles</a></td>
+            <td><a class="tooltipped" data-position="top" data-delay="50"
+                   data-tooltip="Consultar detalles de materias y horarios"
+                   href="{{ route('detalleasesor', ['id'=>encrypt($consultant->id)]) }}" >Ver
+                    detalles</a></td>
         </tr>
     @endforeach
     </tbody>

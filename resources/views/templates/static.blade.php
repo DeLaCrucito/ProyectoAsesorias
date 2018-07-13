@@ -3,7 +3,7 @@
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="{{asset('css/materialize.css')}}"  media="screen,
+    <link type="text/css" rel="stylesheet" href="{{asset('css/materialize.min.css')}}"  media="screen,
     projection"/>
 
     <!--Let browser know website is optimized for mobile-->
@@ -255,7 +255,59 @@
         color: red;
     }
 
+    .pagination li {
+        display: inline-block;
+        border-radius: 15px;
+        text-align: center;
+        vertical-align: top;
+        height: 30px;
+        width: 20px;
+    }
 
+    .pagination li a {
+        color: #ffffff;
+        display: inline-block;
+        font-size: 1.2rem;
+        padding: 0 10px;
+        line-height: 30px;
+    }
+
+    .pagination li.active a {
+        color: #fff;
+    }
+
+    .pagination li.active {
+        background-color: #bbdefb;
+    }
+
+    .pagination li.disabled a {
+        cursor: default;
+        color: #ffffff;
+    }
+
+    .pagination li i {
+        font-size: 2rem;
+    }
+
+    .pagination li.pages ul li {
+        display: inline-block;
+        float: none;
+    }
+
+    @media only screen and (max-width: 992px) {
+        .pagination {
+            width: 100%;
+        }
+        .pagination li.prev,
+        .pagination li.next {
+            width: 10%;
+        }
+        .pagination li.pages {
+            width: 80%;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+    }
 
 </style>
 <body class="iris">

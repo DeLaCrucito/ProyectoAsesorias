@@ -74,20 +74,21 @@
                                            href="#modal{{ $consultant->id }}"><span></span>Remover</a></td>
 
                                 </tr>
-                                <div id="modal{{ $asignatura->id }}" class="modal">
+                                <div id="modal{{ $consultant->id }}" class="modal">
                                     <div class="modal-content">
                                         <h5>Puede reasignar al asesor posteriormente</h5>
                                         <p>¿Desea remover al asesor {{
-                                                   $asignatura->consultant->nombre . ' '.
-                                                   $asignatura->consultant->apellido }}
+                                                   $consultant->consultant->nombre . ' '.
+                                                   $consultant->consultant->apellido }}
                                             de la materia
                                             {{ $subject->nombre  }}?</p>
                                     </div>
                                     <div class="modal-footer">
                                         <a id="#disagree" onclick=" $('#modal{{ $subject->id }}').modal('close');" class="modal-action modal-close waves-effect
                                             waves-red btn-flat">Cancelar</a>
-                                        <a id="#agree" href="{{ route('delasignacion', ['id'=>$consultant,
-                                                   'consultant'=>$consultant->id] ) }}" class="modal-action modal-close waves-effect
+                                        <a id="#agree" href="{{ route('delasignacion', ['id'=>encrypt($consultant->id)] ) }}"
+                                           class="modal-action modal-close
+                                                   waves-effect
                                             waves-green btn-flat">Aceptar</a>
                                     </div>
                                 </div>
@@ -116,6 +117,8 @@
                 url:'?page='+page
             }).done(function (data) {
                 $('.posts').html(data);
+                $('.modal').modal();
+                $('.tooltipped').tooltip({delay: 50});
             })
         }
     </script>

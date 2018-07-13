@@ -48,7 +48,8 @@
                             <h5 class="left-align thin white-text">Materias asignadas</h5>
                         </blockquote>
                     </div>
-                    <a name="cancel" id="cancel" href="{{ route('asignacion', $consultant->id) }}" class="white-text
+                    <a name="cancel" id="cancel" href="{{ route('asignacion', encrypt($consultant->id)) }}"
+                       class="white-text
                     red darken-1 btn boton">Asignar materia</a>
                     <p class="white-text">Se muestra un listado con las materias que el asesor puede impartir.</p>
                     <div class="posts row" id="posts">
@@ -99,7 +100,7 @@
                             <h5 class="left-align thin white-text">Horario</h5>
                         </blockquote>
                     </div>
-                    <a name="cancel" id="cancel" href="{{ route('newhorario', $consultant->id) }}" class="white-text
+                    <a  href="{{ route('newhorario', encrypt($consultant->id)) }}" class="white-text
                 red darken-1 btn boton">Gestionar Horario</a>
                     <p class="white-text">Se muestra un listado con el horario que el asesor dispone para dar
                         asesorías.</p>

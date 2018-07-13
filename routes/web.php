@@ -276,38 +276,38 @@ Route::group(['prefix' => 'coordinador', 'middleware' => 'auth:coordinadores'],f
     Route::get('/profile','CoordinatorController@showDatos')->name('coordinadorhome');
     Route::post('/profile','CoordinatorController@showDatos')->name('coordinadorhome');
 
-    Route::get('/asignacion{consultant}','ConsultantController@asignamateria')->name('asignacion');
-    Route::post('/asignacion{consultant}','ConsultantController@asignamateria')->name('asignacion');
+    Route::get('/asignacion/{consultant}','ConsultantController@asignamateria')->name('asignacion');
+    Route::post('/asignacion/{consultant}','ConsultantController@asignamateria')->name('asignacion');
 
     Route::get('/tbasignacion','ConsultantController@tbasignacion')->name('tbasignacion');
     Route::post('/tbasignacion','ConsultantController@tbasignacion')->name('tbasignacion');
 
-    Route::get('/materia{subject}/asesor{consultant}','AssignmentController@asignar')->name('asignar');
-    Route::post('/materia{subject}/asesor{consultant}','AssignmentController@asignar')->name('asignar');
+    Route::get('/materia','AssignmentController@asignar')->name('asignar');
+    Route::post('/materia','AssignmentController@asignar')->name('asignar');
 
     Route::get('/listaasesores','ConsultantController@listaasesores')->name('verasesores');
     Route::post('/listaasesores','ConsultantController@listaasesores')->name('verasesores');
 
-    Route::get('/detalles{consultant}','ConsultantController@detalles')->name('detalleasesor');
-    Route::post('/detalles{consultant}','ConsultantController@detalles')->name('detalleasesor');
+    Route::get('/detalles/','ConsultantController@detalles')->name('detalleasesor');
+    Route::post('/detalles/','ConsultantController@detalles')->name('detalleasesor');
 
-    Route::get('/newhora{consultant}','ScheduleController@nuevohorario')->name('newhorario');
-    Route::post('/newhora{consultant}','ScheduleController@nuevohorario')->name('newhorario');
+    Route::get('/newhora/{consultant}','ScheduleController@nuevohorario')->name('newhorario');
+    Route::post('/newhora/{consultant}','ScheduleController@nuevohorario')->name('newhorario');
 
-    Route::get('/savehorario{consultant}','ScheduleController@savehorario')->name('savehorario');
-    Route::post('/savehorario{consultant}','ScheduleController@savehorario')->name('savehorario');
+    Route::get('/savehorario/{consultant}','ScheduleController@savehorario')->name('savehorario');
+    Route::post('/savehorario/{consultant}','ScheduleController@savehorario')->name('savehorario');
 
-    Route::get('/deletehora{id}/asesor{consultant}','ScheduleController@destroy')->name('delhorario');
-    Route::post('/deletehora{id}/asesor{consultant}','ScheduleController@destroy')->name('delhorario');
+    Route::get('/deletehora/{id}/asesor/{consultant}','ScheduleController@destroy')->name('delhorario');
+    Route::post('/deletehora/{id}/asesor/{consultant}','ScheduleController@destroy')->name('delhorario');
 
-    Route::get('/delasignacion{id}/asesor{consultant}','AssignmentController@destroy')->name('delasignacion');
-    Route::post('/delasignacion{id}/asesor{consultant}','AssignmentController@destroy')->name('delasignacion');
+    Route::get('/delasignacion/{id}','AssignmentController@destroy')->name('delasignacion');
+    Route::post('/delasignacion/{id}','AssignmentController@destroy')->name('delasignacion');
 
     Route::get('/unidades','SubjectController@listaunidadescoor')->name('coorunidades');
     Route::post('/unidades','SubjectController@listaunidadescoor')->name('coorunidades');
 
-    Route::get('/unidad{subject}','SubjectController@detalleunidad')->name('coordetalleunidad');
-    Route::post('/unidad{subject}','SubjectController@detalleunidad')->name('coordetalleunidad');
+    Route::get('/unidad/','SubjectController@detalleunidad')->name('coordetalleunidad');
+    Route::post('/unidad/','SubjectController@detalleunidad')->name('coordetalleunidad');
 
     Route::get('/solicitudes','CoordinatorController@allSolicitudCoordinador')->name('allsolicitud');
     Route::post('/solicitudes','CoordinatorController@allSolicitudCoordinador')->name('allsolicitud');

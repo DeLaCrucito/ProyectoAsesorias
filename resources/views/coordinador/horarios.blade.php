@@ -85,8 +85,10 @@
                                     <div class="modal-footer">
                                         <a id="#disagree" onclick=" $('#modal{{ $schedule->id }}').modal('close');" class="modal-action modal-close waves-effect
                                             waves-red btn-flat">Cancelar</a>
-                                        <a id="#agree" href="{{ route('delhorario', ['id'=>$schedule,
-                                                   'consultant'=>$consultant]) }}" class="modal-action modal-close waves-effect
+                                        <a id="#agree" href="{{ route('delhorario', ['id'=>encrypt($schedule->id),
+                                                   'consultant'=>encrypt($consultant->id)]) }}" class="modal-action
+                                                   modal-close
+                                                   waves-effect
                                             waves-green btn-flat">Aceptar</a>
                                     </div>
                                 </div>
@@ -127,11 +129,6 @@
                         <input class="white-text timepicker" type="time" id="hr_fin" name="hr_fin" value="">
                         <label class="white-text active" for="hr_fin">Hora de fin</label>
                     </div>
-                        @if(session()->has('message'))
-                            <div class="red darken-1 white-text col s12 m12" style="border-radius: 25px">
-                                {{ session()->get('message') }}
-                            </div>
-                        @endif
                     <button type="submit" name="guardar" id="guardar" class=" black-text light-blue accent-1
                     btn boton oculto">Guardar</button>
                 </div>
@@ -145,6 +142,8 @@
                 url:'?page='+page
             }).done(function (data) {
                 $('.posts').html(data);
+                $('.modal').modal();
+                $('.tooltipped').tooltip({delay: 50});
             })
         }
     </script>
