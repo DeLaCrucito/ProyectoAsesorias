@@ -197,6 +197,10 @@ class ConsultantController extends Controller
         return response()->json(array('success' => true, 'html'=>$vista));
     }
 
-
+    public function showDatos(){
+        $id  =  Auth::id();
+        $consultant = (new \App\Models\Consultant)->where('id','=',$id)->first();
+        return view('asesor.home')->with(compact('consultant'));
+    }
 
 }

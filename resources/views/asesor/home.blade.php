@@ -1,5 +1,5 @@
-@extends('templates.coordinador')
-@section('main')
+@extends('asesor.base')
+@section('elementos')
     <div class="section">
         <div class="row" style="background-color: transparent">
             {{ csrf_field() }}
