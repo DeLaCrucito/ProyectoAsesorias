@@ -350,4 +350,7 @@ Route::group(['prefix' => 'coordinador', 'middleware' => 'auth:coordinadores'],f
 Route::group(['prefix' => 'asesores', 'middleware' => 'auth:asesores'],function (){
     Route::get('/profile','ConsultantController@showDatos')->name('asesorhome');
     Route::post('/profile','ConsultantController@showDatos')->name('asesorhome');
+
+    Route::get('/solicitudes','ConsultantController@allSolicitudConsultant')->name('solicituduser');
+    Route::post('/solicitudes','ConsultantController@allSolicitudConsultant')->name('solicituduser');
 });

@@ -214,4 +214,38 @@ class ConsultantController extends Controller
         return view('asesor.home')->with(compact('consultant'));
     }
 
+    public function allSolicitudConsultant(Request $request){
+        $consultant  =  Auth::id();
+        $consultant = (new \App\Models\Consultant)->where('id','=',$consultant)->first();
+        $colecion = (new \App\Models\Request)->where('asesor','=',$consultant)->get();
+        $materias =$colecion->unique('materia');
+        $estados = $colecion->unique('estado');
+        $solicituds = (new \App\Models\Request)->where('asesor','=',$consultant)->orderBy('fecha', 'asc')->paginate(5);
+        $vista =  view('asesor.historial')->with(compact('solicituds'))->with(compact('materias'))->with(compact
+        ('estados'))->with(compact('consultant'));
+        if ($request->ajax()){
+            $consultant  =  Auth::id();
+            $unidad = $request->unidad;
+            $estado = $request->estado;
+            if ($unidad === 0 && $estado === 0){
+                $solicituds = (new \App\Models\Request)->where('asesor','=',$consultant)->orderBy('fecha', 'asc')->paginate(5);
+            }elseif ($unidad != 0 && $estado != 0){
+                $solicituds = (new \App\Models\Request)->where('asesor','=',$consultant)
+                    ->where('materia','=',$unidad)
+                    ->where('materia','=',$unidad)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            }elseif ($unidad != 0 && $estado == 0){
+                $solicituds = (new \App\Models\Request)->where('asesor','=',$consultant)
+                    ->where('materia','=',$unidad)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            }elseif ($unidad == 0 && $estado != 0){
+                $solicituds = (new \App\Models\Request)->where('asesor','=',$consultant)
+                    ->where('estado','=',$estado)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            }
+            $vista = view('asesor.ajax.tablahistorial')->with(compact('solicituds'))->render();
+        }
+        return $vista;
+    }
+
 }

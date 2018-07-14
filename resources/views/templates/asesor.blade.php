@@ -21,16 +21,7 @@
             <a  href="{{route('asesorhome')}}" class="white-text left-align"><i class="material-icons">home</i>Inicio</a>
         </li>
         <li>
-            <a  href="{{route('viewfacultad')}}" class="white-text left-align"><i class="material-icons">domain</i>Facultades</a>
-        </li>
-        <li>
-            <a  href="{{route('viewlicenciatura')}}" class="white-text left-align"><i class="material-icons">card_membership</i>Licenciaturas</a>
-        </li>
-        <li>
-            <a  href="{{route('viewunidad')}}" class="white-text left-align"><i class="material-icons">class</i>Unidades de Aprendizaje</a>
-        </li>
-        <li>
-            <a  href="{{route('viewusuarios')}}" class="white-text left-align"><i class="material-icons">account_circle</i>Usuarios</a>
+            <a  href="{{route('solicituduser')}}" class="white-text left-align"><i class="material-icons">domain</i>Solicitudes</a>
         </li>
         <li>
             <a href="#signout" class="white-text btn-flat left-align  modal-trigger"><span></span><i
