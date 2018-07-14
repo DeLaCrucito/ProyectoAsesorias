@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\DemoEmail;
+use App\Mail\Recordatorio;
 use App\Models\Consultant;
 use App\Models\Coordinator;
 use App\Models\Degree;
@@ -315,8 +316,7 @@ class RequestController extends Controller
                 $nuevasoli = (new \App\Models\Request)->where('id','=',$id)->first();
                 $nuevasoli->estado = 4;
                 $nuevasoli->save();
-
-
+                Mail::to($nuevasoli->student->correo)->send(new Recordatorio($nuevasoli));
             }
             if ($fechasoli < $today){
                 $nuevasoli = (new \App\Models\Request)->where('id','=',$id)->first();

@@ -59,8 +59,7 @@
         <div align="center">
             <h4 style="text-align: center;"><b>ATTENTAMENTE</b></h4>
             <h4 style="text-align: center;"><b>RESPONSABLE DE PIA EN LA {{ strtoupper($solicitud->student->degree->faculty->nombre) }}</b></h4>
-            <p style="text-align: center;"><b>PD.</b> Le sugerimos guardar este correo electrónico en el ciclo escolar activo para cualquier
-                aclaración</p>
+            <p style="text-align: center;"><b>PD.</b> Le sugerimos guardar este correo electrónico en el ciclo escolar activo para cualquier aclaración</p>
         </div>
     </footer>
 </body>
