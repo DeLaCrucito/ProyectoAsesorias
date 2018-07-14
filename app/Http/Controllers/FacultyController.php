@@ -34,7 +34,7 @@ class FacultyController extends Controller
         $vista = view('administrador.facultad.read');
         if($request->ajax()){
             $nivel = $request->tipo;
-            $facultads = Faculty::where('tipo', '=', $nivel)->paginate(5);
+            $facultads = (new \App\Models\Faculty)->where('tipo', '=', $nivel)->paginate(5);
             return view('administrador.facultad.ajax.tabla', compact('facultads'));
         }
         return $vista;
@@ -50,11 +50,13 @@ class FacultyController extends Controller
         return response()->json(array('success' => true, 'html'=>$vista));
     }
 
-    public function edit(Faculty $faculty){
+    public function edit(Request $request){
+        $facultad = decrypt($request->id);
+        $faculty = (new \App\Models\Faculty)->where('id','=',$facultad)->first();
         return view('administrador.facultad.edit', compact('faculty'));
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request){
         $this->validate($request, [
             'nombre' => 'required',
             'nivel' => 'required',
@@ -63,18 +65,22 @@ class FacultyController extends Controller
             'nivel.required' => 'Debe seleccionar un nivel de estudios'
         ]);
 
+        $id = ($request->id);
         $Faculty = Faculty::findOrFail($id);
         $Faculty -> nombre = $request -> nombre;
         $Faculty -> tipo = $request -> nivel;
         $Faculty -> save();
 
-        return view('administrador.facultad.ajax.exito');
+        return redirect()->back()->with('message','Los cambios se realizaron con éxito');
     }
 
     public function destroy(Request $request){
-        $post = Faculty::findOrFail($request -> id);
+        $id = decrypt($request->id);
+        $post = Faculty::where('id','=',$id)->first();
+        $texto = $post->nombre.' se eliminó correctamente';
         $post -> delete();
-        return redirect()->route('viewfacultad');
+
+        return redirect()->back()->with('message',$texto);
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Consultant;
 use App\Models\Coordinator;
 use App\Models\Degree;
 use App\Models\Evaluation;
@@ -75,12 +76,15 @@ class CoordinatorController extends Controller
         return $vista;
     }
 
-    public function edit(Coordinator $coordinator){
+    public function edit(Request $request){
+        $id = decrypt($request->id);
+        $coordinator = (new \App\Models\Coordinator)->where('id','=',$id)->first();
         $facultads = Faculty::all(['id','nombre']);
         $degrees = Degree::all(['id','nombre','facultad']);
-        return view('administrador.usuarios.coordinador.edit',compact('coordinator'))
-            ->with(compact('facultads',$facultads))
-            ->with(compact('degrees',$degrees));
+        return view('administrador.usuarios.coordinador.edit')
+            ->with(compact('coordinator'))
+            ->with(compact('facultads'))
+            ->with(compact('degrees'));
     }
 
     public function update(Request $request, $id){
@@ -88,18 +92,14 @@ class CoordinatorController extends Controller
             'licen' => 'required',
             'nombre' => 'required',
             'apellido' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|confirmed|min:8'
+            'email' => 'required|email'
         ],[
             'licen.required' => 'Debe seleccionar una licenciatura',
             'nombre.required' => 'Debe seleccionar una facultad',
             'apellido.required' => 'Es necesario ingrasar el nombre',
             'usuario.required' => 'No se pudo encontrar la fase',
             'email.required' => 'El cambo semestre es obligatorio',
-            'email.email' => 'Debe introducir un correo electrónico válido',
-            'password.required' => 'Es necesario una contraseña',
-            'password.confirmed' => 'Las contraseñas no coinciden',
-            'password.min' => 'La contraseña tiene que tener almenos 8 caracteres'
+            'email.email' => 'Debe introducir un correo electrónico válido'
         ]);
 
         $Coordinator = Coordinator::findOrFail($id);
@@ -107,11 +107,19 @@ class CoordinatorController extends Controller
         $Coordinator -> nombre = $request-> nombre;
         $Coordinator -> apellido = $request -> apellido;
         $Coordinator -> correo = $request -> email;
-        $Coordinator -> password = bcrypt($request->password);
+        if ($request->password != ''){
+            $this->validate($request, [
+                'password' => 'required|confirmed|min:8'
+            ],[
+                'password.required' => 'Es necesario una contraseña',
+                'password.confirmed' => 'Las contraseñas no coinciden',
+                'password.min' => 'La contraseña tiene que tener almenos 8 caracteres'
+            ]);
+            $Coordinator -> passwd = bcrypt($request->password);
+        }
 
         $Coordinator -> save();
-
-        return view('administrador.usuarios.coordinador.ajax.exito');
+        return redirect()->back()->with('message','Los cambios se realizaron con éxito');
     }
 
     public function showDatos(){
@@ -122,10 +130,19 @@ class CoordinatorController extends Controller
         $bueno = (new \App\Models\Evaluation)->where('aprovechamiento','=',3)->count();
         $excelente = (new \App\Models\Evaluation)->where('aprovechamiento','=',4)->count();
 
-        $insuficientes = $insuficiente/$evaluations*100;
-        $satisfactorios = $satisfactorio/$evaluations*100;
-        $buenos = $bueno/$evaluations*100;
-        $excelentes = $excelente/$evaluations*100;
+
+        if ( $evaluations > 0){
+            $insuficientes = $insuficiente/$evaluations*100;
+            $satisfactorios = $satisfactorio/$evaluations*100;
+            $buenos = $bueno/$evaluations*100;
+            $excelentes = $excelente/$evaluations*100;
+        } else{
+            $insuficientes =0;
+            $satisfactorios = 0;
+            $buenos = 0;
+            $excelentes = 0;
+        }
+
 
         $coordinator = Coordinator::with('degree')->findOrFail($id);
         return view('coordinador.home',compact('coordinator'))
@@ -137,9 +154,11 @@ class CoordinatorController extends Controller
     }
 
     public function destroy(Request $request){
-        $post = Coordinator::findOrFail($request -> id);
+        $id = decrypt($request->id);
+        $post = Coordinator::where('id','=',$id)->first();
+        $texto = $post->nombre.' '.$post->apellido.' se eliminó correctamente';
         $post -> delete();
-        return redirect()->route('viewcoordinador');
+        return redirect()->back()->with('message',$texto);
     }
 
     public function allSolicitudCoordinador(Request $request){

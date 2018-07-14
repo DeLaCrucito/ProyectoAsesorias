@@ -10,6 +10,11 @@
                     </blockquote>
                 </div>
             </div>
+            @if(session()->has('message'))
+                <div class="green darken-4 white-text col s12 m12 center-align" style="border-radius: 25px">
+                    <h5>{{ session()->get('message') }}</h5>
+                </div><br>
+            @endif
             <div style="margin-top: 50px">
                 <div class="row">
                     <div class="input-field col s12 m6">
@@ -45,6 +50,8 @@
                 },
                 success: function (response) {
                     document.getElementById('posts').innerHTML = response.html;
+                    $('.modal').modal();
+                    $('.tooltipped').tooltip({delay: 50});
                 }
             });
         }
@@ -57,8 +64,9 @@
                 },
                 url:'?page='+page
             }).done(function (data) {
-                console.log(data)
                 $('.posts').html(data);
+                $('.modal').modal();
+                $('.tooltipped').tooltip({delay: 50});
             })
         }
     </script>

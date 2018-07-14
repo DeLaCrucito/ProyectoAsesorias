@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
         $coordinador = new \App\Models\Coordinator();
         $coordinador->nombre = 'Coordinador';
         $coordinador->apellido = 'De Prueba';
-        $coordinador->licenciatura = '4';
+        $coordinador->licenciatura = '12';
         $coordinador->correo = 'coordinador@uacam.mx';
         $coordinador->password = bcrypt('password');
         $coordinador->save();

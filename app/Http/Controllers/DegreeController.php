@@ -34,7 +34,7 @@ class DegreeController extends Controller
 
     public function read(Request $request){
         $facultads = Faculty::all(['id', 'nombre']);
-        $vista = view('administrador.licenciatura.read')->with('facultads',$facultads);
+        $vista = view('administrador.licenciatura.read')->with(compact('facultads'));
         if($request->ajax()){
             $facultad = $request->facultad;
             $degrees = Degree::where('facultad', '=', $facultad)->paginate(5);
@@ -53,7 +53,9 @@ class DegreeController extends Controller
         return response()->json(array('success' => true, 'html'=>$vista));
     }
 
-    public function edit(Degree $degree){
+    public function edit(Request $request){
+        $id = decrypt($request->id);
+        $degree = (new \App\Models\Degree)->where('id','=',$id)->first();
         $facultads = Faculty::all(['id', 'nombre']);
         return view('administrador.licenciatura.edit', compact('degree'))->with('facultads',$facultads);
     }
@@ -75,13 +77,15 @@ class DegreeController extends Controller
         $Degree -> semestres = $request -> semestres;
         $Degree->save();
 
-        return view('administrador.licenciatura.ajax.exito');
+        return redirect()->back()->with('message','Los cambios se realizaron con éxito');
     }
 
     public function destroy(Request $request){
-        $post = Degree::findOrFail($request -> id);
+        $id = decrypt($request->id);
+        $post = Degree::where('id','=',$id)->first();
+        $texto = $post->nombre.' se eliminó correctamente';
         $post -> delete();
-        return redirect()->route('viewlicenciatura');
+        return redirect()->back()->with('message',$texto);
     }
 
 }

@@ -102,11 +102,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:administradores'],funct
         Route::get('/list','FacultyController@read')->name('viewfacultad');
         Route::post('/list','FacultyController@read')->name('viewfacultad');
 
-        Route::get('/edit/{faculty}','FacultyController@edit')->name('editfacultad');
-        Route::post('//edit/{faculty}','FacultyController@edit')->name('editfacultad');
+        Route::get('/edit/','FacultyController@edit')->name('editfacultad');
+        Route::post('//edit/','FacultyController@edit')->name('editfacultad');
 
-        Route::get('/update/{faculty}','FacultyController@update')->name('updatefacultad');
-        Route::post('//update/{faculty}','FacultyController@update')->name('updatefacultad');
+        Route::get('/update/','FacultyController@update')->name('updatefacultad');
+        Route::post('//update/','FacultyController@update')->name('updatefacultad');
 
         Route::get('/delete{id}','FacultyController@destroy')->name('deletefacultad');
         Route::post('/delete{id}','FacultyController@destroy')->name('deletefacultad');
@@ -127,11 +127,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:administradores'],funct
         Route::get('/list','DegreeController@read')->name('viewlicenciatura');
         Route::post('/list','DegreeController@read')->name('viewlicenciatura');
 
-        Route::get('/edit/{degree}','DegreeController@edit')->name('editlicenciatura');
-        Route::post('/edit/{degree}','DegreeController@edit')->name('editlicenciatura');
+        Route::get('/edit/{id}','DegreeController@edit')->name('editlicenciatura');
+        Route::post('/edit/{id}','DegreeController@edit')->name('editlicenciatura');
 
-        Route::get('/update{degree}','DegreeController@update')->name('updatelicenciatura');
-        Route::post('/update{degree}','DegreeController@update')->name('updatelicenciatura');
+        Route::get('/update{id}','DegreeController@update')->name('updatelicenciatura');
+        Route::post('/update{id}','DegreeController@update')->name('updatelicenciatura');
 
         Route::get('/delete{id}','DegreeController@destroy')->name('deletelicenciatura');
         Route::post('/delete{id}','DegreeController@destroy')->name('deletelicenciatura');
@@ -152,11 +152,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:administradores'],funct
         Route::get('/list','SubjectController@read')->name('viewunidad');
         Route::post('/list','SubjectController@read')->name('viewunidad');
 
-        Route::get('/edit{subject}','SubjectController@edit')->name('editunidad');
-        Route::post('/edit{subject}','SubjectController@edit')->name('editunidad');
+        Route::get('/edit{id}','SubjectController@edit')->name('editunidad');
+        Route::post('/edit{id}','SubjectController@edit')->name('editunidad');
 
-        Route::get('/update{subject}','SubjectController@update')->name('updateunidad');
-        Route::post('/update{subject}','SubjectController@update')->name('updateunidad');
+        Route::get('/update{id}','SubjectController@update')->name('updateunidad');
+        Route::post('/update{id}','SubjectController@update')->name('updateunidad');
 
         Route::get('/delete{id}','SubjectController@destroy')->name('deleteunidad');
         Route::post('/delete{id}','SubjectController@destroy')->name('deleteunidad');
@@ -185,8 +185,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:administradores'],funct
             Route::get('/list','StudentController@read')->name('viewalumno');
             Route::post('/list','StudentController@read')->name('viewalumno');
 
-            Route::get('/edit{student}','StudentController@edit')->name('editalumno');
-            Route::post('/edit{student}','StudentController@edit')->name('editalumno');
+            Route::get('/edit{id}','StudentController@edit')->name('editalumno');
+            Route::post('/edit{id}','StudentController@edit')->name('editalumno');
 
             Route::get('/update{student}','StudentController@update')->name('updatealumno');
             Route::post('/update{student}','StudentController@update')->name('updatealumno');
@@ -210,8 +210,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:administradores'],funct
             Route::get('/list','CoordinatorController@read')->name('viewcoordinador');
             Route::post('/list','CoordinatorController@read')->name('viewcoordinador');
 
-            Route::get('/edit{coordinator}','CoordinatorController@edit')->name('editcoordinador');
-            Route::post('/edit{coordinator}','CoordinatorController@edit')->name('editcoordinador');
+            Route::get('/edit{id}','CoordinatorController@edit')->name('editcoordinador');
+            Route::post('/edit{id}','CoordinatorController@edit')->name('editcoordinador');
 
             Route::get('/update{coordinator}','CoordinatorController@update')->name('updatecoordinador');
             Route::post('/update{coordinator}','CoordinatorController@update')->name('updatecoordinador');
@@ -237,8 +237,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:administradores'],funct
             Route::get('/list','ConsultantController@read')->name('viewasesor');
             Route::post('/list','ConsultantController@read')->name('viewasesor');
 
-            Route::get('/edit{consultant}','ConsultantController@edit')->name('editasesor');
-            Route::post('/edit{consultant}','ConsultantController@edit')->name('editasesor');
+            Route::get('/edit{id}','ConsultantController@edit')->name('editasesor');
+            Route::post('/edit{id}','ConsultantController@edit')->name('editasesor');
 
             Route::get('/update{consultant}','ConsultantController@update')->name('updateasesor');
             Route::post('/update{consultant}','ConsultantController@update')->name('updateasesor');

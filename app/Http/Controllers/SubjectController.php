@@ -102,13 +102,16 @@ class SubjectController extends Controller
         return $vista;
     }
 
-    public function edit(Subject $subject){
+    public function edit(Request $request){
+        $id = decrypt($request->id);
+        $subject = (new \App\Models\Subject)->where('id','=',$id)->first();
         $facultads = Faculty::all(['id', 'nombre']);
         $degrees = Degree::all(['id','nombre','facultad','semestres']);
 
-        return view('administrador.unidada.edit',compact('subject',$subject))
-            ->with(compact('facultads',$facultads))
-            ->with(compact('degrees',$degrees))
+        return view('administrador.unidada.edit')
+            ->with(compact('subject'))
+            ->with(compact('facultads'))
+            ->with(compact('degrees'))
             ;
     }
 
@@ -138,13 +141,15 @@ class SubjectController extends Controller
         $Subject-> clave = $request->clave;
         $Subject -> tipo = $request->tipo;
         $Subject-> save();
-        return view('administrador.unidada.ajax.exito');
+        return redirect()->back()->with('message','Los cambios se realizaron con éxito');
     }
 
     public function destroy(Request $request){
-        $post = Subject::findOrFail($request -> id);
+        $id = decrypt($request->id);
+        $post = Subject::where('id','=',$id)->first();
+        $texto = $post->nombre.' se eliminó correctamente';
         $post -> delete();
-        return redirect()->route('viewunidad');
+        return redirect()->back()->with('message',$texto);
     }
 
     public function listaunidadescoor(Request $request){

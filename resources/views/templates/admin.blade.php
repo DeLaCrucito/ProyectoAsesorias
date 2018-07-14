@@ -13,7 +13,7 @@
                 <div>
                     <img src="">
                 </div>
-                <a href="#!user"><img class="circle" src="https://pbs.twimg.com/profile_images/677225147703496704/bI3kWrjm.png"></a>
+                <a><img class="circle" src="https://pbs.twimg.com/profile_images/677225147703496704/bI3kWrjm.png"></a>
                 <h6 class="white-text">ADMINISTRADOR</h6>
             </div>
         </li>
@@ -49,7 +49,7 @@
         <div class="modal-footer">
             <a id="" onclick="$('#signout').modal('close');" class="modal-action modal-close waves-effect
                                             waves-red btn-flat">Cancelar</a>
-            <a id="" onclick="window.location.href = '{{ route('adminlogout') }}'" class="modal-action modal-close waves-effect
+            <a id="" href = '{{ route('adminlogout') }}' class="modal-action modal-close waves-effect
                                             waves-green btn-flat">Aceptar</a>
         </div>
     </div>

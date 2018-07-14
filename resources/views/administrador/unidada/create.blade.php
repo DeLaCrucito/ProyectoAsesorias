@@ -1,10 +1,5 @@
 @extends('administrador.base')
 @section('elementos')
-    <style>
-        .oculto {
-            display: none;
-        }
-    </style>
     <form class="col s12" method="post" action="{{ route('saveunidad') }}">
         {{ csrf_field() }}
         <div class="col s12 m12">
@@ -34,7 +29,7 @@
                                 <option value="{{ $facultad->id }}">{{ $facultad->nombre }}</option>
                             @endforeach
                         </select>
-                        <label class="white-text">Facultad</label>
+                        <label class="white-text" for="facultad">Facultad</label>
                     </div>
                     <div id="cajalicen" class="input-field col s12 m6 white-text oculto">
                         <select id="licen" name="licen" onchange="mostrarsemestre(this.value)" required></select>

@@ -69,22 +69,22 @@ class ConsultantController extends Controller
     }
 
     public function read(Request $request){
-        $consultants = DB::table('consultants')->paginate(5);
-        $datos = compact('consultants',$consultants);
-        $vista = view('administrador.usuarios.asesor.read',$datos);
+        $consultants = Consultant::with('schedules')->paginate(5);
+        $vista = view('administrador.usuarios.asesor.read')->with(compact('consultants'));
         if($request->ajax()){
             $asesor = $request->asesor;
-            $consultants = Consultant::where('nombre', 'like','%'. $asesor.'%')->paginate(5);
-            $datos = compact('consultants',$consultants);
-            $vista = view('administrador.usuarios.asesor.ajax.tabla', $datos)->render();
+            if ($asesor != ''){
+                $consultants = (new \App\Models\Consultant)->where('nombre', 'like','%'. $asesor.'%')->paginate(5);
+            }
+            $vista = view('administrador.usuarios.asesor.ajax.tabla')->with(compact('consultants'))->render();
         }
         return $vista;
     }
 
-    public function edit(Consultant $consultant){
-        $consultants = Consultant::all(['id','nombre','apellido','nivel_estudio','especialidad','correo']);
-        return view('administrador.usuarios.asesor.edit',compact('consultant'))
-            ->with(compact('consultants',$consultants));
+    public function edit(Request $request){
+        $id = decrypt($request->id);
+        $consultant = (new \App\Models\Consultant)->where('id','=',$id)->first();
+        return view('administrador.usuarios.asesor.edit',compact('consultant'));
     }
 
     public function update(Request $request, $id){
@@ -94,7 +94,6 @@ class ConsultantController extends Controller
             'nivel_estudio' => 'required',
             'especialidad' => 'required',
             'correo' => 'required|email',
-            'password' => 'required|confirmed|min:8',
             'lugar' => 'required'
         ],[
             'nombre.required' => 'Es necesario ingresar un nombre',
@@ -103,24 +102,30 @@ class ConsultantController extends Controller
             'especialidad.required' => 'Es necesario ingresar una especialidad',
             'correo.required' => 'Es necesario ingresar un email',
             'correo.email' => 'Debe introducir un correo electrónico válido',
-            'password.required' => 'Es necesario una contraseña',
-            'password.confirmed' => 'Las contraseñas no coinciden',
-            'password.min' => 'La contraseña tiene que tener almenos 8 caracteres',
             'lugar.required' => 'El campo lugar de asesorías es obligatorio'
         ]);
 
-        $Consultant = Consultant::findOrFail($id);
+        $Consultant = (new \App\Models\Consultant)->findOrFail($id);
         $Consultant -> nombre = $request->nombre;
         $Consultant -> apellido = $request-> apellido;
         $Consultant -> nivel_estudio = $request -> nivel_estudio;
         $Consultant -> especialidad = $request -> especialidad;
         $Consultant -> correo = $request -> correo;
-        $Consultant -> password = bcrypt($request->password);
+        if ($request->password != ''){
+            $this->validate($request, [
+                'password' => 'required|confirmed|min:8'
+            ],[
+                'password.required' => 'Es necesario una contraseña',
+                'password.confirmed' => 'Las contraseñas no coinciden',
+                'password.min' => 'La contraseña tiene que tener almenos 8 caracteres'
+            ]);
+            $Consultant -> passwd = bcrypt($request->password);
+        }
         $Consultant -> lugar = $request -> lugar;
 
         $Consultant -> save();
 
-        return view('administrador.usuarios.asesor.ajax.exito');
+        return redirect()->back()->with('message','Los cambios se realizaron con éxito');
     }
 
     public function listaasesores(Request $request){
@@ -151,9 +156,11 @@ class ConsultantController extends Controller
     }
 
     public function destroy(Request $request){
-        $post = Consultant::findOrFail($request -> id);
+        $id = decrypt($request->id);
+        $post = (new \App\Models\Consultant)->where('id','=',$id)->first();
+        $texto = $post->nombre.' '.$post->apellido.' se eliminó correctamente';
         $post -> delete();
-        return redirect()->route('viewasesor');
+        return redirect()->back()->with('message',$texto);
     }
 
     public function detalles(Request $request){

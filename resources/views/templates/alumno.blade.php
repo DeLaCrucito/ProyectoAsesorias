@@ -25,8 +25,11 @@
         </li>
         <li>
             <a  href="{{route('viewhistory')}}" class="white-text left-align"><i
-                        class="material-icons">storage</i><span style="border-radius: 15px" class="new badge
-                        red darken-2 white-text" data-badge-caption="En proceso">{{ $nuevas }}</span>Solicitudes</a>
+                        class="material-icons">storage</i>
+                @if($nuevas != 0)
+                <span style="border-radius: 15px" class="new badge
+                        red darken-2 white-text" data-badge-caption="En proceso">{{ $nuevas }}</span>
+                @endif Solicitudes</a>
         </li>
         <li>
             <a href="#signout" class="white-text btn-flat left-align  modal-trigger"><span></span><i

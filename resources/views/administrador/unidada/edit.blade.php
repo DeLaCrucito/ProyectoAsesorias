@@ -15,6 +15,11 @@
                     </blockquote>
                 </div>
             </div>
+            @if(session()->has('message'))
+                <div class="green darken-4 white-text col s12 m12 center-align" style="border-radius: 25px">
+                    <h5>{{ session()->get('message') }}</h5>
+                </div><br>
+            @endif
             <div style="margin-top: 50px">
                 @if ($errors->any())
                     <div class="red darken-1 white-text" style="border-radius: 25px">
@@ -36,7 +41,7 @@
                                     <option @if ($facultad->id === $degree->facultad) selected="selected" @endif  value="{{ $facultad->id }}">{{ $facultad->nombre }}</option>
                                 @endforeach
                             </select>
-                            <label class="white-text">Facultad</label>
+                            <label class="white-text" for="facultad">Facultad</label>
                         </div>
                         @endif
                     @endforeach
@@ -71,7 +76,7 @@
                     </div>
 
                     <div class="row col s12 m3 " id="oculto6">
-                        <label><h6 class="white-text left-align">Tipo de asignatura</h6></label>
+                        <h6 class="white-text left-align">Tipo de asignatura</h6>
                         <p>
                             <input class="white-text" name="tipo" type="radio" id="obligatoria" @if ($subject->tipo === "Obligatoria") checked @endif  value="Obligatoria"/>
                             <label class="white-text" for="obligatoria">Obligatoria</label>
@@ -101,6 +106,8 @@
             <a name="cancel" id="cancel" href="{{ route('viewunidad') }}" class="white-text red darken-1 btn boton">Cancelar y volver</a>
         </div>
     </form>
+@endsection
+@section('scripts')
     <script>
         function realizaProceso(val) {
             var selecte = document.getElementById('licen');

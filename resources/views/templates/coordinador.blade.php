@@ -30,8 +30,10 @@
         </li>
         <li>
             <a  href="{{route('allsolicitud')}}" class="white-text left-align"><i
-                        class="material-icons">list</i><span style="border-radius: 15px" class="new badge
-                        red darken-2 white-text" data-badge-caption="Por evaluar">{{ $nuevas }}</span>Solicitudes</a>
+                        class="material-icons">list</i>@if($nuevas != 0)
+                    <span style="border-radius: 15px" class="new badge
+                        red darken-2 white-text" data-badge-caption="Por evaluar">{{ $nuevas }}</span>
+                @endif Solicitudes</a>
         </li>
         <li>
             <a href="#signout" class="white-text btn-flat left-align  modal-trigger"><span></span><i

@@ -25,12 +25,10 @@ class StudentController extends Controller
 
     public function ajaxTabla(Request $request){
         if($request->ajax()){
-            $facultad = $request->facultad;
-            $students = Student::whereHas('degree', function($query) use ($facultad) {
-                $query->where('facultad','=',$facultad);
-            })->paginate(5);
-            $datos = compact('students',$students);
-            $vista = view('administrador.usuarios.usuario.ajax.tabla', $datos)->render();
+            $licenciatura = $request->licenciatura;
+            $semestre = $request->semestre;
+            $students = (new \App\Models\Student)->where('licenciatura','=',$licenciatura)->where('semestre','=',$semestre)->paginate(5);
+            $vista = view('administrador.usuarios.usuario.ajax.tabla')->with(compact('students'))->render();
         }
         return response()->json(array('success' => true, 'html'=>$vista));
     }
@@ -77,18 +75,18 @@ class StudentController extends Controller
         $facultads = Faculty::all(['id', 'nombre']);
         $vista = view('administrador.usuarios.usuario.read')->with('facultads',$facultads);
         if($request->ajax()){
-            $facultad = $request->facultad;
-            $students = Student::whereHas('degree', function($query) use ($facultad) {
-                $query->where('facultad','=',$facultad);
-            })->paginate(5);
+            $licenciatura = $request->licenciatura;
+            $semestre = $request->semestre;
+            $students = (new \App\Models\Student)->where('licenciatura','=',$licenciatura)->where('semestre','=',$semestre)->paginate(5);
             $datos = compact('students',$students);
             $vista = view('administrador.usuarios.usuario.ajax.tabla', $datos)->render();
-            return $vista;
         }
         return $vista;
     }
 
-    public function edit(Student $student){
+    public function edit(Request $request){
+        $id = decrypt($request->id);
+        $student = Student::where('id','=',$id)->first();
         $facultads = Faculty::all(['id','nombre']);
         $degrees = Degree::all(['id','nombre','facultad']);
         return view('administrador.usuarios.usuario.edit',compact('student'))
@@ -103,8 +101,7 @@ class StudentController extends Controller
             'apellido' => 'required',
             'email' => 'required|email',
             'licen' => 'required',
-            'semestre' => 'required',
-            'password' => 'required|confirmed|min:8'
+            'semestre' => 'required'
         ],[
             'matri.required' => 'Es necesario ingresar una matricula',
             'nombre.required' => 'Es necesario ingresar el/los nombre(s)',
@@ -113,10 +110,8 @@ class StudentController extends Controller
             'email.email' => 'Debe introducir un correo electrónico válido',
             'licen.required' => 'Debe seleccionar una licenciatura',
             'semestre.required' => 'Debe seleccionar un Semetre',
-            'password.required' => 'Es necesario una contraseña',
-            'password.confirmed' => 'Las contraseñas no coinciden',
-            'password.min' => 'La contraseña tiene que tener almenos 8 caracteres'
         ]);
+
 
         $Student = Student::findOrFail($id);
         $Student -> matricula = $request->matri;
@@ -125,11 +120,21 @@ class StudentController extends Controller
         $Student -> correo = $request -> email;
         $Student -> licenciatura = $request -> licen;
         $Student -> semestre = $request -> semestre;
-        $Student -> passwd = bcrypt($request->password);
+        if ($request->password != ''){
+            $this->validate($request, [
+                'password' => 'required|confirmed|min:8'
+            ],[
+                'password.required' => 'Es necesario una contraseña',
+                'password.confirmed' => 'Las contraseñas no coinciden',
+                'password.min' => 'La contraseña tiene que tener almenos 8 caracteres'
+            ]);
+            $Student -> passwd = bcrypt($request->password);
+        }
+
 
         $Student -> save();
 
-        return view('administrador.usuarios.usuario.ajax.exito');
+        return redirect()->back()->with('message','Los cambios se realizaron con éxito');
     }
 
     public function register(){
@@ -165,9 +170,11 @@ class StudentController extends Controller
     }
 
     public function destroy(Request $request){
-        $post = (new \App\Models\Student)->findOrFail($request -> id);
+        $id = decrypt($request->id);
+        $post = (new \App\Models\Student)->where('id','=',$id)->first();
+        $texto = $post->nombre.' '.$post->apellido.' se eliminó correctamente';
         $post -> delete();
-        return redirect()->route('viewalumno');
+        return redirect()->back()->with('message',$texto);
     }
 
     function addSolicitud(){

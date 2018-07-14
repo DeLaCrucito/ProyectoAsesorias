@@ -60,6 +60,9 @@
                             @endforeach
                             </tbody>
                         </table>
+                        @unless (count($solicituds))
+                            <p class="white-text center-align">Todavía no has solicitado ninguna asesoría.</p>
+                        @endunless
                         {!! $solicituds->links() !!}
                     </div>
 

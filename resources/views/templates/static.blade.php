@@ -3,7 +3,7 @@
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="{{asset('css/materialize.min.css')}}"  media="screen,
+    <link type="text/css" rel="stylesheet" href="{{asset('css/new/materialize.min.css')}}"  media="screen,
     projection"/>
 
     <!--Let browser know website is optimized for mobile-->

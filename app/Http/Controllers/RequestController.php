@@ -66,6 +66,9 @@ class RequestController extends Controller
         $subject = Subject::findOrFail($unidad);
         $consultant = Consultant::findOrFail($asesor);
 
+        $milicen = Auth::user()->licenciatura;
+        $mimatri = Auth::user()->matricula;
+
         if ($tipo != 'Individual'){
             $this->validate($request, [
                 'compa1' => 'required|exists:students,matricula'
@@ -76,37 +79,20 @@ class RequestController extends Controller
             $compa1 = $request->compa1;
             $compa2 = $request->compa2;
 
+
+
             $companero1 = Student::where('matricula','=',$compa1)->first();
             $compa1id = $companero1->id;
+            $compa1licen = $companero1->licenciatura;
+            $compa1matri = $companero1->matricula;
             $datos['compa1'] = $compa1id;
             $datos['compas'] = 1;
 
-            $data = ([
-                'fecha'=> encrypt($datos['fecha']),
-                'hora'=> encrypt($datos['hora']),
-                'tipo' => encrypt($datos['tipo']),
-                'tema'=> encrypt($datos['tema']),
-                'periodo'=> encrypt($datos['periodo']),
-                'apoyo' => encrypt($datos['apoyo']),
-                'asesor'=> encrypt($consultant->id),
-                'unidad' => encrypt($subject->id),
-                'compa1' => encrypt($datos['compa1']),
-                'compas' => encrypt($datos['compas'])
-            ]);
-
-
-            if (isset($compa2)){
-                $this->validate($request, [
-                    'compa2' => 'required|exists:students,matricula',
-                ],[
-                    'compa2.exists' => 'El compañero 2 no se encuentra registrado en el sistema. Para continuar es necesario crear una cuenta.'
-                ]);
-                $compa2 = $request->compa2;
-                $companero2 = Student::where('matricula','=',$compa2)->first();
-                $compa2id = $companero2->id;
-                $datos['compa2'] = $compa2id;
-                $datos['compas'] = 2;
-
+            if ($compa1licen === $milicen){
+                if ($compa1matri === $mimatri){
+                    $texto = 'El compañero con matricula '.$compa1matri.' no es válido';
+                    return redirect()->back()->with('message', $texto);
+                }
                 $data = ([
                     'fecha'=> encrypt($datos['fecha']),
                     'hora'=> encrypt($datos['hora']),
@@ -117,21 +103,57 @@ class RequestController extends Controller
                     'asesor'=> encrypt($consultant->id),
                     'unidad' => encrypt($subject->id),
                     'compa1' => encrypt($datos['compa1']),
-                    'compa2' => encrypt($datos['compa2']),
                     'compas' => encrypt($datos['compas'])
                 ]);
 
-                return view('alumno.confirmacion')
-                    ->with(compact('student'))
-                    ->with(compact('subject'))
-                    ->with(compact('consultant'))
-                    ->with(compact('datos'))
-                    ->with(compact('companero1'))
-                    ->with(compact('companero2'))
-                    ->with(compact('data'))
-                    ;
-            }
+                if (isset($compa2)){
+                    $this->validate($request, [
+                        'compa2' => 'required|exists:students,matricula',
+                    ],[
+                        'compa2.exists' => 'El compañero 2 no se encuentra registrado en el sistema. Para continuar es necesario crear una cuenta.'
+                    ]);
+                    $compa2 = $request->compa2;
+                    $companero2 = Student::where('matricula','=',$compa2)->first();
+                    $compa2id = $companero2->id;
+                    $compa2licen = $companero2->licenciatura;
+                    $compa2matri = $companero2->matricula;
+                    $datos['compa2'] = $compa2id;
+                    $datos['compas'] = 2;
 
+                    if ($compa2licen === $milicen){
+                        if ($compa2matri === $mimatri){
+                            $texto = 'El compañero con matricula '.$compa1matri.' no es válido';
+                            return redirect()->back()->with('message', $texto);
+                        }
+                        $data = ([
+                            'fecha'=> encrypt($datos['fecha']),
+                            'hora'=> encrypt($datos['hora']),
+                            'tipo' => encrypt($datos['tipo']),
+                            'tema'=> encrypt($datos['tema']),
+                            'periodo'=> encrypt($datos['periodo']),
+                            'apoyo' => encrypt($datos['apoyo']),
+                            'asesor'=> encrypt($consultant->id),
+                            'unidad' => encrypt($subject->id),
+                            'compa1' => encrypt($datos['compa1']),
+                            'compa2' => encrypt($datos['compa2']),
+                            'compas' => encrypt($datos['compas'])
+                        ]);
+
+                        return view('alumno.confirmacion')
+                            ->with(compact('student'))
+                            ->with(compact('subject'))
+                            ->with(compact('consultant'))
+                            ->with(compact('datos'))
+                            ->with(compact('companero1'))
+                            ->with(compact('companero2'))
+                            ->with(compact('data'))
+                            ;
+                    }else{
+                        $texto = 'El compañero con matricula '.$compa2matri.' no pertenece a tu licenciatura';
+                        return redirect()->back()->with('message', $texto);
+                    }
+
+                }
 
             return view('alumno.confirmacion')
                 ->with(compact('student'))
@@ -141,6 +163,11 @@ class RequestController extends Controller
                 ->with(compact('companero1'))
                 ->with(compact('data'))
                 ;
+            }else{
+                $texto = 'El compañero con matricula '.$compa1matri.' no pertenece a tu licenciatura';
+                return redirect()->back()->with('message', $texto);
+            }
+
         }
 
         $data = ([
@@ -285,12 +312,14 @@ class RequestController extends Controller
             $id = $solicitud->id;
             $fechasoli = $solicitud->fecha->format('Y-m-d');
             if ($fechasoli === $today){
-                $nuevasoli = (new \App\Models\Request)->findOrFail($id);
+                $nuevasoli = (new \App\Models\Request)->where('id','=',$id)->first();
                 $nuevasoli->estado = 4;
                 $nuevasoli->save();
+
+
             }
             if ($fechasoli < $today){
-                $nuevasoli = (new \App\Models\Request)->findOrFail($id);
+                $nuevasoli = (new \App\Models\Request)->where('id','=',$id)->first();
                 $nuevasoli->estado = 2;
                 $nuevasoli->save();
             }
@@ -300,7 +329,7 @@ class RequestController extends Controller
             $id = $solirun->id;
             $fecha = $solirun->fecha->format('Y-m-d');
             if ($fecha < $today){
-                $actualiza = (new \App\Models\Request)->findOrFail($id);
+                $actualiza = (new \App\Models\Request)->where('id','=',$id)->first();
                 $actualiza->estado = 2;
                 $actualiza->save();
             }

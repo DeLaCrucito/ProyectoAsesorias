@@ -6,5 +6,7 @@ use Illuminate\Http\Request;
 
 class AdministratorController extends Controller
 {
-    //
+    public function recordatorio(){
+
+    }
 }

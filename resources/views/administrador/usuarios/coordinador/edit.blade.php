@@ -13,6 +13,11 @@
                     </blockquote>
                 </div>
             </div>
+            @if(session()->has('message'))
+                <div class="green darken-4 white-text col s12 m12 center-align" style="border-radius: 25px">
+                    <h5>{{ session()->get('message') }}</h5>
+                </div><br>
+            @endif
             <div style="margin-top: 50px">
                 @if ($errors->any())
                     <div class="red darken-1 white-text" style="border-radius: 25px">
@@ -99,6 +104,8 @@
                     selecte.innerHTML = cosas;
                     $("#licen").trigger('contentChanged');
                     MostrarOcultos();
+                    $('.modal').modal();
+                    $('.tooltipped').tooltip({delay: 50});
                 }
             });
         }

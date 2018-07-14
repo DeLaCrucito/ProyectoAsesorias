@@ -12,6 +12,11 @@
                         </blockquote>
                     </div>
                 </div>
+                @if(session()->has('message'))
+                    <div class="red darken-4 white-text col s12 m12 center-align" style="border-radius: 25px">
+                        <h5>{{ session()->get('message') }}</h5>
+                    </div><br>
+                @endif
                 <div style="margin-top: 50px">
 
                     <div class="row col s12 m6">
