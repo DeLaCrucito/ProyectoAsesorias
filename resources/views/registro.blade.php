@@ -8,7 +8,7 @@
             <div class="row col s12 m6">
                 <div class="row col s12 m12" style="display: inline-block">
                     <form class=" white-text" method="post" action="{{ route('newalumno') }}" id="Formulario" name="Formulario">
-                        <h4 class="center-align">Nuevo usuario</h4>
+                        <h4 class="center-align thin">Nuevo usuario</h4>
                         {{ csrf_field() }}
                         <section><p><br></p></section>
                         <div class="row ">

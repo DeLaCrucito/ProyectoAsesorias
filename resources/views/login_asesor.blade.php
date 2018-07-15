@@ -31,7 +31,7 @@
         <div class="row padre">
             <div class="row col s12 m6">
                 <div class="row col s12 m12" style="display: inline-block">
-                    <h4 class="center white-text">Portal de Asesorías</h4>
+                    <h4 class="center white-text thin">Portal de Asesorías</h4>
                     <section><p><br></p></section>
                     <form class=" white-text" method="post" action="{{ route('asesorsignin') }}" id="Formulario" name="Formulario">
                         {{ csrf_field() }}

@@ -13,8 +13,12 @@
                 <div>
                     <img src="">
                 </div>
-                <a href=""><img class="circle" src="https://pbs.twimg.com/profile_images/677225147703496704/bI3kWrjm.png"></a>
-                <h6 class="white-text">Asesor</h6>
+                <img class="circle" src="https://pbs.twimg.com/profile_images/677225147703496704/bI3kWrjm.png">
+                <h6 class="white-text">Portal de Asesorías</h6>
+                <h6 class="white-text">ASESOR</h6>
+                <h6 class="white-text thin">{{ \Illuminate\Support\Facades\Auth::user()->nombre.' '
+                .\Illuminate\Support\Facades\Auth::user()->apellido }}</h6>
+                <h6 class="white-text thin">{{ \Illuminate\Support\Facades\Auth::user()->correo }}</h6>
             </div>
         </li>
         <li>

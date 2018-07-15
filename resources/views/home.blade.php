@@ -31,7 +31,7 @@
         <div class="row padre">
             <div class="row col s12 m6">
                 <div class="row col s12 m12" id="caja1" style="display: inline-block">
-                    <h4 class="white-text center">Bienvenido al Portal de Asesorias</h4>
+                    <h4 class="white-text center thin">Bienvenido al Portal de Asesorias</h4>
                     <section><p><br></p></section>
                     <div class="center-align" id="botones">
                         <p class="white-text">Iniciar Sesión como</p>

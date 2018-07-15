@@ -238,8 +238,11 @@ class RequestController extends Controller
         $Solicitud -> save();
         $identificador = $Solicitud->id;
 
+
         $Nueva = (new \App\Models\Request)->where('id','=',$identificador)->first();
         Mail::to($Nueva->student->correo)->send(new DemoEmail($Nueva));
+        Mail::to($Nueva->coordinator->correo)->send(new DemoEmail($Nueva));
+        Mail::to($Nueva->consultant->correo)->send(new DemoEmail($Nueva));
 
         if ($tipo != 'Individual'){
             $compas = decrypt($request->compas);
@@ -317,6 +320,7 @@ class RequestController extends Controller
                 $nuevasoli->estado = 4;
                 $nuevasoli->save();
                 Mail::to($nuevasoli->student->correo)->send(new Recordatorio($nuevasoli));
+                Mail::to($nuevasoli->consultant->correo)->send(new Recordatorio($nuevasoli));
             }
             if ($fechasoli < $today){
                 $nuevasoli = (new \App\Models\Request)->where('id','=',$id)->first();
