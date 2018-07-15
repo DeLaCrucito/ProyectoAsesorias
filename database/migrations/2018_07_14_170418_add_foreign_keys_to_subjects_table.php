@@ -14,7 +14,7 @@ class AddForeignKeysToSubjectsTable extends Migration {
 	{
 		Schema::table('subjects', function(Blueprint $table)
 		{
-			$table->foreign('licenciatura', 'materia_licenciatura_id_fk')->references('id')->on('degrees')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+			$table->foreign('licenciatura', 'materia_licenciatura_id_fk')->references('id')->on('degrees')->onUpdate('RESTRICT')->onDelete('CASCADE');
 		});
 	}
 

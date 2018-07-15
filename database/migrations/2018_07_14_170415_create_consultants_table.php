@@ -20,7 +20,11 @@ class CreateConsultantsTable extends Migration {
 			$table->string('nivel_estudio', 50)->nullable();
 			$table->string('especialidad', 50)->nullable();
 			$table->string('correo', 50)->nullable()->unique('asesores_correo_uindex');
-			$table->string('passw', 200)->nullable();
+			$table->string('password', 200)->nullable();
+			$table->boolean('is_asesor')->nullable()->default(1);
+			$table->string('lugar', 500)->nullable();
+            $table->timestamps();
+            $table->softDeletes();
 		});
 	}
 

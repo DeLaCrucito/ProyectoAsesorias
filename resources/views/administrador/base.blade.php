@@ -14,8 +14,8 @@
 @endsection
 @section('scripts')
     <script>
-        function continuar(caja) {
-            var finalizar = document.getElementById('#agree');
+        function continuar(caja,btn) {
+            var finalizar = document.getElementById(btn);
             finalizar.getAttribute('class');
             if (caja.checked === true) {
                 finalizar.setAttribute('class', 'modal-action modal-close waves-effect white-text waves-green btn-flat');

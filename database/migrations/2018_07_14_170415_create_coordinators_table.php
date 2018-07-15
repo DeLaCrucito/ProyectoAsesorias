@@ -16,11 +16,13 @@ class CreateCoordinatorsTable extends Migration {
 		{
 			$table->integer('id', true);
 			$table->integer('licenciatura')->nullable()->index('coordinador_licenciatura_index');
-			$table->string('nombre', 50)->nullable();
-			$table->string('apellido', 50)->nullable();
-			$table->string('correo', 50)->nullable()->unique('coordinador_correo_uindex');
-			$table->string('usuario', 50)->nullable()->unique('coordinador_usuario_uindex');
-			$table->integer('passwd')->nullable();
+			$table->string('nombre')->nullable();
+			$table->string('apellido')->nullable();
+			$table->string('correo')->nullable()->unique('coordinador_correo_uindex');
+			$table->string('password', 200)->nullable();
+			$table->boolean('is_coor')->nullable()->default(1);
+            $table->timestamps();
+            $table->softDeletes();
 		});
 	}
 

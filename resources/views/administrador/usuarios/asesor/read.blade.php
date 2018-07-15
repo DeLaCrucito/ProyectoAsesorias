@@ -48,22 +48,22 @@
                                     <div class="modal-content red darken-4">
                                         <h1 class="white-text">ADVERTENCIA</h1>
                                         <p class="white-text">Esta acción no se puede deshacer. Se borrarán todos los datos relacionados con
-                                            el asesor {{$consultant->nombre .' '.$consultant->apellido }} incluyendo
-                                            solicitudes registradas ¿Realmente desea eliminar a {{$consultant->nombre .' '.$consultant->apellido}}?</p>
+                                            el asesor {{$consultant->nombre .' '.$consultant->apellido }} incluyendo solicitudes
+                                            registradas ¿Realmente desea eliminar a {{$consultant->nombre .' '.$consultant->apellido}}?</p>
                                         <div class="center-align">
                                             <div style="display: inline-flex">
-                                                <input type="checkbox" style="background-color: #FFFFFF" onclick="continuar(this)" class="filled-in"
-                                                       id="validar"/>
-                                                <label class="white-text" for="validar">Deseo contiuar</label>
+                                                <input type="checkbox" style="background-color: #FFFFFF" onclick="continuar(this,'#agree{{ $consultant->id }}')"
+                                                       class="filled-in"
+                                                       id="validar{{ $consultant->id }}"/>
+                                                <label class="white-text" for="validar{{ $consultant->id }}">Deseo contiuar</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer red darken-4">
                                         <a id="#disagree" onclick="$('#modal{{ $consultant->id }}').modal('close');" class="modal-action modal-close
                                             waves-effect waves-red btn-flat white-text">Cancelar</a>
-                                        <a id="#agree" href="{{ route('deleteasesor', ['id'=>encrypt($consultant->id)]) }}"
-                                           class="disabled modal-action modal-close waves-effect white-text waves-green
-                                           btn-flat">Aceptar</a>
+                                        <a id="#agree{{ $consultant->id }}" href="{{ route('deleteasesor', ['id'=>encrypt($consultant->id)]) }}"
+                                           class="disabled modal-action modal-close waves-effect white-text waves-green btn-flat">Aceptar</a>
                                     </div>
                                 </div>
                             @endforeach

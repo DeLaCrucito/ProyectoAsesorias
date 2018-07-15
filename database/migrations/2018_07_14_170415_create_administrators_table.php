@@ -16,8 +16,11 @@ class CreateAdministratorsTable extends Migration {
 		{
 			$table->integer('id', true);
 			$table->string('usuario', 50)->nullable()->unique('administradores_usuario_uindex');
-			$table->string('passwd', 200)->nullable();
-			$table->string('correo', 50)->nullable()->unique('administradores_correo_uindex');
+			$table->string('password', 200)->nullable();
+			$table->string('correo', 200)->nullable()->unique('administradores_correo_uindex');
+			$table->boolean('is_admin')->nullable()->default(1);
+			$table->timestamps();
+			$table->softDeletes();
 		});
 	}
 

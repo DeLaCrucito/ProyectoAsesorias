@@ -26,16 +26,17 @@
                     registradas ¿Realmente desea eliminar a {{$coordinator->nombre .' '.$coordinator->apellido}}?</p>
                 <div class="center-align">
                     <div style="display: inline-flex">
-                        <input type="checkbox" style="background-color: #FFFFFF" onclick="continuar(this)" class="filled-in"
-                               id="validar"/>
-                        <label class="white-text" for="validar">Deseo contiuar</label>
+                        <input type="checkbox" style="background-color: #FFFFFF" onclick="continuar(this,'#agree{{ $coordinator->id }}')"
+                               class="filled-in"
+                               id="validar{{ $coordinator->id }}"/>
+                        <label class="white-text" for="validar{{ $coordinator->id }}">Deseo contiuar</label>
                     </div>
                 </div>
             </div>
             <div class="modal-footer red darken-4">
                 <a id="#disagree" onclick="$('#modal{{ $coordinator->id }}').modal('close');" class="modal-action modal-close
                                             waves-effect waves-red btn-flat white-text">Cancelar</a>
-                <a id="#agree" href="{{ route('deletecoordinador', ['id'=>encrypt($coordinator->id)]) }}"
+                <a id="#agree{{ $coordinator->id }}" href="{{ route('deletecoordinador', ['id'=>encrypt($coordinator->id)]) }}"
                    class="disabled modal-action modal-close waves-effect white-text waves-green btn-flat">Aceptar</a>
             </div>
         </div>

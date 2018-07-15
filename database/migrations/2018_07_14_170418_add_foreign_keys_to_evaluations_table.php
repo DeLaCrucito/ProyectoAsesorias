@@ -14,8 +14,8 @@ class AddForeignKeysToEvaluationsTable extends Migration {
 	{
 		Schema::table('evaluations', function(Blueprint $table)
 		{
-			$table->foreign('aprovechamiento', 'evaluacion_aprovechamiento_id_fk')->references('id')->on('exploitations')->onUpdate('RESTRICT')->onDelete('RESTRICT');
-			$table->foreign('solicitud', 'evaluacion_solicitud_id_fk')->references('id')->on('requests')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+			$table->foreign('aprovechamiento', 'evaluacion_aprovechamiento_id_fk')->references('id')->on('exploitations')->onUpdate('RESTRICT')->onDelete('CASCADE');
+			$table->foreign('solicitud', 'evaluacion_solicitud_id_fk')->references('id')->on('requests')->onUpdate('RESTRICT')->onDelete('CASCADE');
 		});
 	}
 

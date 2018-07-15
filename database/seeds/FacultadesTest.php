@@ -13,6 +13,7 @@ class FacultadesTest extends Seeder
     {
         $faculty = new \App\Models\Faculty();
         $faculty-> nombre = "Facultad de Ingeniería";
+        $faculty->tipo = 'Licenciatura';
         $faculty->save();
     }
 }

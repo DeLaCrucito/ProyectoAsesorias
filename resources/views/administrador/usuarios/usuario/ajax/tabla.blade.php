@@ -26,16 +26,17 @@
                     registradas ¿Realmente desea eliminar a {{$student->nombre .' '.$student->apellido}}?</p>
                 <div class="center-align">
                     <div style="display: inline-flex">
-                        <input type="checkbox" style="background-color: #FFFFFF" onclick="continuar(this)" class="filled-in"
-                               id="validar"/>
-                        <label class="white-text" for="validar">Deseo contiuar</label>
+                        <input type="checkbox" style="background-color: #FFFFFF" onclick="continuar(this, '#agree{{ $student->id }}')"
+                               class="filled-in"
+                               id="validar{{ $student->id }}"/>
+                        <label class="white-text" for="validar{{ $student->id }}">Deseo contiuar</label>
                     </div>
                 </div>
             </div>
             <div class="modal-footer red darken-4">
                 <a id="#disagree" onclick="$('#modal{{ $student->id }}').modal('close');" class="modal-action modal-close
                                             waves-effect waves-red btn-flat white-text">Cancelar</a>
-                <a id="#agree" href="{{ route('deletealumno', ['id'=>encrypt($student->id)]) }}"
+                <a id="#agree{{ $student->id }}" href="{{ route('deletealumno', ['id'=>encrypt($student->id)]) }}"
                    class="disabled modal-action modal-close waves-effect white-text waves-green btn-flat">Aceptar</a>
             </div>
         </div>

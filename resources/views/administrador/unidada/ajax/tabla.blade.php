@@ -25,16 +25,16 @@
                     eliminar la unidad de aprendizaje {{$subject->nombre }}?</p>
                 <div class="center-align">
                     <div style="display: inline-flex">
-                        <input type="checkbox" style="background-color: #FFFFFF" onclick="continuar(this)" class="filled-in"
-                               id="validar"/>
-                        <label class="white-text" for="validar">Deseo contiuar</label>
+                        <input type="checkbox" style="background-color: #FFFFFF" onclick="continuar(this,'#agree{{$subject->id}}')" class="filled-in"
+                               id="validar{{$subject->id}}"/>
+                        <label class="white-text" for="validar{{$subject->id}}">Deseo contiuar</label>
                     </div>
                 </div>
             </div>
             <div class="modal-footer red darken-4">
                 <a id="#disagree" onclick="$('#modal{{ $subject->id }}').modal('close');" class="modal-action modal-close
                                             waves-effect white-text waves-red btn-flat">Cancelar</a>
-                <a id="#agree" href="{{ route('deleteunidad', ['id'=>encrypt($subject->id)]) }}"
+                <a id="#agree{{$subject->id}}" href="{{ route('deleteunidad', ['id'=>encrypt($subject->id)]) }}"
                    class="disabled modal-action white-text modal-close waves-effect waves-green btn-flat">Aceptar</a>
             </div>
         </div>

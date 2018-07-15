@@ -2,13 +2,13 @@
 
 /**
  * Created by Reliese Model.
- * Date: Thu, 05 Jul 2018 00:46:41 +0000.
+ * Date: Sat, 14 Jul 2018 17:09:48 -0500.
  */
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\Authenticatable;
 use Reliese\Database\Eloquent\Model as Eloquent;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 /**
  * Class Administrator
@@ -18,14 +18,17 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $password
  * @property string $correo
  * @property bool $is_admin
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property string $deleted_at
  *
  * @package App\Models
  */
-class Administrator extends Eloquent  implements Authenticatable
+class Administrator extends Eloquent implements Authenticatable
 {
+	use \Illuminate\Database\Eloquent\SoftDeletes;
     use \Illuminate\Auth\Authenticatable;
     protected $guard = 'administradores';
-    public $timestamps = false;
 
 	protected $casts = [
 		'is_admin' => 'bool'

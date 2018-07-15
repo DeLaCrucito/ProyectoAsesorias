@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Sun, 08 Jul 2018 16:43:46 -0500.
+ * Date: Sat, 14 Jul 2018 17:09:48 -0500.
  */
 
 namespace App\Models;
@@ -25,6 +25,9 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $tema
  * @property string $folio
  * @property string $periodo
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property string $deleted_at
  * 
  * @property \App\Models\State $state
  * @property \App\Models\Student $student
@@ -37,7 +40,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class Request extends Eloquent
 {
-	public $timestamps = false;
+	use \Illuminate\Database\Eloquent\SoftDeletes;
 
 	protected $casts = [
 		'alumno' => 'int',
@@ -48,8 +51,7 @@ class Request extends Eloquent
 	];
 
 	protected $dates = [
-		'fecha',
-		'horario'
+		'fecha'
 	];
 
 	protected $fillable = [

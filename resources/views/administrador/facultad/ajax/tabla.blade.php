@@ -23,16 +23,16 @@
                     eliminar {{$facultad->nombre }}?</p>
                 <div class="center-align">
                     <div style="display: inline-flex">
-                        <input type="checkbox" style="background-color: #FFFFFF" onclick="continuar(this)" class="filled-in"
-                               id="validar"/>
-                        <label class="white-text" for="validar">Deseo contiuar</label>
+                        <input type="checkbox" onclick="continuar(this,'#agree{{$facultad->id}}')" class="filled-in"
+                               id="validar{{$facultad->id}}"/>
+                        <label class="white-text" for="validar{{$facultad->id}}">Deseo contiuar</label>
                     </div>
                 </div>
             </div>
             <div class="modal-footer red darken-4">
                 <a id="#disagree" onclick="$('#modal{{ $facultad->id }}').modal('close');" class="modal-action modal-close
                                             waves-effect waves-red btn-flat white-text">Cancelar</a>
-                <a id="#agree" href="{{ route('deletefacultad', ['id'=>encrypt($facultad->id)]) }}"
+                <a id="#agree{{$facultad->id}}" href="{{ route('deletefacultad', ['id'=>encrypt($facultad->id)]) }}"
                    class="disabled modal-action modal-close waves-effect white-text waves-green btn-flat">Aceptar</a>
             </div>
         </div>
@@ -43,5 +43,6 @@
     <p class="white-text center-align">No existen facultades.</p>
 @endunless
 {!! $facultads->links() !!}
+
 
 

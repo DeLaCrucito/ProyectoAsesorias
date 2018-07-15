@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Sat, 30 Jun 2018 17:19:29 +0000.
+ * Date: Sat, 14 Jul 2018 17:09:48 -0500.
  */
 
 namespace App\Models;
@@ -22,6 +22,9 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $password
  * @property bool $is_asesor
  * @property string $lugar
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property string $deleted_at
  * 
  * @property \Illuminate\Database\Eloquent\Collection $assignments
  * @property \Illuminate\Database\Eloquent\Collection $requests
@@ -31,10 +34,9 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class Consultant extends Eloquent implements Authenticatable
 {
+	use \Illuminate\Database\Eloquent\SoftDeletes;
     use \Illuminate\Auth\Authenticatable;
     protected $guard = 'administradores';
-	public $timestamps = false;
-
 	protected $casts = [
 		'is_asesor' => 'bool'
 	];
@@ -51,7 +53,7 @@ class Consultant extends Eloquent implements Authenticatable
 		'correo',
 		'password',
 		'is_asesor',
-        'lugar'
+		'lugar'
 	];
 
 	public function assignments()

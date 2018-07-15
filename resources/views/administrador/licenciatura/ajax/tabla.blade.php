@@ -22,16 +22,16 @@
                     ¿Realmente desea eliminar la licenciatura {{$degree->nombre }}?</p>
                 <div class="center-align">
                     <div style="display: inline-flex">
-                        <input type="checkbox" style="background-color: #FFFFFF" onclick="continuar(this)" class="filled-in"
-                               id="validar"/>
-                        <label class="white-text" for="validar">Deseo contiuar</label>
+                        <input type="checkbox" style="background-color: #FFFFFF" onclick="continuar(this,'#agree{{$degree->id}}')" class="filled-in"
+                               id="validar{{$degree->id}}"/>
+                        <label class="white-text" for="validar{{$degree->id}}">Deseo contiuar</label>
                     </div>
                 </div>
             </div>
             <div class="modal-footer red darken-4">
                 <a id="#disagree" onclick="$('#modal{{ $degree->id }}').modal('close');" class="modal-action modal-close
                                             waves-effect white-text waves-red btn-flat">Cancelar</a>
-                <a id="#agree" href="{{ route('deletelicenciatura', ['id'=>encrypt($degree->id)]) }}"
+                <a id="#agree{{$degree->id}}" href="{{ route('deletelicenciatura', ['id'=>encrypt($degree->id)]) }}"
                    class="disabled modal-action white-text modal-close waves-effect waves-green btn-flat">Aceptar</a>
             </div>
         </div>

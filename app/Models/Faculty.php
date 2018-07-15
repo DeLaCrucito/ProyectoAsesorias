@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Thu, 05 Jul 2018 00:46:41 +0000.
+ * Date: Sat, 14 Jul 2018 17:09:48 -0500.
  */
 
 namespace App\Models;
@@ -15,6 +15,9 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $id
  * @property string $nombre
  * @property string $tipo
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property string $deleted_at
  * 
  * @property \Illuminate\Database\Eloquent\Collection $degrees
  *
@@ -22,7 +25,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class Faculty extends Eloquent
 {
-	public $timestamps = false;
+	use \Illuminate\Database\Eloquent\SoftDeletes;
 
 	protected $fillable = [
 		'nombre',

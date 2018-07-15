@@ -19,6 +19,9 @@ class CreateSchedulesTable extends Migration {
 			$table->time('hr_inicio')->nullable();
 			$table->time('hr_fin')->nullable();
 			$table->integer('asesor')->nullable()->index('horario_asesor_index');
+			$table->string('code')->nullable()->unique('schedules_code_uindex');
+            $table->timestamps();
+            $table->softDeletes();
 		});
 	}
 

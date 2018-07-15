@@ -16,13 +16,15 @@ class CreateStudentsTable extends Migration {
 		{
 			$table->integer('id', true);
 			$table->integer('matricula')->nullable()->unique('alumnos_matricula_uindex');
-			$table->string('nombre', 50)->nullable();
-			$table->string('apellido', 50)->nullable();
-			$table->string('correo', 50)->nullable()->unique('alumnos_correo_uindex');
+			$table->string('nombre')->nullable();
+			$table->string('apellido')->nullable();
+			$table->string('correo')->nullable()->unique('alumnos_correo_uindex');
 			$table->integer('licenciatura')->nullable()->index('alumnos_licenciatura_index');
 			$table->integer('semestre')->nullable();
-			$table->string('passwd', 200)->nullable();
-			$table->boolean('is_user')->defult(true);
+			$table->string('password', 200)->nullable();
+			$table->boolean('is_alumno')->nullable()->default(1);
+            $table->timestamps();
+            $table->softDeletes();
 		});
 	}
 

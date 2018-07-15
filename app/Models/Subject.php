@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Thu, 05 Jul 2018 00:46:41 +0000.
+ * Date: Sat, 14 Jul 2018 17:09:48 -0500.
  */
 
 namespace App\Models;
@@ -19,6 +19,9 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $semestre
  * @property string $clave
  * @property string $tipo
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property string $deleted_at
  * 
  * @property \App\Models\Degree $degree
  * @property \Illuminate\Database\Eloquent\Collection $assignments
@@ -28,7 +31,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class Subject extends Eloquent
 {
-	public $timestamps = false;
+	use \Illuminate\Database\Eloquent\SoftDeletes;
 
 	protected $casts = [
 		'licenciatura' => 'int',

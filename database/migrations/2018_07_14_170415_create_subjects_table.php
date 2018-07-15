@@ -16,10 +16,13 @@ class CreateSubjectsTable extends Migration {
 		{
 			$table->integer('id', true);
 			$table->integer('licenciatura')->nullable()->index('materia_licenciatura_id_fk');
-			$table->string('nombre', 50)->nullable();
+			$table->string('nombre')->nullable();
 			$table->integer('fase')->nullable();
 			$table->integer('semestre')->nullable();
-			$table->string('clave', 25)->nullable();
+			$table->string('clave')->nullable();
+			$table->string('tipo')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
 		});
 	}
 

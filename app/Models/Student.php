@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Sat, 30 Jun 2018 17:19:29 +0000.
+ * Date: Sat, 14 Jul 2018 17:09:48 -0500.
  */
 
 namespace App\Models;
@@ -22,6 +22,9 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $semestre
  * @property string $password
  * @property bool $is_alumno
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property string $deleted_at
  * 
  * @property \App\Models\Degree $degree
  * @property \Illuminate\Database\Eloquent\Collection $requests
@@ -30,9 +33,9 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class Student extends Eloquent implements Authenticatable
 {
+	use \Illuminate\Database\Eloquent\SoftDeletes;
     use \Illuminate\Auth\Authenticatable;
     protected $guard = 'alumnos';
-	public $timestamps = false;
 
 	protected $casts = [
 		'matricula' => 'int',

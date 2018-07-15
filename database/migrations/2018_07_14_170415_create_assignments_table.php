@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+
+class CreateAssignmentsTable extends Migration {
+
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
+		Schema::create('assignments', function(Blueprint $table)
+		{
+			$table->integer('id', true);
+			$table->integer('asesor')->nullable()->index('asignacion_asesor_index');
+			$table->integer('materia')->nullable()->index('asignacion_materia_index');
+			$table->string('code', 500)->nullable()->unique('assignments_code_uindex');
+            $table->timestamps();
+            $table->softDeletes();
+		});
+	}
+
+
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		Schema::drop('assignments');
+	}
+
+}

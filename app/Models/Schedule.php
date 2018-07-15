@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Thu, 05 Jul 2018 00:46:41 +0000.
+ * Date: Sat, 14 Jul 2018 17:09:48 -0500.
  */
 
 namespace App\Models;
@@ -19,6 +19,9 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property \Carbon\Carbon $hr_fin
  * @property int $asesor
  * @property string $code
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property string $deleted_at
  * 
  * @property \App\Models\Consultant $consultant
  *
@@ -26,7 +29,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class Schedule extends Eloquent
 {
-	public $timestamps = false;
+	use \Illuminate\Database\Eloquent\SoftDeletes;
 
 	protected $casts = [
 		'asesor' => 'int'

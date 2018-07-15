@@ -14,7 +14,7 @@ class AddForeignKeysToCoordinatorsTable extends Migration {
 	{
 		Schema::table('coordinators', function(Blueprint $table)
 		{
-			$table->foreign('licenciatura', 'coordinador_licenciatura_id_fk')->references('id')->on('degrees')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+			$table->foreign('licenciatura', 'coordinador_licenciatura_id_fk')->references('id')->on('degrees')->onUpdate('RESTRICT')->onDelete('CASCADE');
 		});
 	}
 

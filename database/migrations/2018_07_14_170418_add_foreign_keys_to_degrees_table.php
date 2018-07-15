@@ -14,7 +14,7 @@ class AddForeignKeysToDegreesTable extends Migration {
 	{
 		Schema::table('degrees', function(Blueprint $table)
 		{
-			$table->foreign('facultad', 'licenciatura_facultad_id_fk')->references('id')->on('faculties')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+			$table->foreign('facultad', 'licenciatura_facultad_id_fk')->references('id')->on('faculties')->onUpdate('RESTRICT')->onDelete('CASCADE');
 		});
 	}
 

@@ -19,6 +19,8 @@ class CreateEvaluationsTable extends Migration {
 			$table->integer('nota')->nullable();
 			$table->integer('aprovechamiento')->nullable()->index('evaluacion_aprovechamiento_id_fk');
 			$table->index(['solicitud','aprovechamiento'], 'evaluacion_solicitud_aprovechamiento_index');
+            $table->timestamps();
+            $table->softDeletes();
 		});
 	}
 

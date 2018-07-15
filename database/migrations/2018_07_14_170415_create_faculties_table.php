@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateAssignmentsTable extends Migration {
+class CreateFacultiesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,13 @@ class CreateAssignmentsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('assignments', function(Blueprint $table)
+		Schema::create('faculties', function(Blueprint $table)
 		{
 			$table->integer('id', true);
-			$table->integer('asesor')->nullable()->index('asignacion_asesor_index');
-			$table->integer('materia')->nullable()->index('asignacion_materia_index');
+			$table->string('nombre')->nullable();
+			$table->string('tipo')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
 		});
 	}
 
@@ -28,7 +30,7 @@ class CreateAssignmentsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('assignments');
+		Schema::drop('faculties');
 	}
 
 }

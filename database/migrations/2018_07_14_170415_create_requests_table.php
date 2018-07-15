@@ -19,12 +19,15 @@ class CreateRequestsTable extends Migration {
 			$table->integer('asesor')->nullable()->index('solicitud_asesor_index');
 			$table->integer('coordinador')->nullable()->index('solicitud_coordinador_index');
 			$table->integer('materia')->nullable()->index('solicitud_materia_index');
-			$table->date('fecha')->nullable();
-			$table->time('horario')->nullable();
-			$table->integer('estado')->nullable()->default(0);
+			$table->dateTime('fecha')->nullable();
+			$table->integer('estado')->nullable()->default(1)->index('requests_states_id_fk');
 			$table->string('tipo', 50)->nullable();
 			$table->string('apoyo', 50)->nullable();
 			$table->string('tema')->nullable();
+			$table->string('folio', 500)->nullable()->unique('requests_folio_uindex');
+			$table->string('periodo')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
 		});
 	}
 

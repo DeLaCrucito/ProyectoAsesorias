@@ -17,7 +17,7 @@ class CoordinadorTest extends Seeder
             $coordinador = new \App\Models\Coordinator();
             $coordinador->nombre = $faker->firstName;
             $coordinador->apellido = $faker->lastName;
-            $coordinador->licenciatura = $faker->numberBetween($min = 11, $max = 17);
+            $coordinador->licenciatura = $faker->numberBetween($min = 1, $max = 6);
             $coordinador->correo = $faker->userName.'@uacam.mx';
             $coordinador->password = bcrypt('password');
             $coordinador->save();
