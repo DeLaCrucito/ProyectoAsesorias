@@ -21,7 +21,16 @@
             <a  href="{{route('asesorhome')}}" class="white-text left-align"><i class="material-icons">home</i>Inicio</a>
         </li>
         <li>
-            <a  href="{{route('solicituduser')}}" class="white-text left-align"><i class="material-icons">domain</i>Solicitudes</a>
+            <a  href="{{route('mismaterias')}}" class="white-text left-align"><i class="material-icons">book</i>Mis Materias</a>
+        </li>
+        <li>
+            <a  href="{{route('mishoras')}}" class="white-text left-align"><i class="material-icons">alarm</i>Mi Horario</a>
+        </li>
+        <li>
+            <a  href="{{route('solicituduser')}}" class="white-text left-align"><i class="material-icons">storage</i>@if($nuevas != 0)
+                    <span style="border-radius: 15px" class="new badge
+                        red darken-2 white-text" data-badge-caption="En proceso">{{ $nuevas }}</span>
+                @endif Solicitudes</a>
         </li>
         <li>
             <a href="#signout" class="white-text btn-flat left-align  modal-trigger"><span></span><i

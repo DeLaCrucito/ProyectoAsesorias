@@ -353,4 +353,33 @@ Route::group(['prefix' => 'asesores', 'middleware' => 'auth:asesores'],function 
 
     Route::get('/solicitudes','ConsultantController@allSolicitudConsultant')->name('solicituduser');
     Route::post('/solicitudes','ConsultantController@allSolicitudConsultant')->name('solicituduser');
+
+    Route::get('/solicitud/','ConsultantController@verDetalles')->name('lasoli');
+    Route::post('/solicitud/','ConsultantController@verDetalles')->name('lasoli');
+
+    Route::get('/materias/','ConsultantController@misMaterias')->name('mismaterias');
+    Route::post('/materias/','ConsultantController@misMaterias')->name('mismaterias');
+
+    Route::get('/horario/','ConsultantController@misHoras')->name('mishoras');
+    Route::post('/horario/','ConsultantController@misHoras')->name('mishoras');
+
+    Route::get('/materia/','ConsultantController@detalleunidad')->name('lamateria');
+    Route::post('/materia/','ConsultantController@detalleunidad')->name('lamateria');
+
+    Route::group(['prefix'=>'ajax'],function(){
+        Route::get('/historialunidad','ConsultantController@filtros')->name('filtrosolis');
+        Route::post('/historialunidad','ConsultantController@filtros')->name('filtrosolis');
+
+        Route::get('/selectunidades','ConsultantController@showunidades')->name('asesorselectunidades');
+        Route::post('/selectunidades','ConsultantController@showunidades')->name('asesorselectunidades');
+
+        Route::get('/selectfacul','ConsultantController@selectFacultad')->name('asesorselectfacultad');
+        Route::post('/selectfacul','ConsultantController@selectFacultad')->name('asesorselectfacultad');
+
+        Route::get('/selectlicen','ConsultantController@selectLicen')->name('asesorselectlicen');
+        Route::post('/selectlicen','ConsultantController@selectLicen')->name('asesorselectlicen');
+
+        Route::get('/mismates','ConsultantController@ajaxmismaterias')->name('ajaxmismaterias');
+        Route::post('/mismates','ConsultantController@ajaxmismaterias')->name('ajaxmismaterias');
+    });
 });

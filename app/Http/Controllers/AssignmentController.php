@@ -40,15 +40,21 @@ class AssignmentController extends Controller
 
     public function listaasesores(Request $request){
         $unidad = decrypt($request->unidad);
-        $consultants = Consultant::with('schedules')->orderBy('apellido','asc')->paginate(5);
+        $assigns = (new \App\Models\Assignment)->where('materia','=',$unidad)->get();
+        $asesores = array();
+        foreach ($assigns as $assign){
+            $asesores[] = $assign->asesor;
+        }
+        $consultants = (new \App\Models\Consultant)->whereNotIn('id',$asesores)->orderBy('apellido','asc')->paginate(5);
         $subject = (new \App\Models\Subject)->where('id','=',$unidad)->first();
         $vista = view('coordinador.variosasesores')->with(compact('consultants'))->with(compact('subject'));
         if($request->ajax()){
             $unidad = decrypt($request->unidad);
             $especialidad = $request->especialidad;
             if ($especialidad != 'nada'){
-                $consultants = (new \App\Models\Consultant)->where('especialidad', '=',$especialidad)->orderBy('apellido','asc')
+                $consultants = (new \App\Models\Consultant)->whereNotIn('id',$asesores)->orderBy('apellido','asc')->where('especialidad', '=',$especialidad)->orderBy('apellido','asc')
                     ->paginate(5);
+
                 $subject = (new \App\Models\Subject)->where('id','=',$unidad)->first();
 
             }
@@ -61,8 +67,14 @@ class AssignmentController extends Controller
         if($request->ajax()){
             $unidad = decrypt($request->unidad);
             $especialidad = $request->especialidad;
-            $consultants = (new \App\Models\Consultant)->where('especialidad', '=',$especialidad)->orderBy('apellido','asc')->paginate
-            (5);
+            $assigns = (new \App\Models\Assignment)->where('materia','=',$unidad)->get();
+            $asesores = array();
+            foreach ($assigns as $assign){
+                $asesores[] = $assign->asesor;
+            }
+            $consultants = (new \App\Models\Consultant)->whereNotIn('id',$asesores)->orderBy('apellido','asc')->where('especialidad', '=',$especialidad)->orderBy('apellido','asc')
+                ->paginate(5);
+
             $subject = (new \App\Models\Subject)->where('id','=',$unidad)->first();
 
             $vista = view('coordinador.ajax.tablavariosasesores')->with(compact('consultants'))->with(compact('subject'))

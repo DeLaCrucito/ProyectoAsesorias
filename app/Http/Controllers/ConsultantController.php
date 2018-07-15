@@ -179,16 +179,23 @@ class ConsultantController extends Controller
 
     public function asignamateria(Request $request){
         $licenciatura = Auth::user()->licenciatura;
-        $subjects = Subject::where('licenciatura','=',$licenciatura)->orderBy('semestre','asc')->paginate(5);
         $degree = Degree::findOrFail($licenciatura);
         $asesor = decrypt($request->consultant);
         $consultant = Consultant::where('id','=',$asesor)->first();
+        $assigns = (new \App\Models\Assignment)->where('asesor','=',$asesor)->get();
+        $materias = array();
+        foreach ($assigns as $assign){
+            $materias[] = $assign->materia;
+        }
+        $subjects = (new \App\Models\Subject)->whereNotIn('id',$materias)->orderBy('semestre','asc')->paginate(5);
+
         $vista = view('coordinador.asignacion',compact('subjects'))
             ->with(compact('degree'))->with(compact('consultant'));
         if($request->ajax()){
             $semestre = $request->semestre;
             if(($semestre != 0)){
-                $subjects = Subject::where('licenciatura','=',$licenciatura)->where('semestre','=',$semestre)->paginate(5);
+                $subjects = (new \App\Models\Subject)->whereNotIn('id',$materias)->where('licenciatura','=',$licenciatura)
+                    ->where('semestre','=',$semestre)->paginate(5);
             }
             $vista = view('coordinador.ajax.tablaasignacion')->with(compact('subjects'))->with(compact('consultant'))->render();
         }
@@ -199,10 +206,15 @@ class ConsultantController extends Controller
         if($request->ajax()){
             $semestre = $request->semestre;
             $asesor = $request->asesor;
+            $assigns = (new \App\Models\Assignment)->where('asesor','=',$asesor)->get();
+            $materias = array();
+            foreach ($assigns as $assign){
+                $materias[] = $assign->materia;
+            }
             $consultant = Consultant::where('id','=',$asesor)->first();
             $licenciatura = Auth::user()->licenciatura;
-            $subjects = Subject::where('semestre', '=',$semestre)->where('licenciatura','=',$licenciatura)->paginate(5);
-            $datos = compact('subjects',$subjects);
+            $subjects = (new \App\Models\Subject)->whereNotIn('id',$materias)->where('licenciatura','=',$licenciatura)
+                ->where('semestre','=',$semestre)->paginate(5);            $datos = compact('subjects',$subjects);
             $vista = view('coordinador.ajax.tablaasignacion', $datos)->with(compact('consultant'))->render();
         }
         return response()->json(array('success' => true, 'html'=>$vista));
@@ -211,41 +223,221 @@ class ConsultantController extends Controller
     public function showDatos(){
         $id  =  Auth::id();
         $consultant = (new \App\Models\Consultant)->where('id','=',$id)->first();
-        return view('asesor.home')->with(compact('consultant'));
+
+        $solicituds = (new \App\Models\Request)->where('asesor','=',$id)->get();
+        $ids = array();
+        foreach ($solicituds as $solicitud){
+            $ids[] = $solicitud->id;
+        }
+
+        $evaluations = (new \App\Models\Evaluation)->whereIn('solicitud',$ids)->count();
+        $insuficiente = (new \App\Models\Evaluation)->whereIn('solicitud',$ids)->where('aprovechamiento','=',1)->count();
+        $satisfactorio = (new \App\Models\Evaluation)->whereIn('solicitud',$ids)->where('aprovechamiento','=',2)->count();
+        $bueno = (new \App\Models\Evaluation)->whereIn('solicitud',$ids)->where('aprovechamiento','=',3)->count();
+        $excelente = (new \App\Models\Evaluation)->whereIn('solicitud',$ids)->where('aprovechamiento','=',4)->count();
+
+
+        if ( $evaluations > 0){
+            $insuficientes = $insuficiente/$evaluations*100;
+            $satisfactorios = $satisfactorio/$evaluations*100;
+            $buenos = $bueno/$evaluations*100;
+            $excelentes = $excelente/$evaluations*100;
+        } else{
+            $insuficientes =0;
+            $satisfactorios = 0;
+            $buenos = 0;
+            $excelentes = 0;
+        }
+
+        return view('asesor.home')->with(compact('consultant'))
+            ->with(compact('insuficientes'))
+            ->with(compact('satisfactorios'))
+            ->with(compact('buenos'))
+            ->with(compact('excelentes'));;
     }
 
     public function allSolicitudConsultant(Request $request){
-        $consultant  =  Auth::id();
-        $consultant = (new \App\Models\Consultant)->where('id','=',$consultant)->first();
-        $colecion = (new \App\Models\Request)->where('asesor','=',$consultant)->get();
+        $asesor  =  Auth::id();
+        $colecion = (new \App\Models\Request)->where('asesor','=',$asesor)->get();
         $materias =$colecion->unique('materia');
         $estados = $colecion->unique('estado');
-        $solicituds = (new \App\Models\Request)->where('asesor','=',$consultant)->orderBy('fecha', 'asc')->paginate(5);
+        $assigns = (new \App\Models\Assignment)->where('asesor','=',$asesor)->get();
+        $facultades = array();
+        foreach ($assigns as $assign){
+            $facultades[] = $assign->subject->degree->facultad;
+        }
+        $faculties = (new \App\Models\Faculty())->whereIn('id',$facultades)->get();
+        $solicituds = (new \App\Models\Request)->where('asesor','=',$asesor)->orderBy('fecha', 'asc')->paginate(5);
         $vista =  view('asesor.historial')->with(compact('solicituds'))->with(compact('materias'))->with(compact
-        ('estados'))->with(compact('consultant'));
+        ('estados'))->with(compact('faculties'));
         if ($request->ajax()){
-            $consultant  =  Auth::id();
             $unidad = $request->unidad;
             $estado = $request->estado;
             if ($unidad === 0 && $estado === 0){
-                $solicituds = (new \App\Models\Request)->where('asesor','=',$consultant)->orderBy('fecha', 'asc')->paginate(5);
+                $solicituds = (new \App\Models\Request)->where('asesor','=',$asesor)->orderBy('fecha', 'asc')->paginate(5);
             }elseif ($unidad != 0 && $estado != 0){
-                $solicituds = (new \App\Models\Request)->where('asesor','=',$consultant)
+                $solicituds = (new \App\Models\Request)->where('asesor','=',$asesor)
                     ->where('materia','=',$unidad)
                     ->where('materia','=',$unidad)
                     ->orderBy('fecha', 'asc')->paginate(5);
             }elseif ($unidad != 0 && $estado == 0){
-                $solicituds = (new \App\Models\Request)->where('asesor','=',$consultant)
+                $solicituds = (new \App\Models\Request)->where('asesor','=',$asesor)
                     ->where('materia','=',$unidad)
                     ->orderBy('fecha', 'asc')->paginate(5);
             }elseif ($unidad == 0 && $estado != 0){
-                $solicituds = (new \App\Models\Request)->where('asesor','=',$consultant)
+                $solicituds = (new \App\Models\Request)->where('asesor','=',$asesor)
                     ->where('estado','=',$estado)
                     ->orderBy('fecha', 'asc')->paginate(5);
             }
             $vista = view('asesor.ajax.tablahistorial')->with(compact('solicituds'))->render();
         }
         return $vista;
+    }
+
+    public function filtros(Request $request)
+    {
+        if ($request->ajax()) {
+            $asesor = Auth::id();
+            $unidad = $request->unidad;
+            $estado = $request->estado;
+            if ($unidad === 0 && $estado === 0) {
+                $solicituds = (new \App\Models\Request)->where('asesor', '=', $asesor)->orderBy('fecha', 'asc')
+                    ->paginate(5);
+            } elseif ($unidad != 0 && $estado != 0) {
+                $solicituds = (new \App\Models\Request)->where('asesor', '=', $asesor)
+                    ->where('materia', '=', $unidad)
+                    ->where('estado', '=', $estado)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            } elseif ($unidad != 0 && $estado == 0) {
+                $solicituds = (new \App\Models\Request)->where('asesor', '=', $asesor)
+                    ->where('materia', '=', $unidad)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            } elseif ($unidad == 0 && $estado != 0) {
+                $solicituds = (new \App\Models\Request)->where('asesor', '=', $asesor)
+                    ->where('estado', '=', $estado)
+                    ->orderBy('fecha', 'asc')->paginate(5);
+            }
+            $vista = view('coordinador.ajax.tablahistorial')->with(compact('solicituds'))->render();
+        }
+        return response()->json(array('success' => true, 'html' => $vista));
+    }
+
+    function showunidades(Request $request){
+        if ($request->ajax()){
+            $semestre = $request->semestre;
+            $licenciatura = $request->licenciatura;
+            $asesor  =  Auth::id();
+            $assigns = (new \App\Models\Assignment)->where('asesor','=',$asesor)->get();
+            $materias = array();
+            foreach ($assigns as $assign){
+                $semes = $assign->subject->semestre;
+                $licen = $assign->subject->licenciatura;
+                if ($licen == $licenciatura && $semestre == $semes){
+                    $materias[] = $assign->materia;
+                }
+            }
+            $subjects = (new \App\Models\Subject)->whereIn('id',$materias)->get();
+            $vista = view('asesor.ajax.selectunidades', compact('subjects'))->render();
+        }
+        return response()->json(array('success' => true, 'html'=>$vista));
+    }
+
+    function selectFacultad(Request $request){
+        if ($request->ajax()){
+            $id = $request->facultad;
+            $asesor  =  Auth::id();
+            $assigns = (new \App\Models\Assignment)->where('asesor','=',$asesor)->get();
+            $licenciaturas = array();
+            foreach ($assigns as $assign){
+                $licenciaturas[] = $assign->subject->licenciatura;
+            }
+            $degrees = (new \App\Models\Degree)->whereIn('id', $licenciaturas)->where('facultad','=',$id)->get();
+            $vista = view('asesor.ajax.selectlicenciatura')->with(compact('degrees'))->render();
+        }
+        return response()->json(array('success' => true, 'html'=>$vista));
+    }
+
+    function selectLicen(Request $request){
+        if ($request->ajax()){
+            $id = $request->licenciatura;
+            $asesor  =  Auth::id();
+            $assigns = (new \App\Models\Assignment)->where('asesor','=',$asesor)->get();
+            $semestres = array();
+            foreach ($assigns as $assign){
+                $licen = $assign->subject->licenciatura;
+                if ($licen == $id){
+                    $semestres[] = $assign->materia;
+                }
+            }
+            $subject = Subject::whereIn('id',$semestres)->get();
+            $subjects = $subject->unique('semestre');
+            $vista = view('asesor.ajax.semestres')->with(compact('subjects'))->render();
+        }
+        return response()->json(array('success' => true, 'html'=>$vista));
+    }
+
+    public function verDetalles(Request $request){
+        $id = decrypt($request->id);
+        $solicitud = (new \App\Models\Request)->where('id','=',$id)->first();
+        return view('asesor.solicitud')->with(compact('solicitud'));
+    }
+
+    public function misMaterias(Request $request){
+        $asesor  =  Auth::id();
+        $assigns = (new \App\Models\Assignment)->where('asesor','=',$asesor)->get();
+        $facultades = array();
+        foreach ($assigns as $assign){
+            $facultades[] = $assign->subject->degree->facultad;
+        }
+        $faculties = (new \App\Models\Faculty())->whereIn('id',$facultades)->get();
+        $subjects = (new \App\Models\Subject)->whereHas('assignments',function ($query) use ($asesor){
+            $query->where('asesor','=',$asesor);
+        })->paginate(5);
+        $vista =  view('asesor.unidades')->with(compact('subjects'))->with(compact
+        ('estados'))->with(compact('faculties'));
+        if ($request->ajax()){
+            $asesor  =  Auth::id();
+            $semestre = $request->semestre;
+            $licenciatura = $request->licenciatura;
+            if ($semestre != 0){
+                $subjects = (new \App\Models\Subject)->whereHas('assignments',function ($query) use ($asesor){
+                    $query->where('asesor','=',$asesor);
+                })->where('semestre','=',$semestre)->where('licenciatura','=',$licenciatura)->paginate(5);
+            }
+            $vista = view('asesor.ajax.tablaunidades')->with(compact('subjects'))->render();
+        }
+        return $vista;
+    }
+
+    public function ajaxmismaterias(Request $request){
+        if ($request->ajax()){
+            $asesor  =  Auth::id();
+            $semestre = $request->semestre;
+            $licenciatura = $request->licenciatura;
+            if ($semestre != 0){
+                $subjects = (new \App\Models\Subject)->whereHas('assignments',function ($query) use ($asesor){
+                    $query->where('asesor','=',$asesor);
+                })->where('semestre','=',$semestre)->where('licenciatura','=',$licenciatura)->paginate(5);
+            }
+            $vista = view('asesor.ajax.tablaunidades')->with(compact('subjects'))->render();
+        }
+        return response()->json(array('success' => true, 'html'=>$vista));
+    }
+
+    public function misHoras(Request $request){
+        $asesor  =  Auth::id();
+        $schedules = Schedule::with('consultant')->where('asesor','=',$asesor)->orderBy('dia','desc')->paginate(5);
+        $vista = view('asesor.horarios')->with(compact('schedules'));
+        if($request->ajax()){
+            $vista = view('asesor.ajax.tablahoras')->with(compact('schedules'))->render();
+        }
+        return $vista;
+    }
+
+    public function detalleunidad(Request $request){
+        $id = decrypt($request->id);
+        $subject = (new \App\Models\Subject())->where('id','=',$id)->first();
+        return view('asesor.ajax.unidad')->with(compact('subject'));
     }
 
 }

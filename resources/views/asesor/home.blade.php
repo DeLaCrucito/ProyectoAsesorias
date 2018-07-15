@@ -17,27 +17,50 @@
                             <div class="center-align" style="margin-top: 50px">
                                 <div class="row col s12 m12">
                                     <div class="input-field col s12 m9">
-                                        <input type="text" disabled name="Nombre" id="Nombre" value=""
+                                        <input type="text" disabled name="Nombre" id="Nombre" value="{{
+                                        $consultant->nombre .' '.$consultant->apellido
+                                         }}"
                                                class="white-text"/>
                                         <label class="white-text" for="Nombre">Nombre</label>
                                     </div>
-                                    <div class="input-field col s12 m3">
-                                        <input class="white-text" type="text" id="Matricula" disabled value="Matricula" name="Matricula">
-                                        <label class="white-text" for="Matricula">Matricula</label>
-                                    </div>
-                                    <div class="input-field col s12 m12">
-                                        <input class="white-text" type="text" id="licenciatura" disabled value="Licenciatura" name="licenciatura">
-                                        <label class="white-text" for="licenciatura">Licenciatura</label>
-                                    </div>
-                                    <div class="input-field col s12 m2">
-                                        <input class="white-text" type="text" id="semestre" disabled value="Semestre" name="semestre">
-                                        <label class="white-text" for="semestre">Semestre</label>
-                                    </div>
                                     <div class="input-field col s12 m10">
-                                        <input class="white-text" type="text" id="correo" disabled value="Correo" name="correo">
+                                        <input class="white-text" type="text" id="correo" disabled value="{{
+                                        $consultant->correo }}"
+                                               name="correo">
                                         <label class="white-text" for="correo">Correo</label>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row col s12 m12" style="display: inline-flex">
+                                <div class="row col s12 m6">
+                                    <table class="white-text centered">
+                                        <thead>
+                                        <tr>
+                                            <th>Aprovechamiento de alumnos</th>
+                                            <th>Porcentaje</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>Insuficiente</td>
+                                            <td>{{ $insuficientes }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Satisfactorio</td>
+                                            <td>{{ $satisfactorios }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bueno</td>
+                                            <td>{{ $buenos }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Excelente</td>
+                                            <td>{{ $excelentes }}%</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
                             </div>
                         </div>
                     </div>

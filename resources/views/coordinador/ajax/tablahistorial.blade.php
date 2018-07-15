@@ -1,9 +1,9 @@
 <table class="white-text highlight responsive-table">
     <thead>
     <tr>
+        <th>Alumno</th>
+        <th>Asesor</th>
         <th>Unidad de Aprendizaje</th>
-        <th>Cita</th>
-        <th>Fecha</th>
         <th>Estado</th>
         <th>Acciones</th>
     </tr>
@@ -12,9 +12,9 @@
 
     @foreach($solicituds as $solicitud)
         <tr>
-            <td>{{ $solicitud->student->nombre .' '.$solicitud->student->apellido }}</td>
-            <td>{{ $solicitud->consultant->nombre .' '. $solicitud->consultant->apellido }}</td>
-            <td>{{ $solicitud->subject->nombre }}</td>
+            <td width="25%">{{ $solicitud->student->nombre .' '.$solicitud->student->apellido }}</td>
+            <td width="25%">{{ $solicitud->consultant->nombre .' '. $solicitud->consultant->apellido }}</td>
+            <td width="25%">{{ $solicitud->subject->nombre }}</td>
             <td><a style=" cursor: default;"  data-position="top" data-delay="10"
                    data-tooltip="{{ $solicitud->state->mensaje }}" class="black-text {{
                                            $solicitud->state->color }} btn-floating tooltipped"><i
