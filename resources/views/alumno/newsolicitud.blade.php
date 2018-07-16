@@ -162,6 +162,7 @@
                         <button type="submit" name="btn_login"  class=" black-text light-blue accent-1 btn
                         boton">Generar solicitud</button>
                     </div>
+
                 </div>
             </div>
     </form>
@@ -263,6 +264,7 @@
             ]
 
         });
+
 
     </script>
 @endsection

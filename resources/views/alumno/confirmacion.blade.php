@@ -170,3 +170,12 @@
         }
     </script>
 @endsection
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            setTimeout(function(){
+                window.history.back();
+                }, 240000);
+        });
+    </script>
+@endsection

@@ -35,9 +35,9 @@
 </div>
 
 <div>
-    <p>Este mensaje es un recordatorio de la asesoría académica con número de folio <b>{{ $solicitud->fecha->format
-    ('l, d F Y')}}</b> que se realizará el día de hoy de la unidad de aprendizaje<b>{{ $solicitud->subject->nombre }}</b> del
-        tema <b>{{ $solicitud->tema }}</b>, con el asesor <b>{{ $solicitud->consultant->nombre .' '.
+    <p>Este mensaje es un recordatorio de la asesoría académica con número de folio <b>{{ $solicitud->folio
+ }}</b> unidad de aprendizaje <b>{{ $solicitud->subject->nombre
+    }}</b> que se realizará el día de hoy de la y en la que se tratará el tema <b>{{ $solicitud->tema }}</b>, con el asesor <b>{{ $solicitud->consultant->nombre .' '.
     $solicitud->consultant->apellido }}</b> en horario de <b>{{ $solicitud->fecha->format('h:i A') }}</b> y que se
         realizará en <b>{{ $solicitud->consultant->lugar }}</b>. Recuerda ser puntual y en caso de no realizarse la
         asesoría, indicarlo en el Portal de Asesorías al termino de la sesión de 30 minutos.</p>

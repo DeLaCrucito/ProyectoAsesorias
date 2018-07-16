@@ -232,6 +232,7 @@ class RequestController extends Controller
         $periodo = decrypt($request->periodo);
 
         $foliohora = str_replace(':', '', $hora);
+        $foliohora = preg_replace('/[^0-9]+/', '', $foliohora);
         $foliofecha = str_replace('-', '', $fecha);
         $folio = $alumno .'-'.$asesor.'-'.$coordinador.'-'.$unidad.'-'.$foliofecha.'-'.$foliohora;
 

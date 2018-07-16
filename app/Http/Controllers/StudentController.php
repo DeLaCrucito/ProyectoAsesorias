@@ -264,52 +264,17 @@ class StudentController extends Controller
                 $Borrar = Hour::where('id','=',$id)->first();
                 $Borrar->forceDelete();
             }
-                    $schedules = Schedule::where('asesor','=',$asesor)->where('dia','=',$dia)->get();
-                    $horas = \App\Models\Request::where('asesor','=',$asesor)->get();
-                    $validas = array();
-
-                    foreach ($schedules as $schedule) {
-                        $start = Carbon::parse($schedule->hr_inicio)->format('H:i');
-                        $end = Carbon::parse($schedule->hr_fin);
-                        while ($start < $end) {
-                            $bandera = true;
-                            $start = Carbon::parse($start)->format('H:i');
-                            $newfecha = Carbon::parse( $fechaselect.' '.$start)->format('Y-m-d H:i');
-                            foreach ($horas as $hora){
-                                $fechasoli = Carbon::parse($hora->fecha)->format('Y-m-d');
-                                if ($fecha === $fechasoli){
-                                    if ($start === (Carbon::parse($hora->fecha)->format('H:i'))){
-                                        $bandera = false;
-                                        break;
-                                    }
-                                }
-                            }
-                            foreach ($hours as $hour){
-                                $hoursfecha = Carbon::parse($hour->fechahora)->format('Y-m-d H:i');
-                                if (Carbon::parse($hoursfecha)->format('Y-m-d H:i') == Carbon::parse($newfecha)->format('Y-m-d H:i')){
-                                    $bandera = false;
-                                    break;
-                                }
-                            }
-
-                            if ($bandera == 1){
-                                $validas[] = Carbon::parse($start)->format('h:i A');
-                            }
-                            $start = Carbon::parse($start)->addMinutes(30);
-                        }
-                    }
-
-
-
-            //$date = Carbon::parse('2016-11-24 11:59:56')->addMinutes(30);
-            /*$schedules = Schedule::where('asesor','=',$asesor)->where('dia','=',$dia)->get();
+            $schedules = Schedule::where('asesor','=',$asesor)->where('dia','=',$dia)->get();
             $horas = \App\Models\Request::where('asesor','=',$asesor)->get();
             $validas = array();
+
             foreach ($schedules as $schedule) {
-                $start = Carbon::parse($schedule->hr_inicio);
+                $start = Carbon::parse($schedule->hr_inicio)->format('H:i');
                 $end = Carbon::parse($schedule->hr_fin);
                 while ($start < $end) {
                     $bandera = true;
+                    $start = Carbon::parse($start)->format('H:i');
+                    $newfecha = Carbon::parse( $fechaselect.' '.$start)->format('Y-m-d H:i');
                     foreach ($horas as $hora){
                         $fechasoli = Carbon::parse($hora->fecha)->format('Y-m-d');
                         if ($fecha === $fechasoli){
@@ -318,12 +283,20 @@ class StudentController extends Controller
                                 break;
                             }
                         }
-                    }if ($bandera == 1){
-                        $validas[] = $start;
+                    }
+                    foreach ($hours as $hour){
+                        $hoursfecha = Carbon::parse($hour->fechahora)->format('Y-m-d H:i');
+                        if (Carbon::parse($hoursfecha)->format('Y-m-d H:i') == Carbon::parse($newfecha)->format('Y-m-d H:i')){
+                            $bandera = false;
+                            break;
+                        }
+                    }
+                    if ($bandera == 1){
+                        $validas[] = Carbon::parse($start)->format('h:i A');
                     }
                     $start = Carbon::parse($start)->addMinutes(30);
                 }
-            }*/
+            }
             $vista = view('alumno.ajax.selecthoras', compact('validas'))->render();
         }
         return response()->json(array('success' => true, 'html'=>$vista));

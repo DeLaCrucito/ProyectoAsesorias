@@ -50,6 +50,9 @@ Route::group(['prefix' => 'alumno', 'middleware' => 'auth:alumnos'],function (){
     Route::get('/profile','StudentController@showDatos')->name('profile');
     Route::post('/profile','StudentController@showDatos')->name('profile');
 
+    Route::get('/sendmail','AdministratorController@recordatorio')->name('enviarrecordatorio');
+    Route::post('/sendmail','AdministratorController@recordatorio')->name('enviarrecordatorio');
+
     Route::get('/nueva','StudentController@addSolicitud')->name('nuevasolicitud');
     Route::post('/nueva','StudentController@addSolicitud')->name('nuevasolicitud');
 
