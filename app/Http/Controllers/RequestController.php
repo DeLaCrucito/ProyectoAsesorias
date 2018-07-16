@@ -132,6 +132,10 @@ class RequestController extends Controller
                             $texto = 'El compañero con matricula '.$compa1matri.' no es válido';
                             return redirect()->back()->with('message', $texto);
                         }
+                        if ($compa2matri === $compa1matri){
+                            $texto = 'No puedes introducir al mismo compañero ('.$compa1matri.') más de una vez';
+                            return redirect()->back()->with('message', $texto);
+                        }
                         $data = ([
                             'fecha'=> encrypt($datos['fecha']),
                             'hora'=> encrypt($datos['hora']),
