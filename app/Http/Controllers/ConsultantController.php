@@ -39,13 +39,13 @@ class ConsultantController extends Controller
     public function create(Request $request)
     {
         $this->validate($request, [
-            'nombre' => 'required',
-            'apellido' => 'required',
-            'nivel_estudio' => 'required',
-            'especialidad' => 'required',
-            'correo' => 'required|email|unique:consultants,correo',
-            'password' => 'required|confirmed|min:8',
-            'lugar' => 'required'
+            'nombre' => 'required|max:255',
+            'apellido' => 'required|max:255',
+            'nivel_estudio' => 'required|max:255',
+            'especialidad' => 'required|max:255',
+            'correo' => 'required|email|unique:consultants,correo|max:255',
+            'password' => 'required|confirmed|min:8|max:200',
+            'lugar' => 'required|max:500'
         ],[
             'nombre.required' => 'Es necesario ingresar un nombre',
             'apellido.required' => 'Es necesario ingresar un apellido',
@@ -57,7 +57,12 @@ class ConsultantController extends Controller
             'password.confirmed' => 'Las contraseñas no coinciden',
             'password.min' => 'La contraseña tiene que tener almenos 8 caracteres',
             'lugar.required' => 'El campo lugar de asesorías es obligatorio',
-            'correo.unique'=>'Ya existe un usuario con este correo'
+            'correo.unique'=>'Ya existe un usuario con este correo',
+            'nombre.max'=>'El campo nombre es demasiado largo, no debe exeder los 255 caracteres',
+            'apellido.max'=>'El campo apellido es demasiado largo, no debe exeder los 255 caracteres',
+            'correo.max'=>'El campo correo es demasiado largo, no debe exeder los 255 caracteres',
+            'password.max'=>'La contraseña es demasiado larga, no debe exeder los 200 caracteres',
+            'lugar.max'=>'El campo lugar es demasiado largo, no debe exeder los 500 caracteres'
         ]);
 
         $Consultant = new Consultant();
@@ -99,12 +104,12 @@ class ConsultantController extends Controller
 
     public function update(Request $request, $id){
         $this->validate($request, [
-            'nombre' => 'required',
-            'apellido' => 'required',
-            'nivel_estudio' => 'required',
-            'especialidad' => 'required',
-            'correo' => 'required|email',
-            'lugar' => 'required'
+            'nombre' => 'required|max:255',
+            'apellido' => 'required|max:255',
+            'nivel_estudio' => 'required|max:255',
+            'especialidad' => 'required|max:255',
+            'correo' => 'required|email|unique:consultants,correo|max:255',
+            'lugar' => 'required|max:500'
         ],[
             'nombre.required' => 'Es necesario ingresar un nombre',
             'apellido.required' => 'Es necesario ingresar un apellido',
@@ -112,7 +117,12 @@ class ConsultantController extends Controller
             'especialidad.required' => 'Es necesario ingresar una especialidad',
             'correo.required' => 'Es necesario ingresar un email',
             'correo.email' => 'Debe introducir un correo electrónico válido',
-            'lugar.required' => 'El campo lugar de asesorías es obligatorio'
+            'lugar.required' => 'El campo lugar de asesorías es obligatorio',
+            'correo.unique'=>'Ya existe un usuario con este correo',
+            'nombre.max'=>'El campo nombre es demasiado largo, no debe exeder los 255 caracteres',
+            'apellido.max'=>'El campo apellido es demasiado largo, no debe exeder los 255 caracteres',
+            'correo.max'=>'El campo correo es demasiado largo, no debe exeder los 255 caracteres',
+            'lugar.max'=>'El campo lugar es demasiado largo, no debe exeder los 500 caracteres'
         ]);
 
         $Consultant = (new \App\Models\Consultant)->findOrFail($id);
@@ -123,11 +133,12 @@ class ConsultantController extends Controller
         $Consultant -> correo = $request -> correo;
         if ($request->password != ''){
             $this->validate($request, [
-                'password' => 'required|confirmed|min:8'
+                'password' => 'required|confirmed|min:8|max:200',
             ],[
                 'password.required' => 'Es necesario una contraseña',
                 'password.confirmed' => 'Las contraseñas no coinciden',
-                'password.min' => 'La contraseña tiene que tener almenos 8 caracteres'
+                'password.min' => 'La contraseña tiene que tener almenos 8 caracteres',
+                'password.max'=>'La contraseña es demasiado larga, no debe exeder los 200 caracteres'
             ]);
             $Consultant -> passwd = bcrypt($request->password);
         }

@@ -35,10 +35,10 @@ class CoordinatorController extends Controller
     public function create(Request $request){
         $this->validate($request, [
             'licen' => 'required|exists:degrees,id',
-            'nombre' => 'required',
-            'apellido' => 'required',
-            'email' => 'required|email|unique:coordinator,correo',
-            'password' => 'required|confirmed|min:8'
+            'nombre' => 'required|max:255',
+            'apellido' => 'required|max:255',
+            'email' => 'required|email|unique:coordinator,correo|max:255',
+            'password' => 'required|confirmed|min:8|max:255'
         ],[
             'licen.required' => 'Debe seleccionar una licenciatura',
             'nombre.required' => 'Debe seleccionar una facultad',
@@ -49,7 +49,11 @@ class CoordinatorController extends Controller
             'password.confirmed' => 'Las contraseñas no coinciden',
             'password.min' => 'La contraseña tiene que tener almenos 8 caracteres',
             'email.unique' => 'Ya existe un usuario con este correo',
-            'licen.exists'=>'La licenciatura no es un dato válido'
+            'licen.exists'=>'La licenciatura no es un dato válido',
+            'nombre.max'=>'El campo nombre es demasiado largo, no debe exeder los 255 caracteres',
+            'apellido.max'=>'El campo apellido es demasiado largo, no debe exeder los 255 caracteres',
+            'email.max'=>'El campo correo es demasiado largo, no debe exeder los 255 caracteres',
+            'password.max'=>'La contraseña demasiado larga, no debe exeder los 255 caracteres'
         ]);
 
         $Coordinator = new Coordinator();
@@ -92,19 +96,21 @@ class CoordinatorController extends Controller
     public function update(Request $request, $id){
         $this->validate($request, [
             'licen' => 'required|exists:degrees,id',
-            'nombre' => 'required',
-            'apellido' => 'required',
-            'email' => 'required|email'
+            'nombre' => 'required|max:255',
+            'apellido' => 'required|max:255',
+            'email' => 'required|email|unique:coordinator,correo|max:255'
         ],[
             'licen.required' => 'Debe seleccionar una licenciatura',
             'nombre.required' => 'Debe seleccionar una facultad',
             'apellido.required' => 'Es necesario ingrasar el nombre',
-            'usuario.required' => 'No se pudo encontrar la fase',
-            'email.required' => 'El cambo semestre es obligatorio',
+            'email.required' => 'El cambo correo electrónico es obligatorio',
             'email.email' => 'Debe introducir un correo electrónico válido',
-            'licen.exists'=>'La licenciatura no es un dato válido'
+            'email.unique' => 'Ya existe un usuario con este correo',
+            'licen.exists'=>'La licenciatura no es un dato válido',
+            'nombre.max'=>'El campo nombre es demasiado largo, no debe exeder los 255 caracteres',
+            'apellido.max'=>'El campo apellido es demasiado largo, no debe exeder los 255 caracteres',
+            'email.max'=>'El campo correo es demasiado largo, no debe exeder los 255 caracteres',
         ]);
-
         $Coordinator = Coordinator::findOrFail($id);
         $Coordinator -> licenciatura = $request->licen;
         $Coordinator -> nombre = $request-> nombre;
@@ -112,11 +118,13 @@ class CoordinatorController extends Controller
         $Coordinator -> correo = $request -> email;
         if ($request->password != ''){
             $this->validate($request, [
-                'password' => 'required|confirmed|min:8'
+                'password' => 'required|confirmed|min:8|max:255'
             ],[
                 'password.required' => 'Es necesario una contraseña',
                 'password.confirmed' => 'Las contraseñas no coinciden',
-                'password.min' => 'La contraseña tiene que tener almenos 8 caracteres'
+                'password.min' => 'La contraseña tiene que tener almenos 8 caracteres',
+                'password.max'=>'La contraseña demasiado larga, no debe exeder los 255 caracteres'
+
             ]);
             $Coordinator -> passwd = bcrypt($request->password);
         }

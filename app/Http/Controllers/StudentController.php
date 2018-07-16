@@ -36,14 +36,14 @@ class StudentController extends Controller
     public function create(Request $request){
 
         $this->validate($request, [
-            'matri' => 'required|unique:students,matricula',
-            'nombre' => 'required',
-            'apellido' => 'required',
-            'email' => 'required|email|unique:students,correo',
+            'matri' => 'required|unique:students,matricula|integer|digits:5',
+            'nombre' => 'required|max:255',
+            'apellido' => 'required|max:255',
+            'email' => 'required|email|unique:students,correo|max:255',
             'facultad' => 'required|exists:faculties,id',
             'licen' => 'required|exists:degrees,id',
-            'semestre' => 'required',
-            'password' => 'required|confirmed|min:8'
+            'semestre' => 'required|integer|between:1,12',
+            'password' => 'required|confirmed|min:8|max:200'
         ],[
             'matri.required' => 'Es necesario ingresar una matricula',
             'nombre.required' => 'Es necesario ingresar el/los nombre(s)',
@@ -59,7 +59,14 @@ class StudentController extends Controller
             'email.unique'=>'Ya existe un usuario con este correo',
             'matri.unique'=>'Ya existe un usuario con esta matricula',
             'licen.exists'=>'La licenciatura no es válida',
-            'facultad.exists'=>'La facultad seleccionada no es válida'
+            'facultad.exists'=>'La facultad seleccionada no es válida',
+            'matri.integer'=>'La matrícula no debe contener caracteres especiales ni letras',
+            'matri.digits'=>'La matrícula no debe ser mayor a 5 caracteres',
+            'nombre.max'=>'El campo nombre es demasiado largo, no debe exeder los 255 caracteres',
+            'apellido.max'=>'El campo apellido es demasiado largo, no debe exeder los 255 caracteres',
+            'correo.max'=>'El campo correo es demasiado largo, no debe exeder los 255 caracteres',
+            'semestre.integer'=>'El semestre no es válido',
+            'password.max'=>'El campo contraseña es demasiado largo, no debe exeder los 255 caracteres'
         ]);
 
         $Student = new Student();
@@ -100,20 +107,32 @@ class StudentController extends Controller
 
     public function update(Request $request, $id){
         $this->validate($request, [
-            'matri' => 'required',
-            'nombre' => 'required',
-            'apellido' => 'required',
-            'email' => 'required|email',
-            'licen' => 'required',
-            'semestre' => 'required'
+            'matri' => 'required|unique:students,matricula|integer|digits:5',
+            'nombre' => 'required|max:255',
+            'apellido' => 'required|max:255',
+            'email' => 'required|email|unique:students,correo|max:255',
+            'facultad' => 'required|exists:faculties,id',
+            'licen' => 'required|exists:degrees,id',
+            'semestre' => 'required|integer|between:1,12',
         ],[
             'matri.required' => 'Es necesario ingresar una matricula',
             'nombre.required' => 'Es necesario ingresar el/los nombre(s)',
             'apellido.required' => 'Es necesario ingresar su(s) apellido(s)',
             'email.required' => 'Es necesario ingresar un email',
             'email.email' => 'Debe introducir un correo electrónico válido',
+            'facultad.required' => 'Debe seleccionar su facultad',
             'licen.required' => 'Debe seleccionar una licenciatura',
             'semestre.required' => 'Debe seleccionar un Semetre',
+            'email.unique'=>'Ya existe un usuario con este correo',
+            'matri.unique'=>'Ya existe un usuario con esta matricula',
+            'licen.exists'=>'La licenciatura no es válida',
+            'facultad.exists'=>'La facultad seleccionada no es válida',
+            'matri.integer'=>'La matrícula no debe contener caracteres especiales ni letras',
+            'matri.digits'=>'La matrícula no debe ser mayor a 5 caracteres',
+            'nombre.max'=>'El campo nombre es demasiado largo, no debe exeder los 255 caracteres',
+            'apellido.max'=>'El campo apellido es demasiado largo, no debe exeder los 255 caracteres',
+            'correo.max'=>'El campo correo es demasiado largo, no debe exeder los 255 caracteres',
+            'semestre.integer'=>'El semestre no es válido'
         ]);
 
 
@@ -126,11 +145,12 @@ class StudentController extends Controller
         $Student -> semestre = $request -> semestre;
         if ($request->password != ''){
             $this->validate($request, [
-                'password' => 'required|confirmed|min:8'
+                'password' => 'required|confirmed|min:8|max:200'
             ],[
                 'password.required' => 'Es necesario una contraseña',
                 'password.confirmed' => 'Las contraseñas no coinciden',
-                'password.min' => 'La contraseña tiene que tener almenos 8 caracteres'
+                'password.min' => 'La contraseña tiene que tener almenos 8 caracteres',
+                'password.max'=>'El campo contraseña es demasiado largo, no debe exeder los 255 caracteres'
             ]);
             $Student -> passwd = bcrypt($request->password);
         }

@@ -18,11 +18,17 @@ class DegreeController extends Controller
     {
         $this->validate($request, [
             'facultad' => 'required|exists:faculties,id',
-            'nombre' => 'required',
+            'nombre' => 'required|max:255',
+            'semestres' => 'required|integer|between:1,12'
         ],[
             'facultad.required' => 'Debe seleccionar una facultad',
             'nombre.required' => 'Es necesario ingrasar el nombre',
-            'facultad.exists' => 'La facultad no es un dato válido'
+            'facultad.exists' => 'La facultad no es un dato válido',
+            'nombre.max' => 'El nombre es demasiado largo, no debe exceder los 255 caracteres',
+            'semestres.required'=> 'Debe introducir los semestres de la licenciatura',
+            'semestres.integer'=>'El campo semestres debe ser un número entero',
+            'semestres.between' => 'El campo semestres no es válido'
+
         ]);
 
         $Degree = new Degree();
@@ -63,13 +69,18 @@ class DegreeController extends Controller
 
     public function update(Request $request, $id){
         $this->validate($request, [
-            'facultad' => 'required',
-            'nombre' => 'required',
-            'semestres' => 'required'
+            'facultad' => 'required|exists:faculties,id',
+            'nombre' => 'required|max:255',
+            'semestres' => 'required|integer|between:1,12'
         ],[
             'facultad.required' => 'Debe seleccionar una facultad',
             'nombre.required' => 'Es necesario ingrasar el nombre',
-            'semestres.required' => 'Debe introducir los semestres'
+            'facultad.exists' => 'La facultad no es un dato válido',
+            'nombre.max' => 'El nombre es demasiado largo, no debe exceder los 255 caracteres',
+            'semestres.required'=> 'Debe introducir los semestres de la licenciatura',
+            'semestres.integer'=>'El campo semestres debe ser un número entero',
+            'semestres.between' => 'El campo semestres no es válido'
+
         ]);
 
         $Degree = Degree::findOrFail($id);

@@ -16,7 +16,7 @@ class CreateDegreesTable extends Migration {
 		{
 			$table->integer('id', true);
 			$table->integer('facultad')->nullable()->index('licenciatura_facultad_index');
-			$table->string('nombre', 200)->nullable();
+			$table->string('nombre', 255)->nullable();
 			$table->integer('semestres')->nullable();
             $table->timestamps();
             $table->softDeletes();

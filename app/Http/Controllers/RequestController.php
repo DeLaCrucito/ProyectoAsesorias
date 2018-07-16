@@ -26,10 +26,10 @@ class RequestController extends Controller
             'asesor' => 'required|numeric|exists:consultants,id',
             'fecha' => 'required|date',
             'hora' => 'required|date_format:H:i',
-            'tipo' => 'required',
-            'textema' => 'required',
-            'periodo' => 'required',
-            'apoyo' => 'required'
+            'tipo' => 'required|in:Grupal,Individual',
+            'textema' => 'required|max:255',
+            'periodo' => 'required|in:Primer Parcial,Segundo Parcial,Ordinario,Extraordinario,Competencia',
+            'apoyo' => 'required|in:Ninguno,Tutor,Coordinador de PE,Coordinador General'
         ],[
             'unidad.required' => 'Debe seleccionar una unidad',
             'unidadd.numeric' => 'El valor no es correcto',
@@ -44,7 +44,11 @@ class RequestController extends Controller
             'periodo.required' => 'Debe seleccionar un periodo',
             'apoyo.required' => 'El campo apoyo es obligatorio',
             'unidad.exists' => 'La unidad de aprendizaje no es válida',
-            'asesor.exists' => 'El asesor no es válido'
+            'asesor.exists' => 'El asesor no es válido',
+            'tipo.in'=>'El tipo de asesoría seleccionado no es válido',
+            'textema' =>'El campo tema no debe exceder los 255 caracteres',
+            'periodo.in'=>'El periodo seleccionado no es válido',
+            'apoyo.in' => 'El apoyo seleccionado no es válido'
         ]);
 
         $alumno  =  Auth::id();
@@ -321,8 +325,6 @@ class RequestController extends Controller
                 $nuevasoli = (new \App\Models\Request)->where('id','=',$id)->first();
                 $nuevasoli->estado = 4;
                 $nuevasoli->save();
-                Mail::to($nuevasoli->student->correo)->send(new Recordatorio($nuevasoli));
-                Mail::to($nuevasoli->consultant->correo)->send(new Recordatorio($nuevasoli));
             }
             if ($fechasoli < $today){
                 $nuevasoli = (new \App\Models\Request)->where('id','=',$id)->first();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Faculty;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 
 class FacultyController extends Controller
@@ -15,11 +16,13 @@ class FacultyController extends Controller
 
     public function create(Request $request){
         $this->validate($request, [
-            'nombre' => 'required',
-            'nivel' => 'required',
+            'nombre' => 'required|max:255',
+            'nivel' => 'required|in:Licenciatura,Bachillerato',
         ],[
             'nombre.required' => 'El campo nombre es obligatorio',
-            'nivel.required' => 'Debe seleccionar un nivel de estudios'
+            'nivel.required' => 'Debe seleccionar un nivel de estudios',
+            'nombre.max'=>'El campo nombre no debe exceder 255 caracteres',
+            'nivel.in'=>'El valor de nivel no es válido'
         ]);
 
         $Faculty = new Faculty();
@@ -58,11 +61,13 @@ class FacultyController extends Controller
 
     public function update(Request $request){
         $this->validate($request, [
-            'nombre' => 'required',
-            'nivel' => 'required',
+            'nombre' => 'required|max:255',
+            'nivel' => 'required|in:Licenciatura,Bachillerato',
         ],[
             'nombre.required' => 'El campo nombre es obligatorio',
-            'nivel.required' => 'Debe seleccionar un nivel de estudios'
+            'nivel.required' => 'Debe seleccionar un nivel de estudios',
+            'nombre.max'=>'El campo nombre no debe exceder 255 caracteres',
+            'nivel.in'=>'El valor de nivel no es válido'
         ]);
 
         $id = ($request->id);

@@ -59,11 +59,11 @@ class SubjectController extends Controller
     public function create(Request $request){
         $this->validate($request, [
             'licen' => 'required|exists:degrees,id',
-            'nombre' => 'required',
+            'nombre' => 'required|max:255',
             'fase' => 'required|between:1,2',
-            'semestre' => 'required|integer',
-            'clave' => 'required',
-            'tipo' => 'required'
+            'semestre' => 'required|integer|between:1,12',
+            'clave' => 'required|max:255',
+            'tipo' => 'required|in:Obligatoria,Optativa'
         ],[
             'licen.required' => 'Debe seleccionar una licenciatura',
             'facultad.required' => 'Debe seleccionar una facultad',
@@ -74,7 +74,11 @@ class SubjectController extends Controller
             'tipo.required' => 'Debe seleccionar el tipo asignatura',
             'licen.exists'=>'La licenciatura seleccionada no es válida',
             'fase.between'=>'La fase no es correcta',
-            'smestre.integer'=>'El semestre no es válido'
+            'smestre.integer'=>'El semestre no es válido',
+            'nombre.max'=>'El campo nombre es demasiado largo, no debe exceder los 255 caracteres',
+            'semestre.between'=>'El campo semestre no es válido',
+            'clave.max'=>'La clave es demasiado larga, no debe exceder los 255 caracteres',
+            'tipo.in'=>'El tipo de unidad seleccionado no es válido'
         ]);
 
         $Subject = new Subject();
@@ -120,12 +124,12 @@ class SubjectController extends Controller
 
     public function update(Request $request, $id){
         $this->validate($request, [
-            'licen' => 'required',
-            'nombre' => 'required',
-            'fase' => 'required',
-            'semestre' => 'required',
-            'clave' => 'required',
-            'tipo' => 'required'
+            'licen' => 'required|exists:degrees,id',
+            'nombre' => 'required|max:255',
+            'fase' => 'required|between:1,2',
+            'semestre' => 'required|integer|between:1,12',
+            'clave' => 'required|max:255',
+            'tipo' => 'required|in:Obligatoria,Optativa'
         ],[
             'licen.required' => 'Debe seleccionar una licenciatura',
             'facultad.required' => 'Debe seleccionar una facultad',
@@ -133,7 +137,14 @@ class SubjectController extends Controller
             'fase.required' => 'No se pudo encontrar la fase',
             'semestre.required' => 'El cambo semestre es obligatorio',
             'clave.required' => 'Debe introducir una clave válida',
-            'tipo.required' => 'Debe seleccionar el tipo asignatura'
+            'tipo.required' => 'Debe seleccionar el tipo asignatura',
+            'licen.exists'=>'La licenciatura seleccionada no es válida',
+            'fase.between'=>'La fase no es correcta',
+            'smestre.integer'=>'El semestre no es válido',
+            'nombre.max'=>'El campo nombre es demasiado largo, no debe exceder los 255 caracteres',
+            'semestre.between'=>'El campo semestre no es válido',
+            'clave.max'=>'La clave es demasiado larga, no debe exceder los 255 caracteres',
+            'tipo.in'=>'El tipo de unidad seleccionado no es válido'
         ]);
 
         $Subject = Subject::findOrFail($id);
