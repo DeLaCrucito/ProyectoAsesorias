@@ -60,6 +60,7 @@
                                         <option value="" selected="selected">Seleccione una fecha</option>
                                     </select>
                                 </div>
+                                <p class="white-text">* El horario seleccionado no estará disponible durante 5 min.</p>
                             </div>
                         </div>
                         <div class="row col s12 m6" >

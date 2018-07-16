@@ -19,8 +19,8 @@ class CreateStatesTable extends Migration {
 			$table->string('icon')->nullable();
 			$table->string('mensaje')->nullable();
 			$table->string('color')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+			$table->timestamps();
+			$table->softDeletes();
 		});
 	}
 

@@ -17,8 +17,8 @@ class CreateFacultiesTable extends Migration {
 			$table->integer('id', true);
 			$table->string('nombre')->nullable();
 			$table->string('tipo')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+			$table->timestamps();
+			$table->softDeletes();
 		});
 	}
 

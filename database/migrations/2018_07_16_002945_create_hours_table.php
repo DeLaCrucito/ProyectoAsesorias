@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateDegreesTable extends Migration {
+class CreateHoursTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,12 +12,11 @@ class CreateDegreesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('degrees', function(Blueprint $table)
+		Schema::create('hours', function(Blueprint $table)
 		{
 			$table->integer('id', true);
-			$table->integer('facultad')->nullable()->index('licenciatura_facultad_index');
-			$table->string('nombre', 255)->nullable();
-			$table->integer('semestres')->nullable();
+			$table->integer('asesor')->nullable()->index('hours_consultants_id_fk');
+			$table->dateTime('fechahora')->nullable();
             $table->timestamps();
             $table->softDeletes();
 		});
@@ -31,7 +30,7 @@ class CreateDegreesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('degrees');
+		Schema::drop('hours');
 	}
 
 }

@@ -21,8 +21,8 @@ class CreateCoordinatorsTable extends Migration {
 			$table->string('correo')->nullable()->unique('coordinador_correo_uindex');
 			$table->string('password', 200)->nullable();
 			$table->boolean('is_coor')->nullable()->default(1);
-            $table->timestamps();
-            $table->softDeletes();
+			$table->timestamps();
+			$table->softDeletes();
 		});
 	}
 

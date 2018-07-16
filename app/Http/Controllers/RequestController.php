@@ -7,6 +7,7 @@ use App\Mail\Recordatorio;
 use App\Models\Consultant;
 use App\Models\Coordinator;
 use App\Models\Degree;
+use App\Models\Hour;
 use App\Models\Student;
 use App\Models\Subject;
 use Carbon\Carbon;
@@ -25,7 +26,7 @@ class RequestController extends Controller
             'unidad' => 'required|numeric|exists:subjects,id',
             'asesor' => 'required|numeric|exists:consultants,id',
             'fecha' => 'required|date',
-            'hora' => 'required|date_format:H:i',
+            'hora' => 'required|date_format:h:i A',
             'tipo' => 'required|in:Grupal,Individual',
             'textema' => 'required|max:255',
             'periodo' => 'required|in:Primer Parcial,Segundo Parcial,Ordinario,Extraordinario,Competencia',
@@ -36,9 +37,9 @@ class RequestController extends Controller
             'asesor.numeric' => 'El valor no es correcto',
             'asesor.required' => 'Debe seleccionar un asesor',
             'fecha.required' => 'Debe seleccionar una fecha',
-            'fecha.date_format' => 'Debe introducir una fecha válida',
+            'fecha.date' => 'Debe introducir una fecha válida',
             'hora.required' => 'Debe seleccionar una hora',
-            'hora.date' => 'Debe seleccionar una hora válida',
+            'hora.date_format' => 'Debe seleccionar una hora válida',
             'tipo.required' => 'El campo tipo es obligatorio',
             'textema.required' => 'Debe introducir un tema',
             'periodo.required' => 'Debe seleccionar un periodo',
@@ -61,6 +62,22 @@ class RequestController extends Controller
         $tema = $request->textema;
         $periodo = $request->periodo;
         $apoyo = $request->apoyo;
+
+        $newfecha = Carbon::createFromFormat('Y-m-d H:i A', $fecha .' '. $hora);
+
+        $hours = Hour::where('asesor','=',$asesor)->get();
+        foreach ($hours as $hour){
+            $hoursfecha = Carbon::parse($hour->fechahora)->format('Y-m-d H:i');
+            if (Carbon::parse($hoursfecha)->format('Y-m-d H:i') == Carbon::parse($newfecha)->format('Y-m-d H:i')){
+                $texto = 'El horario seleccionado actualmente está ocupado.';
+                return redirect()->back()->with('message', $texto);
+            }
+        }
+
+        $Hour = new Hour();
+        $Hour->asesor = $asesor;
+        $Hour->fechahora = $newfecha;
+        $Hour->save();
 
         $datos = [];
         $datos['fecha'] = $fecha;
@@ -218,12 +235,12 @@ class RequestController extends Controller
         $foliofecha = str_replace('-', '', $fecha);
         $folio = $alumno .'-'.$asesor.'-'.$coordinador.'-'.$unidad.'-'.$foliofecha.'-'.$foliohora;
 
-        $newfecha = Carbon::createFromFormat('Y-m-d H:i', $fecha .' '. $hora);
+        $newfecha = Carbon::createFromFormat('Y-m-d H:i A', $fecha .' '. $hora);
 
         $solicituds = (new \App\Models\Request)->where('asesor','=',$asesor)->get();
 
         foreach ($solicituds as $solicitud){
-            $fechasoli = $solicitud->fecha;
+            $fechasoli = $solicitud->fecha->format('Y-m-d H:i');
             if ($fechasoli === $newfecha){
                 return redirect()->route('nuevasolicitud')->with('message', 'Error: El asesor ya tiene una solicitud agendada con esta fecha y hora');
             }

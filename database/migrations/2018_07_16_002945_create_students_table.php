@@ -23,8 +23,8 @@ class CreateStudentsTable extends Migration {
 			$table->integer('semestre')->nullable();
 			$table->string('password', 200)->nullable();
 			$table->boolean('is_alumno')->nullable()->default(1);
-            $table->timestamps();
-            $table->softDeletes();
+			$table->timestamps();
+			$table->softDeletes();
 		});
 	}
 

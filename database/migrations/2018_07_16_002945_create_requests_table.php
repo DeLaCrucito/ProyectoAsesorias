@@ -26,8 +26,8 @@ class CreateRequestsTable extends Migration {
 			$table->string('tema')->nullable();
 			$table->string('folio', 500)->nullable()->unique('requests_folio_uindex');
 			$table->string('periodo')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+			$table->timestamps();
+			$table->softDeletes();
 		});
 	}
 

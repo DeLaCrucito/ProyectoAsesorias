@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Sat, 14 Jul 2018 17:09:48 -0500.
+ * Date: Mon, 16 Jul 2018 00:33:14 -0500.
  */
 
 namespace App\Models;
@@ -27,6 +27,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $deleted_at
  * 
  * @property \Illuminate\Database\Eloquent\Collection $assignments
+ * @property \Illuminate\Database\Eloquent\Collection $hours
  * @property \Illuminate\Database\Eloquent\Collection $requests
  * @property \Illuminate\Database\Eloquent\Collection $schedules
  *
@@ -59,6 +60,11 @@ class Consultant extends Eloquent implements Authenticatable
 	public function assignments()
 	{
 		return $this->hasMany(\App\Models\Assignment::class, 'asesor');
+	}
+
+	public function hours()
+	{
+		return $this->hasMany(\App\Models\Hour::class, 'asesor');
 	}
 
 	public function requests()

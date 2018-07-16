@@ -18,8 +18,8 @@ class CreateAssignmentsTable extends Migration {
 			$table->integer('asesor')->nullable()->index('asignacion_asesor_index');
 			$table->integer('materia')->nullable()->index('asignacion_materia_index');
 			$table->string('code', 500)->nullable()->unique('assignments_code_uindex');
-            $table->timestamps();
-            $table->softDeletes();
+			$table->timestamps();
+			$table->softDeletes();
 		});
 	}
 

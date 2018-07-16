@@ -21,8 +21,8 @@ class CreateSubjectsTable extends Migration {
 			$table->integer('semestre')->nullable();
 			$table->string('clave')->nullable();
 			$table->string('tipo')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+			$table->timestamps();
+			$table->softDeletes();
 		});
 	}
 

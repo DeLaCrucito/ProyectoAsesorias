@@ -49,8 +49,8 @@ class ScheduleController extends Controller
 
         $this->validate($request, [
             'dia' => 'required|between:1,5',
-            'hr_inicio' => 'required|date_format:h:i',
-            'hr_fin' => 'required|date_format:h:i'
+            'hr_inicio' => 'required|date_format:H:i',
+            'hr_fin' => 'required|date_format:H:i'
         ],[
             'dia.required' => 'Debe seleccionar un día',
             'hr_inicio.required' => 'Debe seleccionar un horario de inicio',

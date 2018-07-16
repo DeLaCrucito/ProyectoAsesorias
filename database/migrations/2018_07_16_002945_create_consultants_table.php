@@ -15,16 +15,16 @@ class CreateConsultantsTable extends Migration {
 		Schema::create('consultants', function(Blueprint $table)
 		{
 			$table->integer('id', true);
-			$table->string('nombre', 255)->nullable();
-			$table->string('apellido', 255)->nullable();
-			$table->string('nivel_estudio', 255)->nullable();
-			$table->string('especialidad', 255)->nullable();
-			$table->string('correo', 255)->nullable()->unique('asesores_correo_uindex');
+			$table->string('nombre')->nullable();
+			$table->string('apellido')->nullable();
+			$table->string('nivel_estudio')->nullable();
+			$table->string('especialidad')->nullable();
+			$table->string('correo')->nullable()->unique('asesores_correo_uindex');
 			$table->string('password', 200)->nullable();
 			$table->boolean('is_asesor')->nullable()->default(1);
 			$table->string('lugar', 500)->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+			$table->timestamps();
+			$table->softDeletes();
 		});
 	}
 
