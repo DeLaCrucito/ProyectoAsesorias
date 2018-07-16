@@ -33,6 +33,11 @@
                             </div>
                             <div class="row col s12 m12" style="display: inline-flex">
                                 <div class="row col s12 m6">
+                                    <h5 class="white-text">Número de solicitudes: {{ $solicituds->count() }}</h5>
+                                    <p class="white-text">Completadas: {{ $completadas }}</p>
+                                    <p class="white-text">Pendientes: {{ $pendientes }}</p>
+                                    <p class="white-text">No realizadas: {{ $norealizada }}</p>
+                                    <p class="white-text">En proceso: {{ $enproceso }}</p>
                                     <table class="white-text centered">
                                         <thead>
                                         <tr>

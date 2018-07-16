@@ -13,8 +13,8 @@ class AssignmentController extends Controller
         $unidad = decrypt($request->subject);
         $asesor = decrypt($request->consultant);
         $code = $unidad.'-'. $asesor;
-        $materia = Subject::where('id','=',$unidad)->first();
-        if (Assignment::where('code', '=', $code)->exists()) {
+        $materia = (new \App\Models\Subject)->where('id','=',$unidad)->first();
+        if ((new \App\Models\Assignment)->where('code', '=', $code)->exists()) {
             $texto = 'La materia '.$materia->nombre.' ya está asignada, intente con otra materia.';
             return redirect()->back()->with('alert', $texto);
         } else{
@@ -33,7 +33,11 @@ class AssignmentController extends Controller
     public function destroy(Request $request){
         $consultant = decrypt($request->id);
         $post = (new \App\Models\Assignment)->where('id','=',$consultant)->first();
-        $post->delete();
+        try {
+            $post->delete();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+        }
         return redirect()->back()->with('message', 'La materia fue removida con éxito');
 
     }
@@ -58,7 +62,12 @@ class AssignmentController extends Controller
                 $subject = (new \App\Models\Subject)->where('id','=',$unidad)->first();
 
             }
-            $vista = view('coordinador.ajax.tablavariosasesores')->with(compact('consultants'))->with(compact('subject'))->render();
+            try {
+                $vista = view('coordinador.ajax.tablavariosasesores')->with(compact('consultants'))->with(compact('subject'))->render();
+            } catch (\Throwable $e) {
+                return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+
+            }
         }
         return $vista;
     }
@@ -77,8 +86,13 @@ class AssignmentController extends Controller
 
             $subject = (new \App\Models\Subject)->where('id','=',$unidad)->first();
 
-            $vista = view('coordinador.ajax.tablavariosasesores')->with(compact('consultants'))->with(compact('subject'))
-                ->render();
+            try {
+                $vista = view('coordinador.ajax.tablavariosasesores')->with(compact('consultants'))->with(compact('subject'))
+                    ->render();
+            } catch (\Throwable $e) {
+                return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+
+            }
         }
         return response()->json(array('success' => true, 'html'=>$vista));
     }

@@ -13,7 +13,7 @@
             <div style="margin-top: 50px">
                 <div class="row">
                     <div class="row input-field col s12 m6">
-                        <label class="active white-text" for="tipo">Especialidad</label>
+                        <label class="active white-text" for="especialidad">Especialidad</label>
                         <select class="white-text" id="especialidad" name="especialidad" onchange="mostrarTabla(this
                         .value)">
                             <option disabled selected="selected" value="nada">Buscar por especialidad</option>
@@ -22,36 +22,35 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="posts row" id="posts">
-                        <table class="white-text highlight">
-                            <thead>
+
+                </div>
+                <div class="posts row" id="posts">
+                    <table class="white-text highlight responsive-table">
+                        <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Especialidad</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($consultants as $consultant)
                             <tr>
-                                <th>Nombre</th>
-                                <th>Especialidad</th>
-                                <th>Acciones</th>
+                                <td width="40%">{{ $consultant->nombre ." ". $consultant->apellido}}</td>
+                                <td width="40%">{{ $consultant->especialidad }}</td>
+
+                                <td><a class="tooltipped" data-position="top" data-delay="50"
+                                       data-tooltip="Consultar detalles de materias y horarios"
+                                       href="{{ route('detalleasesor', ['id'=>encrypt($consultant->id)]) }}" >Ver
+                                        detalles</a></td>
                             </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($consultants as $consultant)
-                                <tr>
-                                    <td>{{ $consultant->nombre ." ". $consultant->apellido}}</td>
-                                    <td>{{ $consultant->especialidad }}</td>
-
-                                        <td><a class="tooltipped" data-position="top" data-delay="50"
-                                               data-tooltip="Consultar detalles de materias y horarios"
-                                               href="{{ route('detalleasesor', ['id'=>encrypt($consultant->id)]) }}" >Ver
-                                                detalles</a></td>
-
-
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                        @unless (count($consultants))
-                            <p class="white-text center-align">No existen asesores.</p>
-                        @endunless
-                        {!! $consultants->links() !!}
-                    </div>
+                        @endforeach
+                        </tbody>
+                    </table>
+                    @unless (count($consultants))
+                        <p class="white-text center-align">No existen asesores.</p>
+                    @endunless
+                    {!! $consultants->links() !!}
                 </div>
             </div>
         </div>

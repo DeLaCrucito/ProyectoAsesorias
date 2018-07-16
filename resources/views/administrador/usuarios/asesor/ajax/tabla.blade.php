@@ -1,4 +1,4 @@
-<table class="white-text highlight">
+<table class="white-text highlight responsive-table">
     <thead>
     <tr>
         <th>Nombre</th>
@@ -10,8 +10,8 @@
     <tbody>
     @foreach($consultants as $consultant)
         <tr>
-            <td>{{ $consultant->nombre ." ". $consultant->apellido}}</td>
-            <td>{{ $consultant->correo }}</td>
+            <td width="40%">{{ $consultant->nombre ." ". $consultant->apellido}}</td>
+            <td width="20%">{{ $consultant->correo }}</td>
             <td><a href="{{ route('editasesor', encrypt($consultant->id)) }}" >Ver detalles</a></td>
             <td><a class="btn-flat blue-text modal-trigger"
                    href="#modal{{ $consultant->id }}"><span></span>Eliminar</a></td>

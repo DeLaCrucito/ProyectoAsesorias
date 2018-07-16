@@ -53,7 +53,7 @@
                     red darken-1 btn boton">Asignar materia</a>
                     <p class="white-text">Se muestra un listado con las materias que el asesor puede impartir.</p>
                     <div class="posts row" id="posts">
-                        <table class="white-text highlight">
+                        <table class="white-text highlight responsive-table">
                             <thead>
                             <tr>
                                 <th>Unidad de Aprendizaje</th>
@@ -91,6 +91,9 @@
                             @endforeach
                             </tbody>
                         </table>
+                        @unless (count($subjects))
+                            <p class="white-text center-align">No existen materias.</p>
+                        @endunless
                         {!! $subjects->links() !!}
                     </div>
                 </div>
@@ -123,6 +126,9 @@
                             @endforeach
                             </tbody>
                         </table>
+                        @unless (count($schedules))
+                            <p class="white-text center-align">No existen horarios.</p>
+                        @endunless
                     </div>
                 </div>
             </div>

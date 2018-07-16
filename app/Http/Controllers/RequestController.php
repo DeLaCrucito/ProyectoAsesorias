@@ -22,8 +22,8 @@ class RequestController extends Controller
 {
     public function nuevaSolicitud(Request $request){
         $this->validate($request, [
-            'unidad' => 'required|numeric',
-            'asesor' => 'required|numeric',
+            'unidad' => 'required|numeric|exists:subjects,id',
+            'asesor' => 'required|numeric|exists:consultants,id',
             'fecha' => 'required|date',
             'hora' => 'required|date_format:H:i',
             'tipo' => 'required',
@@ -42,7 +42,9 @@ class RequestController extends Controller
             'tipo.required' => 'El campo tipo es obligatorio',
             'textema.required' => 'Debe introducir un tema',
             'periodo.required' => 'Debe seleccionar un periodo',
-            'apoyo.required' => 'El campo apoyo es obligatorio'
+            'apoyo.required' => 'El campo apoyo es obligatorio',
+            'unidad.exists' => 'La unidad de aprendizaje no es válida',
+            'asesor.exists' => 'El asesor no es válido'
         ]);
 
         $alumno  =  Auth::id();
@@ -359,10 +361,11 @@ class RequestController extends Controller
 
     public function updateestado(Request $request){
         $this->validate($request, [
-            'check' => 'required|numeric',
+            'check' => 'required|numeric|exists:states',
         ],[
             'check.required' => 'Debe seleccionar una opción',
-            'check.numeric' => 'Los datos no son correctos'
+            'check.numeric' => 'Los datos no son correctos',
+            'cehck.exists'=>'La opción seleccionada no es válida'
         ]);
         $check = $request->check;
         $id = decrypt($request->id);

@@ -43,8 +43,9 @@
                         <select id="semestre" onchange="mostrarTabla(this.value)" name="semestre"  required></select>
                         <label for="semestre" class="white-text">Semestre</label>
                     </div>
-                    <div class="posts row" id="posts">
-                    </div>
+
+                </div>
+                <div class="posts row" id="posts">
                 </div>
             </div>
         </div>

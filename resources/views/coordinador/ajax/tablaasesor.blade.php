@@ -1,4 +1,4 @@
-<table class="white-text highlight">
+<table class="white-text highlight responsive-table">
     <thead>
     <tr>
         <th>Nombre</th>
@@ -9,8 +9,8 @@
     <tbody>
     @foreach($consultants as $consultant)
         <tr>
-            <td>{{ $consultant->nombre ." ". $consultant->apellido}}</td>
-            <td>{{ $consultant->especialidad }}</td>
+            <td width="40%">{{ $consultant->nombre ." ". $consultant->apellido}}</td>
+            <td width="40%">{{ $consultant->especialidad }}</td>
             <td><a class="tooltipped" data-position="top" data-delay="50"
                    data-tooltip="Consultar detalles de materias y horarios"
                    href="{{ route('detalleasesor', ['id'=>encrypt($consultant->id)]) }}" >Ver

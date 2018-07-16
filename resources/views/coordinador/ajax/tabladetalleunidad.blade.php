@@ -1,4 +1,4 @@
-<table class="white-text highlight">
+<table class="white-text highlight responsive-table">
     <thead>
     <tr>
         <th>Nombre</th>

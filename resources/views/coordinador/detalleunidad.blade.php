@@ -63,7 +63,7 @@
 
                     <p class="white-text center-align">Se muestra un listado con los asesores que imparten la materia.</p>
                     <div class="posts row" id="posts">
-                        <table class="white-text highlight">
+                        <table class="white-text highlight responsive-table">
                             <thead>
                             <tr>
                                 <th>Nombre</th>

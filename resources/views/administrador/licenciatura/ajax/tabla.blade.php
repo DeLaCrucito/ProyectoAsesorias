@@ -1,7 +1,7 @@
-<table class="white-text highlight">
+<table class="white-text highlight responsive-table">
     <thead>
     <tr>
-        <th>Nombre</th>
+        <th width="50%">Nombre</th>
         <th>Acciones</th>
         <th>Borrar</th>
     </tr>

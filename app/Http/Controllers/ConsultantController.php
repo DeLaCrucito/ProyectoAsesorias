@@ -25,9 +25,13 @@ class ConsultantController extends Controller
     public function ajaxTabla(Request $request){
         if($request->ajax()){
             $asesor = $request->asesor;
-            $consultants = Consultant::where('nombre', 'like','%'. $asesor.'%')->paginate(5);
+            $consultants = (new \App\Models\Consultant)->where('nombre', 'like','%'. $asesor.'%')->paginate(5);
             $datos = compact('consultants',$consultants);
-            $vista = view('administrador.usuarios.asesor.ajax.tabla', $datos)->render();
+            try {
+                $vista = view('administrador.usuarios.asesor.ajax.tabla', $datos)->render();
+            } catch (\Throwable $e) {
+                return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+            }
         }
         return response()->json(array('success' => true, 'html'=>$vista));
     }
@@ -39,7 +43,7 @@ class ConsultantController extends Controller
             'apellido' => 'required',
             'nivel_estudio' => 'required',
             'especialidad' => 'required',
-            'correo' => 'required|email',
+            'correo' => 'required|email|unique:consultants,correo',
             'password' => 'required|confirmed|min:8',
             'lugar' => 'required'
         ],[
@@ -52,7 +56,8 @@ class ConsultantController extends Controller
             'password.required' => 'Es necesario una contraseña',
             'password.confirmed' => 'Las contraseñas no coinciden',
             'password.min' => 'La contraseña tiene que tener almenos 8 caracteres',
-            'lugar.required' => 'El campo lugar de asesorías es obligatorio'
+            'lugar.required' => 'El campo lugar de asesorías es obligatorio',
+            'correo.unique'=>'Ya existe un usuario con este correo'
         ]);
 
         $Consultant = new Consultant();
@@ -76,7 +81,12 @@ class ConsultantController extends Controller
             if ($asesor != ''){
                 $consultants = (new \App\Models\Consultant)->where('nombre', 'like','%'. $asesor.'%')->paginate(5);
             }
-            $vista = view('administrador.usuarios.asesor.ajax.tabla')->with(compact('consultants'))->render();
+            try {
+                $vista = view('administrador.usuarios.asesor.ajax.tabla')->with(compact('consultants'))->render();
+            } catch (\Throwable $e) {
+                return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+
+            }
         }
         return $vista;
     }
@@ -134,10 +144,14 @@ class ConsultantController extends Controller
         if($request->ajax()){
             $especialidad = $request->especialidad;
             if ($especialidad != 'nada'){
-                $consultants = Consultant::where('especialidad', '=',$especialidad)->orderBy('apellido','asc')
+                $consultants = (new \App\Models\Consultant)->where('especialidad', '=',$especialidad)->orderBy('apellido','asc')
                     ->paginate(5);
             }
-            $vista = view('coordinador.ajax.tablaasesor')->with(compact('consultants'))->render();
+            try {
+                $vista = view('coordinador.ajax.tablaasesor')->with(compact('consultants'))->render();
+            } catch (\Throwable $e) {
+                return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+            }
         }
         return $vista;
     }
@@ -147,10 +161,14 @@ class ConsultantController extends Controller
     public function especialidad(Request $request){
         if($request->ajax()){
             $especialidad = $request->especialidad;
-            $consultants = Consultant::where('especialidad', '=',$especialidad)->orderBy('apellido','asc')->paginate
+            $consultants = (new \App\Models\Consultant)->where('especialidad', '=',$especialidad)->orderBy('apellido','asc')->paginate
             (5);
             $datos = compact('consultants',$consultants);
-            $vista = view('coordinador.ajax.tablaasesor', $datos)->render();
+            try {
+                $vista = view('coordinador.ajax.tablaasesor', $datos)->render();
+            } catch (\Throwable $e) {
+                return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+            }
         }
         return response()->json(array('success' => true, 'html'=>$vista));
     }
@@ -159,12 +177,15 @@ class ConsultantController extends Controller
         $id = decrypt($request->id);
         $post = (new \App\Models\Consultant)->where('id','=',$id)->first();
         $texto = $post->nombre.' '.$post->apellido.' se eliminó correctamente';
-        $post -> delete();
+        try {
+            $post->delete();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+        }
         return redirect()->back()->with('message',$texto);
     }
 
     public function detalles(Request $request){
-        $value = Auth::user()->licenciatura;
         $id = decrypt($request->id);
         $consultant = (new \App\Models\Consultant)->where('id','=',$id)->first();
         $schedules = Schedule::with('consultant')->where('asesor','=',$consultant->id)->orderBy('dia','desc')->get();
@@ -179,9 +200,9 @@ class ConsultantController extends Controller
 
     public function asignamateria(Request $request){
         $licenciatura = Auth::user()->licenciatura;
-        $degree = Degree::findOrFail($licenciatura);
+        $degree = (new \App\Models\Degree)->findOrFail($licenciatura);
         $asesor = decrypt($request->consultant);
-        $consultant = Consultant::where('id','=',$asesor)->first();
+        $consultant = (new \App\Models\Consultant)->where('id','=',$asesor)->first();
         $assigns = (new \App\Models\Assignment)->where('asesor','=',$asesor)->get();
         $materias = array();
         foreach ($assigns as $assign){
@@ -197,7 +218,11 @@ class ConsultantController extends Controller
                 $subjects = (new \App\Models\Subject)->whereNotIn('id',$materias)->where('licenciatura','=',$licenciatura)
                     ->where('semestre','=',$semestre)->paginate(5);
             }
-            $vista = view('coordinador.ajax.tablaasignacion')->with(compact('subjects'))->with(compact('consultant'))->render();
+            try {
+                $vista = view('coordinador.ajax.tablaasignacion')->with(compact('subjects'))->with(compact('consultant'))->render();
+            } catch (\Throwable $e) {
+                return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+            }
         }
         return $vista;
     }
@@ -211,11 +236,15 @@ class ConsultantController extends Controller
             foreach ($assigns as $assign){
                 $materias[] = $assign->materia;
             }
-            $consultant = Consultant::where('id','=',$asesor)->first();
+            $consultant = (new \App\Models\Consultant)->where('id','=',$asesor)->first();
             $licenciatura = Auth::user()->licenciatura;
             $subjects = (new \App\Models\Subject)->whereNotIn('id',$materias)->where('licenciatura','=',$licenciatura)
                 ->where('semestre','=',$semestre)->paginate(5);            $datos = compact('subjects',$subjects);
-            $vista = view('coordinador.ajax.tablaasignacion', $datos)->with(compact('consultant'))->render();
+            try {
+                $vista = view('coordinador.ajax.tablaasignacion', $datos)->with(compact('consultant'))->render();
+            } catch (\Throwable $e) {
+                return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+            }
         }
         return response()->json(array('success' => true, 'html'=>$vista));
     }
@@ -223,12 +252,17 @@ class ConsultantController extends Controller
     public function showDatos(){
         $id  =  Auth::id();
         $consultant = (new \App\Models\Consultant)->where('id','=',$id)->first();
-
         $solicituds = (new \App\Models\Request)->where('asesor','=',$id)->get();
         $ids = array();
         foreach ($solicituds as $solicitud){
             $ids[] = $solicitud->id;
         }
+
+        $completadas = (new \App\Models\Request)->where('asesor','=',$id)->where('estado','=',2)->count();
+        $norealizada = (new \App\Models\Request)->where('asesor','=',$id)->where('estado','=',3)->count();
+        $pendientes = (new \App\Models\Request)->where('asesor','=',$id)->where('estado','=',1)->count();
+        $enproceso = (new \App\Models\Request)->where('asesor','=',$id)->where('estado','=',4)->count();
+
 
         $evaluations = (new \App\Models\Evaluation)->whereIn('solicitud',$ids)->count();
         $insuficiente = (new \App\Models\Evaluation)->whereIn('solicitud',$ids)->where('aprovechamiento','=',1)->count();
@@ -253,7 +287,12 @@ class ConsultantController extends Controller
             ->with(compact('insuficientes'))
             ->with(compact('satisfactorios'))
             ->with(compact('buenos'))
-            ->with(compact('excelentes'));;
+            ->with(compact('excelentes'))
+            ->with(compact('solicituds'))
+            ->with(compact('completadas'))
+            ->with(compact('norealizada'))
+            ->with(compact('pendientes'))
+            ->with(compact('enproceso'));
     }
 
     public function allSolicitudConsultant(Request $request){
@@ -289,7 +328,12 @@ class ConsultantController extends Controller
                     ->where('estado','=',$estado)
                     ->orderBy('fecha', 'asc')->paginate(5);
             }
-            $vista = view('asesor.ajax.tablahistorial')->with(compact('solicituds'))->render();
+            try {
+                $vista = view('asesor.ajax.tablahistorial')->with(compact('solicituds'))->render();
+            } catch (\Throwable $e) {
+                return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+
+            }
         }
         return $vista;
     }
@@ -317,7 +361,12 @@ class ConsultantController extends Controller
                     ->where('estado', '=', $estado)
                     ->orderBy('fecha', 'asc')->paginate(5);
             }
-            $vista = view('coordinador.ajax.tablahistorial')->with(compact('solicituds'))->render();
+            try {
+                $vista = view('coordinador.ajax.tablahistorial')->with(compact('solicituds'))->render();
+            } catch (\Throwable $e) {
+                return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+
+            }
         }
         return response()->json(array('success' => true, 'html' => $vista));
     }
@@ -337,7 +386,12 @@ class ConsultantController extends Controller
                 }
             }
             $subjects = (new \App\Models\Subject)->whereIn('id',$materias)->get();
-            $vista = view('asesor.ajax.selectunidades', compact('subjects'))->render();
+            try {
+                $vista = view('asesor.ajax.selectunidades', compact('subjects'))->render();
+            } catch (\Throwable $e) {
+                return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+
+            }
         }
         return response()->json(array('success' => true, 'html'=>$vista));
     }
@@ -352,7 +406,12 @@ class ConsultantController extends Controller
                 $licenciaturas[] = $assign->subject->licenciatura;
             }
             $degrees = (new \App\Models\Degree)->whereIn('id', $licenciaturas)->where('facultad','=',$id)->get();
-            $vista = view('asesor.ajax.selectlicenciatura')->with(compact('degrees'))->render();
+            try {
+                $vista = view('asesor.ajax.selectlicenciatura')->with(compact('degrees'))->render();
+            } catch (\Throwable $e) {
+                return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+
+            }
         }
         return response()->json(array('success' => true, 'html'=>$vista));
     }
@@ -369,9 +428,13 @@ class ConsultantController extends Controller
                     $semestres[] = $assign->materia;
                 }
             }
-            $subject = Subject::whereIn('id',$semestres)->get();
+            $subject = (new \App\Models\Subject)->whereIn('id',$semestres)->get();
             $subjects = $subject->unique('semestre');
-            $vista = view('asesor.ajax.semestres')->with(compact('subjects'))->render();
+            try {
+                $vista = view('asesor.ajax.semestres')->with(compact('subjects'))->render();
+            } catch (\Throwable $e) {
+                return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+            }
         }
         return response()->json(array('success' => true, 'html'=>$vista));
     }

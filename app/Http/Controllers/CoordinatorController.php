@@ -34,10 +34,10 @@ class CoordinatorController extends Controller
 
     public function create(Request $request){
         $this->validate($request, [
-            'licen' => 'required',
+            'licen' => 'required|exists:degrees,id',
             'nombre' => 'required',
             'apellido' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:coordinator,correo',
             'password' => 'required|confirmed|min:8'
         ],[
             'licen.required' => 'Debe seleccionar una licenciatura',
@@ -47,7 +47,9 @@ class CoordinatorController extends Controller
             'email.email' => 'Debe introducir un correo electrónico válido',
             'password.required' => 'Debe introducir una clave válida',
             'password.confirmed' => 'Las contraseñas no coinciden',
-            'password.min' => 'La contraseña tiene que tener almenos 8 caracteres'
+            'password.min' => 'La contraseña tiene que tener almenos 8 caracteres',
+            'email.unique' => 'Ya existe un usuario con este correo',
+            'licen.exists'=>'La licenciatura no es un dato válido'
         ]);
 
         $Coordinator = new Coordinator();
@@ -89,7 +91,7 @@ class CoordinatorController extends Controller
 
     public function update(Request $request, $id){
         $this->validate($request, [
-            'licen' => 'required',
+            'licen' => 'required|exists:degrees,id',
             'nombre' => 'required',
             'apellido' => 'required',
             'email' => 'required|email'
@@ -99,7 +101,8 @@ class CoordinatorController extends Controller
             'apellido.required' => 'Es necesario ingrasar el nombre',
             'usuario.required' => 'No se pudo encontrar la fase',
             'email.required' => 'El cambo semestre es obligatorio',
-            'email.email' => 'Debe introducir un correo electrónico válido'
+            'email.email' => 'Debe introducir un correo electrónico válido',
+            'licen.exists'=>'La licenciatura no es un dato válido'
         ]);
 
         $Coordinator = Coordinator::findOrFail($id);
@@ -124,11 +127,23 @@ class CoordinatorController extends Controller
 
     public function showDatos(){
         $id  =  Auth::id();
-        $evaluations = (new \App\Models\Evaluation)->count();
-        $insuficiente = (new \App\Models\Evaluation)->where('aprovechamiento','=',1)->count();
-        $satisfactorio = (new \App\Models\Evaluation)->where('aprovechamiento','=',2)->count();
-        $bueno = (new \App\Models\Evaluation)->where('aprovechamiento','=',3)->count();
-        $excelente = (new \App\Models\Evaluation)->where('aprovechamiento','=',4)->count();
+        $solicituds = (new \App\Models\Request)->where('coordinador','=',$id)->get();
+        $missolis = array();
+        foreach ($solicituds as $solicitud){
+            $missolis[] = $solicitud->id;
+        }
+
+        $completadas = (new \App\Models\Request)->where('coordinador','=',$id)->where('estado','=',2)->count();
+        $norealizada = (new \App\Models\Request)->where('coordinador','=',$id)->where('estado','=',3)->count();
+        $pendientes = (new \App\Models\Request)->where('coordinador','=',$id)->where('estado','=',1)->count();
+        $enproceso = (new \App\Models\Request)->where('coordinador','=',$id)->where('estado','=',4)->count();
+
+
+        $evaluations = (new \App\Models\Evaluation)->whereIn('solicitud',$missolis)->count();
+        $insuficiente = (new \App\Models\Evaluation)->whereIn('solicitud',$missolis)->where('aprovechamiento','=',1)->count();
+        $satisfactorio = (new \App\Models\Evaluation)->whereIn('solicitud',$missolis)->where('aprovechamiento','=',2)->count();
+        $bueno = (new \App\Models\Evaluation)->whereIn('solicitud',$missolis)->where('aprovechamiento','=',3)->count();
+        $excelente = (new \App\Models\Evaluation)->whereIn('solicitud',$missolis)->where('aprovechamiento','=',4)->count();
 
 
         if ( $evaluations > 0){
@@ -144,20 +159,30 @@ class CoordinatorController extends Controller
         }
 
 
-        $coordinator = Coordinator::with('degree')->findOrFail($id);
+        $coordinator = (new \App\Models\Coordinator)->where('id','=',$id)->first();
         return view('coordinador.home',compact('coordinator'))
             ->with(compact('insuficientes'))
             ->with(compact('satisfactorios'))
             ->with(compact('buenos'))
-            ->with(compact('excelentes'));
+            ->with(compact('excelentes'))
+            ->with(compact('solicituds'))
+            ->with(compact('completadas'))
+            ->with(compact('norealizada'))
+            ->with(compact('pendientes'))
+            ->with(compact('enproceso'));
 
     }
 
     public function destroy(Request $request){
         $id = decrypt($request->id);
-        $post = Coordinator::where('id','=',$id)->first();
+        $post = (new \App\Models\Coordinator)->where('id','=',$id)->first();
         $texto = $post->nombre.' '.$post->apellido.' se eliminó correctamente';
-        $post -> delete();
+        try {
+            $post->delete();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+
+        }
         return redirect()->back()->with('message',$texto);
     }
 

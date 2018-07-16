@@ -1,4 +1,4 @@
-<table class="white-text highlight">
+<table class="white-text highlight responsive-table">
     <thead>
     <tr>
         <th>Unidad de Aprendizaje</th>
@@ -38,4 +38,7 @@
     @endforeach
     </tbody>
 </table>
+@unless (count($subjects))
+    <p class="white-text center-align">No existen materias.</p>
+@endunless
 {!! $subjects->links() !!}

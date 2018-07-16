@@ -30,7 +30,7 @@ class AdministratorLoginController extends Controller
             return redirect()->intended(route('adminhome'));
         }
         // if unsuccessful, then redirect back to the login with the form data
-        if (Administrator::where('correo','=',$request->email)->exists()){
+        if ((new \App\Models\Administrator)->where('correo','=',$request->email)->exists()){
             return redirect()->back()->withInput($request->only('email', 'remember'))->with('message', 'Error: La contraseña es incorrecta');
         } else{
             return redirect()->back()->withInput($request->only('email', 'remember'))->with('message', 'Error: No se encuentra registrado');

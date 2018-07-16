@@ -58,10 +58,10 @@ class SubjectController extends Controller
 
     public function create(Request $request){
         $this->validate($request, [
-            'licen' => 'required',
+            'licen' => 'required|exists:degrees,id',
             'nombre' => 'required',
-            'fase' => 'required',
-            'semestre' => 'required',
+            'fase' => 'required|between:1,2',
+            'semestre' => 'required|integer',
             'clave' => 'required',
             'tipo' => 'required'
         ],[
@@ -71,7 +71,10 @@ class SubjectController extends Controller
             'fase.required' => 'No se pudo encontrar la fase',
             'semestre.required' => 'El cambo semestre es obligatorio',
             'clave.required' => 'Debe introducir una clave válida',
-            'tipo.required' => 'Debe seleccionar el tipo asignatura'
+            'tipo.required' => 'Debe seleccionar el tipo asignatura',
+            'licen.exists'=>'La licenciatura seleccionada no es válida',
+            'fase.between'=>'La fase no es correcta',
+            'smestre.integer'=>'El semestre no es válido'
         ]);
 
         $Subject = new Subject();

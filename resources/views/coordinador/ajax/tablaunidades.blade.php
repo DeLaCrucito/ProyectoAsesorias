@@ -1,4 +1,4 @@
-<table class="white-text highlight">
+<table class="white-text highlight responsive-table">
     <thead>
     <tr>
         <th>Unidad de Aprendizaje</th>
@@ -10,7 +10,7 @@
     <tbody>
     @foreach($subjects as $subject)
         <tr>
-            <td>{{ $subject->nombre }}</td>
+            <td width="50%">{{ $subject->nombre }}</td>
             <td>{{ $subject->semestre }}</td>
             <td>{{ $subject->tipo }}</td>
             <td><a class="tooltipped" data-position="top" data-delay="50"
@@ -22,4 +22,7 @@
     @endforeach
     </tbody>
 </table>
+@unless (count($subjects))
+    <p class="white-text center-align">No existen unidades de aprendizaje.</p>
+@endunless
 {!! $subjects->links() !!}

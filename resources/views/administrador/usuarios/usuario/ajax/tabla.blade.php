@@ -1,4 +1,4 @@
-<table class="white-text highlight">
+<table class="white-text highlight responsive-table">
     <thead>
     <tr>
         <th>Nombre</th>
@@ -11,8 +11,8 @@
     <tbody>
     @foreach($students as $student)
         <tr>
-            <td>{{ $student->nombre ." ". $student->apellido}}</td>
-            <td>{{ $student->matricula }}</td>
+            <td width="40%">{{ $student->nombre ." ". $student->apellido}}</td>
+            <td width="20%">{{ $student->matricula }}</td>
             <td>{{ $solicituds = (new App\Models\Request)->where('alumno','=',$student->id)->count() }}</td>
             <td><a href="{{ route('editalumno', encrypt($student->id)) }}" >Ver detalles</a></td>
             <td><a class="btn-flat blue-text modal-trigger"

@@ -1,4 +1,4 @@
-<table class="white-text highlight">
+<table class="white-text highlight responsive-table">
     <thead>
     <tr>
         <th>Nombre</th>
@@ -9,9 +9,9 @@
     <tbody>
     @foreach($facultads as $facultad)
         <tr>
-            <td>{{ $facultad->nombre }}</td>
-            <td><a href="{{ route('editfacultad', ['id'=>encrypt($facultad->id)]) }}" >Ver detalles</a></td>
-            <td><a class="btn-flat blue-text modal-trigger"
+            <td width="50%">{{ $facultad->nombre }}</td>
+            <td width="25%"><a href="{{ route('editfacultad', ['id'=>encrypt($facultad->id)]) }}" >Ver detalles</a></td>
+            <td width="25%"><a class="btn-flat blue-text modal-trigger"
                    href="#modal{{ $facultad->id }}"><span></span>Eliminar</a></td>
         </tr>
         <div id="modal{{ $facultad->id }}" class="modal">

@@ -39,9 +39,9 @@ class StudentController extends Controller
             'matri' => 'required|unique:students,matricula',
             'nombre' => 'required',
             'apellido' => 'required',
-            'email' => 'required|email',
-            'facultad' => 'required',
-            'licen' => 'required',
+            'email' => 'required|email|unique:students,correo',
+            'facultad' => 'required|exists:faculties,id',
+            'licen' => 'required|exists:degrees,id',
             'semestre' => 'required',
             'password' => 'required|confirmed|min:8'
         ],[
@@ -55,7 +55,11 @@ class StudentController extends Controller
             'semestre.required' => 'Debe seleccionar un Semetre',
             'password.required' => 'Es necesario una contraseña',
             'password.confirmed' => 'Las contraseñas no coinciden',
-            'password.min' => 'La contraseña tiene que tener almenos 8 caracteres'
+            'password.min' => 'La contraseña tiene que tener almenos 8 caracteres',
+            'email.unique'=>'Ya existe un usuario con este correo',
+            'matri.unique'=>'Ya existe un usuario con esta matricula',
+            'licen.exists'=>'La licenciatura no es válida',
+            'facultad.exists'=>'La facultad seleccionada no es válida'
         ]);
 
         $Student = new Student();

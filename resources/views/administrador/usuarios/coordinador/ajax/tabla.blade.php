@@ -1,4 +1,4 @@
-<table class="white-text highlight">
+<table class="white-text highlight responsive-table">
     <thead>
     <tr>
         <th>Nombre</th>
@@ -11,9 +11,9 @@
     <tbody>
     @foreach($coordinators as $coordinator)
         <tr>
-            <td>{{ $coordinator->nombre ." ". $coordinator->apellido}}</td>
-            <td>{{ $coordinator->correo }}</td>
-            <td>{{ $coordinator->degree->nombre }}</td>
+            <td width="35%">{{ $coordinator->nombre ." ". $coordinator->apellido}}</td>
+            <td width="20%">{{ $coordinator->correo }}</td>
+            <td width="25%">{{ $coordinator->degree->nombre }}</td>
             <td><a href="{{ route('editcoordinador', encrypt($coordinator->id)) }}" >Ver detalles</a></td>
             <td><a class="btn-flat blue-text modal-trigger"
                    href="#modal{{ $coordinator->id }}"><span></span>Eliminar</a></td>

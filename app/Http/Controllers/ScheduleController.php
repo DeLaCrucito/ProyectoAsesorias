@@ -25,10 +25,13 @@ class ScheduleController extends Controller
     }
 
     public function destroy(Request $request){
-        $consultant = decrypt($request->consultant);
         $id = decrypt($request->id);
         $post = (new \App\Models\Schedule)->findOrFail($id);
-        $post->delete();
+        try {
+            $post->delete();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+        }
         return redirect()->back()->with('message', 'El horario se eliminó correctamente');
     }
 
@@ -42,13 +45,16 @@ class ScheduleController extends Controller
         $fin =  Carbon::createFromTimeString($hr_fin);
 
         $this->validate($request, [
-            'dia' => 'required',
-            'hr_inicio' => 'required',
-            'hr_fin' => 'required'
+            'dia' => 'required|between:1,5',
+            'hr_inicio' => 'required|date_format:h:i',
+            'hr_fin' => 'required|date_format:h:i'
         ],[
             'dia.required' => 'Debe seleccionar un día',
             'hr_inicio.required' => 'Debe seleccionar un horario de inicio',
-            'hr_fin.required' => 'Debe seleccionar un horario de fin'
+            'hr_fin.required' => 'Debe seleccionar un horario de fin',
+            'hr_inicio.date'=>'La hora de inicio no tiene un formato válido',
+            'hr_fin.date'=>'La hora de fin no tiene un formato válido',
+            'dia.between'=>'El día seleccionado no es correcto'
         ]);
 
         $schedules = (new \App\Models\Schedule)->where('asesor','=',$consultant->id)->where('dia','=',$day)->get();

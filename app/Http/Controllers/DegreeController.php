@@ -17,11 +17,12 @@ class DegreeController extends Controller
     public function create(Request $request)
     {
         $this->validate($request, [
-            'facultad' => 'required',
+            'facultad' => 'required|exists:faculties,id',
             'nombre' => 'required',
         ],[
             'facultad.required' => 'Debe seleccionar una facultad',
-            'nombre.required' => 'Es necesario ingrasar el nombre'
+            'nombre.required' => 'Es necesario ingrasar el nombre',
+            'facultad.exists' => 'La facultad no es un dato válido'
         ]);
 
         $Degree = new Degree();
@@ -82,9 +83,14 @@ class DegreeController extends Controller
 
     public function destroy(Request $request){
         $id = decrypt($request->id);
-        $post = Degree::where('id','=',$id)->first();
+        $post = (new \App\Models\Degree)->where('id','=',$id)->first();
         $texto = $post->nombre.' se eliminó correctamente';
-        $post -> delete();
+        try {
+            $post->delete();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+
+        }
         return redirect()->back()->with('message',$texto);
     }
 

@@ -43,8 +43,9 @@
                         <!--<a name="nuevo" id="nuevo" href="{{ route('newalumno') }}" class="white-text red
                         darken-1 btn boton">Agregar Nuevo</a>-->
                     </div>
-                    <div class="posts row" id="posts">
-                    </div>
+
+                </div>
+                <div class="posts row" id="posts">
                 </div>
             </div>
         </div>
