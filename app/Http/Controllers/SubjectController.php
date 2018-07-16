@@ -46,7 +46,7 @@ class SubjectController extends Controller
         if($request->ajax()){
             $licenciatura = $request->licenciatura;
             $semestre = $request->semestre;
-            $subjects = Subject::where([
+            $subjects = (new \App\Models\Subject)->where([
                 ['licenciatura', '=', $licenciatura],
                 ['semestre', '=', $semestre]
             ])->paginate(5);
@@ -88,7 +88,11 @@ class SubjectController extends Controller
         $Subject-> semestre = $request->semestre;
         $Subject-> clave = $request->clave;
         $Subject -> tipo = $request->tipo;
-        $Subject-> save();
+        try {
+            $Subject-> save();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+        }
         return view('administrador.unidada.ajax.exito');
     }
 
@@ -98,7 +102,7 @@ class SubjectController extends Controller
         if($request->ajax()){
             $licenciatura = $request->licenciatura;
             $semestre = $request->semestre;
-            $subjects = Subject::where([
+            $subjects = (new \App\Models\Subject)->where([
                 ['licenciatura', '=', $licenciatura],
                 ['semestre', '=', $semestre]
             ])->paginate(5);
@@ -154,7 +158,12 @@ class SubjectController extends Controller
         $Subject-> semestre = $request->semestre;
         $Subject-> clave = $request->clave;
         $Subject -> tipo = $request->tipo;
-        $Subject-> save();
+        try {
+            $Subject-> save();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+        }
+
         return redirect()->back()->with('message','Los cambios se realizaron con éxito');
     }
 
@@ -162,7 +171,10 @@ class SubjectController extends Controller
         $id = decrypt($request->id);
         $post = Subject::where('id','=',$id)->first();
         $texto = $post->nombre.' se eliminó correctamente';
-        $post -> delete();
+        try {
+            $post->delete();
+        } catch (\Exception $e) {
+        }
         return redirect()->back()->with('message',$texto);
     }
 

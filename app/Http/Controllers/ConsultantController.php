@@ -36,6 +36,10 @@ class ConsultantController extends Controller
         return response()->json(array('success' => true, 'html'=>$vista));
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function create(Request $request)
     {
         $this->validate($request, [
@@ -73,7 +77,11 @@ class ConsultantController extends Controller
         $Consultant->correo = $request->correo;
         $Consultant->password = $request->password;
         $Consultant->lugar = $request->lugar;
-        $Consultant->save();
+        try {
+            $Consultant->save();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+        }
 
         return view('administrador.usuarios.asesor.ajax.exito');
     }
@@ -143,8 +151,12 @@ class ConsultantController extends Controller
             $Consultant -> passwd = bcrypt($request->password);
         }
         $Consultant -> lugar = $request -> lugar;
+        try {
+            $Consultant -> save();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+        }
 
-        $Consultant -> save();
 
         return redirect()->back()->with('message','Los cambios se realizaron con éxito');
     }

@@ -28,7 +28,11 @@ class FacultyController extends Controller
         $Faculty = new Faculty();
         $Faculty -> nombre = $request -> nombre;
         $Faculty -> tipo = $request -> nivel;
-        $Faculty -> save();
+        try {
+            $Faculty -> save();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+        }
 
         return view('administrador.facultad.ajax.exito');
     }
@@ -74,7 +78,13 @@ class FacultyController extends Controller
         $Faculty = Faculty::findOrFail($id);
         $Faculty -> nombre = $request -> nombre;
         $Faculty -> tipo = $request -> nivel;
-        $Faculty -> save();
+
+        try {
+            $Faculty -> save();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+        }
+
 
         return redirect()->back()->with('message','Los cambios se realizaron con éxito');
     }
@@ -83,7 +93,11 @@ class FacultyController extends Controller
         $id = decrypt($request->id);
         $post = Faculty::where('id','=',$id)->first();
         $texto = $post->nombre.' se eliminó correctamente';
-        $post -> delete();
+        try {
+            $post->delete();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+        }
 
         return redirect()->back()->with('message',$texto);
     }

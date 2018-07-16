@@ -77,7 +77,11 @@ class StudentController extends Controller
         $Student -> licenciatura = $request -> licen;
         $Student -> semestre = $request -> semestre;
         $Student -> password = bcrypt($request->password);
-        $Student -> save();
+        try {
+            $Student -> save();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+        }
 
         return view('exito');
     }
@@ -154,9 +158,12 @@ class StudentController extends Controller
             ]);
             $Student -> passwd = bcrypt($request->password);
         }
+        try {
+            $Student -> save();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+        }
 
-
-        $Student -> save();
 
         return redirect()->back()->with('message','Los cambios se realizaron con éxito');
     }
@@ -197,7 +204,11 @@ class StudentController extends Controller
         $id = decrypt($request->id);
         $post = (new \App\Models\Student)->where('id','=',$id)->first();
         $texto = $post->nombre.' '.$post->apellido.' se eliminó correctamente';
-        $post -> delete();
+        try {
+            $post->delete();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+        }
         return redirect()->back()->with('message',$texto);
     }
 

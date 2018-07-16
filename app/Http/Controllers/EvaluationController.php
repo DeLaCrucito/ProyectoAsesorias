@@ -31,7 +31,11 @@ class EvaluationController extends Controller
                 $Evaluation->solicitud = $id;
                 $Evaluation->nota = $nota;
                 $Evaluation->aprovechamiento = $eval;
-                $Evaluation->save();
+                try {
+                    $Evaluation->save();
+                } catch (\Exception $e) {
+                    return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+                }
                 return redirect()->back()->with('message', 'Se ha guardado la califición');
             }
         }

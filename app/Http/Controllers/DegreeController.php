@@ -35,7 +35,12 @@ class DegreeController extends Controller
         $Degree-> facultad = $request->facultad;
         $Degree-> nombre = $request->nombre;
         $Degree-> semestres = $request->semestres;
-        $Degree-> save();
+        try {
+            $Degree-> save();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+        }
+
         return view('administrador.licenciatura.ajax.exito');
     }
 
@@ -87,7 +92,11 @@ class DegreeController extends Controller
         $Degree -> facultad = $request -> facultad;
         $Degree -> nombre = $request -> nombre;
         $Degree -> semestres = $request -> semestres;
-        $Degree->save();
+        try {
+            $Degree->save();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+        }
 
         return redirect()->back()->with('message','Los cambios se realizaron con éxito');
     }

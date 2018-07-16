@@ -62,7 +62,12 @@ class CoordinatorController extends Controller
         $Coordinator -> apellido = $request -> apellido;
         $Coordinator -> correo = $request -> email;
         $Coordinator -> password = bcrypt($request->password);
-        $Coordinator -> save();
+
+        try {
+            $Coordinator -> save();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+        }
 
         return view('administrador.usuarios.coordinador.ajax.exito');
     }
@@ -128,8 +133,11 @@ class CoordinatorController extends Controller
             ]);
             $Coordinator -> passwd = bcrypt($request->password);
         }
-
-        $Coordinator -> save();
+        try {
+            $Coordinator -> save();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+        }
         return redirect()->back()->with('message','Los cambios se realizaron con éxito');
     }
 

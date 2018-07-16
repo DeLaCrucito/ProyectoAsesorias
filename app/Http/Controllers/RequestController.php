@@ -311,6 +311,7 @@ class RequestController extends Controller
             }
         }
 
+
         return view('alumno.exito')
             ->with(compact('Nueva'));
     }

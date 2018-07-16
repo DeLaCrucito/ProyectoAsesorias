@@ -10,6 +10,11 @@
                     </blockquote>
                 </div>
             </div>
+            @if(session()->has('message'))
+                <div class="green darken-4 white-text col s12 m12 center-align" style="border-radius: 25px">
+                    <h5>{{ session()->get('message') }}</h5>
+                </div><br>
+            @endif
             <div style="margin-top: 50px">
                 @if ($errors->any())
                     <div class="red darken-1 white-text" style="border-radius: 25px">
@@ -77,14 +82,15 @@
                                         <h5>Esta acción no se puede deshacer</h5>
                                         <p>¿Seguro que desea remover la materia {{
                                                    $subject->subject->nombre }} para el asesor
-                                            {{$subject->nombre . ' '.
-                                                                       $subject->apellido}}?</p>
+                                            {{$subject->consultant->nombre . ' '.
+                                                                       $subject->consultant->apellido}}?</p>
                                     </div>
                                     <div class="modal-footer">
                                         <a id="#disagree" onclick="$('#modal{{ $subject->id }}').modal('close');" class="modal-action modal-close waves-effect
                                             waves-red btn-flat">Cancelar</a>
-                                        <a id="#agree" href="{{ route('delasignacion', ['id'=>$subject,
-                                                   'consultant'=>$consultant]) }}" class="modal-action modal-close waves-effect
+                                        <a id="#agree" href="{{ route('delasignacion', ['id'=>encrypt($subject->id)]) }}" class="modal-action
+                                                   modal-close
+                                                   waves-effect
                                             waves-green btn-flat">Aceptar</a>
                                     </div>
                                 </div>

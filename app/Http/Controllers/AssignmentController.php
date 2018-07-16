@@ -22,7 +22,11 @@ class AssignmentController extends Controller
             $Assignment -> materia = $unidad;
             $Assignment -> asesor = $asesor;
             $Assignment -> code = $code;
-            $Assignment -> save();
+            try {
+                $Assignment -> save();
+            } catch (\Exception $e) {
+                return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+            }
 
 
             $texto = 'La materia '.$materia->nombre.' se agregó con éxito';

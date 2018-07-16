@@ -19,7 +19,10 @@ class ScheduleController extends Controller
         $vista = view('coordinador.horarios',compact('consultant'))->with(compact('schedules'))->with(compact('horas'));
         if($request->ajax()){
             $schedules = Schedule::with('consultant')->where('asesor','=',$consultant->id)->paginate(5);
-            $vista = view('coordinador.ajax.tablahoras', compact('schedules'))->with(compact('consultant'))->render();
+            try {
+                $vista = view('coordinador.ajax.tablahoras', compact('schedules'))->with(compact('consultant'))->render();
+            } catch (\Throwable $e) {
+            }
         }
         return $vista;
     }
@@ -77,7 +80,11 @@ class ScheduleController extends Controller
                 $horario->code= $code;
                 $horario->asesor = $consultant->id;
                 $horario->dia=$day;
-                $horario->save();
+                try {
+                    $horario->save();
+                } catch (\Exception $e) {
+                    return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+                }
                 return redirect()->back()->with('message', 'El horario se agregó correctamente');
             }
         }
@@ -90,7 +97,11 @@ class ScheduleController extends Controller
             $horario->code= $code;
             $horario->asesor = $consultant->id;
             $horario->dia=$day;
-            $horario->save();
+            try {
+                $horario->save();
+            } catch (\Exception $e) {
+                return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+            }
             return redirect()->back()->with('message', 'El horario se agregó correctamente');
         }
     }
