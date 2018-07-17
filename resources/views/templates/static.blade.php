@@ -23,6 +23,8 @@
         background-attachment: fixed;
         z-index: 0;
         background-color: black;
+        background-position: center;
+
     }
     .padre {
         display: flex;
