@@ -28,8 +28,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->call('App\Http\Controllers\RequestController@actualizarEstado')->everyMinute();
-        $schedule->call('App\Http\Controllers\AdministratorController@recordatorio')->everyMinute();
+        $schedule->call('App\Http\Controllers\RequestController@actualizarEstado')->dailyAt('01:00');
+        $schedule->call('App\Http\Controllers\AdministratorController@recordatorio')->dailyAt('05:00');
     }
 
     /**

@@ -50,8 +50,6 @@ Route::group(['prefix' => 'alumno', 'middleware' => 'auth:alumnos'],function (){
     Route::get('/profile','StudentController@showDatos')->name('profile');
     Route::post('/profile','StudentController@showDatos')->name('profile');
 
-    Route::get('/sendmail','AdministratorController@recordatorio')->name('enviarrecordatorio');
-    Route::post('/sendmail','AdministratorController@recordatorio')->name('enviarrecordatorio');
 
     Route::get('/nueva','StudentController@addSolicitud')->name('nuevasolicitud');
     Route::post('/nueva','StudentController@addSolicitud')->name('nuevasolicitud');
@@ -94,6 +92,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:administradores'],funct
     Route::get('/home',function (){
         return view('administrador.home');
     })->name('adminhome');
+
+
 
     Route::group(['prefix' => 'facultad'], function (){
         Route::get('/new','FacultyController@nuevo')->name('newfacultad');

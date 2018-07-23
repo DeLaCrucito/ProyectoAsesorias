@@ -13,12 +13,10 @@ class AdministratorController extends Controller
         foreach ($solis as $soli){
             $id = $soli->id;
             $Nueva = (new \App\Models\Request)->where('id','=',$id)->first();
-            try{
+
                 Mail::to($Nueva->student->correo)->send(new Recordatorio($Nueva));
                 Mail::to($Nueva->consultant->correo)->send(new Recordatorio($Nueva));
-            }catch (\Exception $e){
-                return redirect()->back()->with('message','Ocurrio un error inesperado');
-            }
+
 
         }
         return redirect()->back();
