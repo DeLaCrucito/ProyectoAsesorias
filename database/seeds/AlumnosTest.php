@@ -13,7 +13,7 @@ class AlumnosTest extends Seeder
     public function run()
     {
         $faker = Faker::create('es-MX');
-        for ($i=0; $i < 100; $i++) {
+        for ($i=0; $i < 1000; $i++) {
             $asesor = new \App\Models\Student();
             $asesor -> nombre = $faker->firstName;
             $asesor -> apellido = $faker->lastName;

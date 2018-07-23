@@ -322,8 +322,6 @@ class CoordinatorController extends Controller
             'nombre' => 'required|max:255',
             'apellido' => 'required|max:255',
             'email' => 'required|email|unique:students,correo|max:255',
-            'facultad' => 'required|exists:faculties,id',
-            'licen' => 'required|exists:degrees,id',
             'semestre' => 'required|integer|between:1,12',
         ],[
             'matri.required' => 'Es necesario ingresar una matricula',
@@ -331,13 +329,9 @@ class CoordinatorController extends Controller
             'apellido.required' => 'Es necesario ingresar su(s) apellido(s)',
             'email.required' => 'Es necesario ingresar un email',
             'email.email' => 'Debe introducir un correo electrónico válido',
-            'facultad.required' => 'Debe seleccionar su facultad',
-            'licen.required' => 'Debe seleccionar una licenciatura',
             'semestre.required' => 'Debe seleccionar un Semetre',
             'email.unique'=>'Ya existe un usuario con este correo',
             'matri.unique'=>'Ya existe un usuario con esta matricula',
-            'licen.exists'=>'La licenciatura no es válida',
-            'facultad.exists'=>'La facultad seleccionada no es válida',
             'matri.integer'=>'La matrícula no debe contener caracteres especiales ni letras',
             'matri.digits'=>'La matrícula no debe ser mayor a 5 caracteres',
             'nombre.max'=>'El campo nombre es demasiado largo, no debe exeder los 255 caracteres',
@@ -352,7 +346,6 @@ class CoordinatorController extends Controller
         $Student -> nombre = $request-> nombre;
         $Student -> apellido = $request -> apellido;
         $Student -> correo = $request -> email;
-        $Student -> licenciatura = $request -> licen;
         $Student -> semestre = $request -> semestre;
         if ($request->password != ''){
             $this->validate($request, [
