@@ -112,10 +112,10 @@ class StudentController extends Controller
 
     public function update(Request $request, $id){
         $this->validate($request, [
-            'matri' => 'required|unique:students,matricula|integer|digits:5',
+            'matri' => 'required|integer|digits:5',
             'nombre' => 'required|max:255',
             'apellido' => 'required|max:255',
-            'email' => 'required|email|unique:students,correo|max:255',
+            'email' => 'required|email|max:255',
             'facultad' => 'required|exists:faculties,id',
             'licen' => 'required|exists:degrees,id',
             'semestre' => 'required|integer|between:1,12',
@@ -128,8 +128,6 @@ class StudentController extends Controller
             'facultad.required' => 'Debe seleccionar su facultad',
             'licen.required' => 'Debe seleccionar una licenciatura',
             'semestre.required' => 'Debe seleccionar un Semetre',
-            'email.unique'=>'Ya existe un usuario con este correo',
-            'matri.unique'=>'Ya existe un usuario con esta matricula',
             'licen.exists'=>'La licenciatura no es válida',
             'facultad.exists'=>'La facultad seleccionada no es válida',
             'matri.integer'=>'La matrícula no debe contener caracteres especiales ni letras',

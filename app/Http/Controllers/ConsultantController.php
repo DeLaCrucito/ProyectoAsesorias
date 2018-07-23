@@ -116,7 +116,7 @@ class ConsultantController extends Controller
             'apellido' => 'required|max:255',
             'nivel_estudio' => 'required|max:255',
             'especialidad' => 'required|max:255',
-            'correo' => 'required|email|unique:consultants,correo|max:255',
+            'correo' => 'required|email|max:255',
             'lugar' => 'required|max:500'
         ],[
             'nombre.required' => 'Es necesario ingresar un nombre',
@@ -126,7 +126,6 @@ class ConsultantController extends Controller
             'correo.required' => 'Es necesario ingresar un email',
             'correo.email' => 'Debe introducir un correo electrónico válido',
             'lugar.required' => 'El campo lugar de asesorías es obligatorio',
-            'correo.unique'=>'Ya existe un usuario con este correo',
             'nombre.max'=>'El campo nombre es demasiado largo, no debe exeder los 255 caracteres',
             'apellido.max'=>'El campo apellido es demasiado largo, no debe exeder los 255 caracteres',
             'correo.max'=>'El campo correo es demasiado largo, no debe exeder los 255 caracteres',

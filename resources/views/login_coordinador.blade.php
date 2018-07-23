@@ -45,7 +45,7 @@
                             <div class="row">
                                 <div class="input-field col s12">
                                     <i class="material-icons prefix" style="focus: white">account_circle</i>
-                                    <input placeholder="" type="email"  name="email" id="email" />
+                                    <input placeholder="" type="email"  name="email" value="{{ old('email') }}" id="email" />
                                     <label for="email">Correo institucional</label>
                                 </div>
                             </div>

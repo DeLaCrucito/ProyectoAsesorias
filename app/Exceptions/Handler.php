@@ -62,22 +62,22 @@ class Handler extends ExceptionHandler
         $guard = array_get($exception->guards(), 0);
         switch ($guard) {
             case 'alumnos':
-                $login = 'login_alumno';
+                $login = 'generalhome';
                 break;
             case 'administradores':
-                $login = 'login_admini';
+                $login = 'adminlogin';
                 break;
             case 'coordinadores':
-                $login = 'login_coordinador';
+                $login = 'generalhome';
                 break;
             case 'asesores':
-                $login = 'login_asesor';
+                $login = 'generalhome';
                 break;
             default:
-                $login = '/';
+                $login = 'generalhome';
                 break;
         }
 
-        return redirect()->guest(route('generalhome'));
+        return redirect()->guest(route($login));
     }
 }

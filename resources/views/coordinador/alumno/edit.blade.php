@@ -38,7 +38,8 @@
                         <label class="white-text"  for="apellido">Apellido</label>
                     </div>
                     <div class="input-field col s12 m6 ">
-                        <input class="white-text" type="text" id="matri" name="matri" value="{{ $student->matricula }}" placeholder="Introduzca la matricula">
+                        <input class="white-text" type="text" id="matri" name="matri" disabled value="{{ $student->matricula
+                        }}" placeholder="Introduzca la matricula">
                         <label class="white-text"  for="matri">Matrícula</label>
                     </div>
                     <div class="input-field col s12 m6 ">
@@ -46,7 +47,8 @@
                         <label class="white-text"  for="semestre">Semestre</label>
                     </div>
                     <div class="input-field col s12 m12 ">
-                        <input class="white-text"  type="email" id="email" name="email" value="{{ $student->correo }}" placeholder="Ingrese correo electrónico institucional">
+                        <input class="white-text"  type="email" id="email" name="email" disabled value="{{ $student->correo
+                        }}" placeholder="Ingrese correo electrónico institucional">
                         <label class="white-text"  for="email">Correo Institucional</label>
                     </div>
 
