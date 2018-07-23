@@ -13,7 +13,7 @@
                 <div>
                     <img src="">
                 </div>
-                <a href="#!user"><img class="circle" src="https://pbs.twimg.com/profile_images/677225147703496704/bI3kWrjm.png"></a>
+                <a href="#!user"><img class="circle" src="{{ asset('images/asesorias.jpg') }}"></a>
                 <h6 class="white-text bold">Portal de Asesorías</h6>
                 <h6 class="white-text thin">{{ \Illuminate\Support\Facades\Auth::user()->nombre.' '.
                 \Illuminate\Support\Facades\Auth::user()->apellido }}</h6>

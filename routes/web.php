@@ -347,6 +347,23 @@ Route::group(['prefix' => 'coordinador', 'middleware' => 'auth:coordinadores'],f
         Route::get('/tabla','SubjectController@ajaxTabla')->name('coortablaunidada');
         Route::post('/tabla','SubjectController@ajaxTabla')->name('coortablaunidada');
     });
+
+    Route::group(['prefix' => 'alumno'], function (){
+
+        Route::get('/list','CoordinatorController@estudiantes')->name('misalumnos');
+        Route::post('/list','CoordinatorController@estudiantes')->name('misalumnos');
+
+        Route::get('/edit{id}','CoordinatorController@studentedit')->name('studentedit');
+        Route::post('/edit{id}','CoordinatorController@studentedit')->name('studentedit');
+
+        Route::get('/update{student}','CoordinatorController@studentupdate')->name('studentupdate');
+        Route::post('/update{student}','CoordinatorController@studentupdate')->name('studentupdate');
+
+        Route::group(['prefix' => 'ajax'], function (){
+            Route::get('/tabla','CoordinatorController@studentajaxTabla')->name('misalumnostable');
+            Route::post('/tabla','CoordinatorController@studentajaxTabla')->name('misalumnostable');
+        });
+    });
 });
 
 //Asesor

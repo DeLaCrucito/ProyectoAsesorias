@@ -13,7 +13,7 @@
                 <div>
                     <img src="">
                 </div>
-                <img class="circle" src="https://pbs.twimg.com/profile_images/677225147703496704/bI3kWrjm.png">
+                <img class="circle" src="{{ asset('images/asesorias.jpg') }}">
                 <h6 class="white-text">Portal de Asesorías</h6>
                 <h6 class="white-text">ASESOR</h6>
                 <h6 class="white-text thin">{{ \Illuminate\Support\Facades\Auth::user()->nombre.' '

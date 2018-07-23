@@ -7,6 +7,7 @@ use App\Models\Coordinator;
 use App\Models\Degree;
 use App\Models\Evaluation;
 use App\Models\Faculty;
+use App\Models\Student;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -278,5 +279,100 @@ class CoordinatorController extends Controller
         return view('coordinador.solicitud')->with(compact('solicitud'))->with(compact('evaluada'))->with(compact('evaluation'));
     }
 
+    //Studiantes
+    public function estudiantes(Request $request){
+        //$facultads = Faculty::all(['id', 'nombre']);
+        $licenciatura = Auth::user()->licenciatura;
+        $students = Student::where('licenciatura','=',$licenciatura)->paginate(5);
+        $vista = view('coordinador.alumno.read')->with(compact('students'));
+        if($request->ajax()){
+            $semestre = $request->semestre;
+            if ($semestre != 0){
+                $students = (new \App\Models\Student)->where('licenciatura','=',$licenciatura)->where('semestre','=',$semestre)->paginate(5);
+
+            }
+            $vista = view('coordinador.alumno.ajax.tabla')->with(compact('students'))->render();
+        }
+        return $vista;
+    }
+
+    public function studentajaxTabla(Request $request){
+        if($request->ajax()){
+            $licenciatura = Auth::user()->licenciatura;
+            $semestre = $request->semestre;
+            $students = (new \App\Models\Student)->where('licenciatura','=',$licenciatura)->where('semestre','=',$semestre)->paginate(5);
+            $vista = view('coordinador.alumno.ajax.tabla')->with(compact('students'))->render();
+        }
+        return response()->json(array('success' => true, 'html'=>$vista));
+    }
+
+    public function studentedit(Request $request){
+        $id = decrypt($request->id);
+        $student = Student::where('id','=',$id)->first();
+        $facultads = Faculty::all(['id','nombre']);
+        $degrees = Degree::all(['id','nombre','facultad']);
+        return view('coordinador.alumno.edit',compact('student'))
+            ->with(compact('facultads',$facultads))
+            ->with(compact('degrees',$degrees));
+    }
+
+    public function studentupdate(Request $request, $id){
+        $this->validate($request, [
+            'matri' => 'required|unique:students,matricula|integer|digits:5',
+            'nombre' => 'required|max:255',
+            'apellido' => 'required|max:255',
+            'email' => 'required|email|unique:students,correo|max:255',
+            'facultad' => 'required|exists:faculties,id',
+            'licen' => 'required|exists:degrees,id',
+            'semestre' => 'required|integer|between:1,12',
+        ],[
+            'matri.required' => 'Es necesario ingresar una matricula',
+            'nombre.required' => 'Es necesario ingresar el/los nombre(s)',
+            'apellido.required' => 'Es necesario ingresar su(s) apellido(s)',
+            'email.required' => 'Es necesario ingresar un email',
+            'email.email' => 'Debe introducir un correo electrónico válido',
+            'facultad.required' => 'Debe seleccionar su facultad',
+            'licen.required' => 'Debe seleccionar una licenciatura',
+            'semestre.required' => 'Debe seleccionar un Semetre',
+            'email.unique'=>'Ya existe un usuario con este correo',
+            'matri.unique'=>'Ya existe un usuario con esta matricula',
+            'licen.exists'=>'La licenciatura no es válida',
+            'facultad.exists'=>'La facultad seleccionada no es válida',
+            'matri.integer'=>'La matrícula no debe contener caracteres especiales ni letras',
+            'matri.digits'=>'La matrícula no debe ser mayor a 5 caracteres',
+            'nombre.max'=>'El campo nombre es demasiado largo, no debe exeder los 255 caracteres',
+            'apellido.max'=>'El campo apellido es demasiado largo, no debe exeder los 255 caracteres',
+            'correo.max'=>'El campo correo es demasiado largo, no debe exeder los 255 caracteres',
+            'semestre.integer'=>'El semestre no es válido'
+        ]);
+
+
+        $Student = Student::findOrFail($id);
+        $Student -> matricula = $request->matri;
+        $Student -> nombre = $request-> nombre;
+        $Student -> apellido = $request -> apellido;
+        $Student -> correo = $request -> email;
+        $Student -> licenciatura = $request -> licen;
+        $Student -> semestre = $request -> semestre;
+        if ($request->password != ''){
+            $this->validate($request, [
+                'password' => 'required|confirmed|min:8|max:200'
+            ],[
+                'password.required' => 'Es necesario una contraseña',
+                'password.confirmed' => 'Las contraseñas no coinciden',
+                'password.min' => 'La contraseña tiene que tener almenos 8 caracteres',
+                'password.max'=>'El campo contraseña es demasiado largo, no debe exeder los 255 caracteres'
+            ]);
+            $Student -> passwd = bcrypt($request->password);
+        }
+        try {
+            $Student -> save();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
+        }
+
+
+        return redirect()->back()->with('message','Los cambios se realizaron con éxito');
+    }
 
 }

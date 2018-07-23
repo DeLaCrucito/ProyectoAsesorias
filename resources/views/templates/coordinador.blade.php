@@ -13,7 +13,7 @@
                 <div>
                     <img src="">
                 </div>
-                <a href=""><img class="circle" src="https://pbs.twimg.com/profile_images/677225147703496704/bI3kWrjm.png"></a>
+                <a href=""><img class="circle" src="{{ asset('images/asesorias.jpg') }}"></a>
                 <h6 class="white-text">Portal de Asesorías</h6>
                 <h6 class="white-text">COORDINADOR</h6>
                 <h6 class="white-text thin">{{ \Illuminate\Support\Facades\Auth::user()->nombre.' '.
@@ -32,6 +32,11 @@
             <a  href="{{route('verasesores')}}" class="white-text left-align"><i
                         class="material-icons">account_circle</i>Asesores</a>
         </li>
+        <li>
+            <a  href="{{route('misalumnos')}}" class="white-text left-align"><i
+                        class="material-icons">people</i>Alumnos</a>
+        </li>
+
         <li>
             <a  href="{{route('allsolicitud')}}" class="white-text left-align"><i
                         class="material-icons">list</i>@if($nuevas != 0)
