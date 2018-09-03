@@ -263,8 +263,7 @@
                 @endforeach
             ]
 
+
         });
-
-
     </script>
 @endsection

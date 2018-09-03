@@ -155,7 +155,7 @@ class StudentController extends Controller
                 'password.min' => 'La contraseña tiene que tener almenos 8 caracteres',
                 'password.max'=>'El campo contraseña es demasiado largo, no debe exeder los 255 caracteres'
             ]);
-            $Student -> passwd = bcrypt($request->password);
+            $Student -> password = bcrypt($request->password);
         }
         try {
             $Student -> save();

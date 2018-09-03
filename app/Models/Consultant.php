@@ -37,7 +37,7 @@ class Consultant extends Eloquent implements Authenticatable
 {
 	use \Illuminate\Database\Eloquent\SoftDeletes;
     use \Illuminate\Auth\Authenticatable;
-    protected $guard = 'administradores';
+    protected $guard = 'asesores';
 	protected $casts = [
 		'is_asesor' => 'bool'
 	];

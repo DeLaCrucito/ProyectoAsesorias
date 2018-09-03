@@ -343,9 +343,8 @@
             container: undefined, // ex. 'body' will append picker to body
             autoclose: false, // automatic close timepicker
             ampmclickable: true, // make AM PM clickable
-            disable: [
-                { from: [2,0], to: [5,30] }
-            ]
+            min: [7],
+            max: [20]
         });
 
             // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered

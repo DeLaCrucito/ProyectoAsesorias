@@ -75,7 +75,7 @@ class ConsultantController extends Controller
         $Consultant->nivel_estudio = $request->nivel_estudio;
         $Consultant->especialidad = $request->especialidad;
         $Consultant->correo = $request->correo;
-        $Consultant->password = $request->password;
+        $Consultant->password = bcrypt($request->password);
         $Consultant->lugar = $request->lugar;
         try {
             $Consultant->save();
@@ -138,6 +138,7 @@ class ConsultantController extends Controller
         $Consultant -> nivel_estudio = $request -> nivel_estudio;
         $Consultant -> especialidad = $request -> especialidad;
         $Consultant -> correo = $request -> correo;
+        $Consultant -> lugar = $request -> lugar;
         if ($request->password != ''){
             $this->validate($request, [
                 'password' => 'required|confirmed|min:8|max:200',
@@ -147,9 +148,9 @@ class ConsultantController extends Controller
                 'password.min' => 'La contraseña tiene que tener almenos 8 caracteres',
                 'password.max'=>'La contraseña es demasiado larga, no debe exeder los 200 caracteres'
             ]);
-            $Consultant -> passwd = bcrypt($request->password);
+            $Consultant -> password = bcrypt($request->password);
         }
-        $Consultant -> lugar = $request -> lugar;
+
         try {
             $Consultant -> save();
         } catch (\Exception $e) {

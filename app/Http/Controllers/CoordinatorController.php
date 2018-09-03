@@ -38,7 +38,7 @@ class CoordinatorController extends Controller
             'licen' => 'required|exists:degrees,id',
             'nombre' => 'required|max:255',
             'apellido' => 'required|max:255',
-            'email' => 'required|email|unique:coordinator,correo|max:255',
+            'email' => 'required|email|unique:coordinators,correo|max:255',
             'password' => 'required|confirmed|min:8|max:255'
         ],[
             'licen.required' => 'Debe seleccionar una licenciatura',
@@ -131,7 +131,7 @@ class CoordinatorController extends Controller
                 'password.max'=>'La contraseña demasiado larga, no debe exeder los 255 caracteres'
 
             ]);
-            $Coordinator -> passwd = bcrypt($request->password);
+            $Coordinator -> password = bcrypt($request->password);
         }
         try {
             $Coordinator -> save();
@@ -353,7 +353,6 @@ class CoordinatorController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('message', 'La operación ha fallado, por favor, contacte al administrador.');
         }
-
 
         return redirect()->back()->with('message','Los cambios se realizaron con éxito');
     }
